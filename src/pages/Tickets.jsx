@@ -53,6 +53,12 @@ const Tickets = () => {
 											<ShowtimeDetails showtime={ticket.showtime} />
 											<div className="flex h-full flex-col justify-between rounded-b-lg bg-gradient-to-br from-indigo-100 to-white text-center text-lg drop-shadow-lg md:flex-row">
 												<div className="flex h-full flex-col items-center gap-x-4 px-4 py-2 md:flex-row">
+													<p className="whitespace-nowrap font-semibold">Price : </p>
+													<p className="text-left">
+														{ticket.price || "-"}
+													</p>
+												</div>
+												<div className="flex h-full flex-col items-center gap-x-4 px-4 py-2 md:flex-row">
 													<p className="whitespace-nowrap font-semibold">Seats : </p>
 													<p className="text-left">
 														{ticket.seats.map((seat) => seat.row + seat.number).join(', ')}
