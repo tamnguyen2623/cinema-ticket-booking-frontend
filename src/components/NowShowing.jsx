@@ -27,6 +27,7 @@ const NowShowing = ({ movies, selectedMovieIndex, setSelectedMovieIndex, auth, i
 										<p className="truncate pt-1 text-center text-sm font-semibold leading-4">
 											{movie.name}
 										</p>
+										<button style={{color: 'white', backgroundColor: 'gray', marginTop:10, borderRadius: 4}} type="button" onClick={()=>{window.location.href=`/movie-detail/${movie._id}`}}>Detail</button>
 									</div>
 								) : (
 									<div
@@ -44,6 +45,8 @@ const NowShowing = ({ movies, selectedMovieIndex, setSelectedMovieIndex, auth, i
 										<p className="truncate pt-1 text-center text-sm font-semibold leading-4">
 											{movie.name}
 										</p>
+										<button style={{color: 'white', backgroundColor: 'gray', marginTop:10, borderRadius: 4}} type="button" onClick={()=>{window.location.href=`/movie-detail/${movie._id}`}}>Detail</button>
+
 									</div>
 								)
 							})}
