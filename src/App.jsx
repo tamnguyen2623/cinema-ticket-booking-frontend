@@ -44,6 +44,7 @@ function App() {
 					}
 				/>
 				<Route path="/showtime/:id" element={<Showtime />} />
+				<Route path="/showtime/:id/:code" element={<Showtime />} />
 				<Route path="/movie-detail/:id" element={<MovieDetail />} />
 				<Route path="/purchase/:id" element={<Purchase />} />
 				<Route path="/ticket" element={<Tickets />} />
