@@ -22,18 +22,18 @@ const Purchase = () => {
     try {
       const response = await axios.post(
         `/showtime/${showtime._id}`,
-        { 
-			seats: selectedSeats,
-			price:  showtime.movie.price
-		},
+        {
+          seats: selectedSeats,
+          price: showtime.movie.price,
+        },
         {
           headers: {
             Authorization: `Bearer ${auth.token}`,
           },
         }
       );
-      // console.log(response.data)
-      navigate("/cinema");
+      console.log(response.data.url);
+      window.location.href = response.data.url;
       toast.success("Purchase seats successful!", {
         position: "top-center",
         autoClose: 2000,
