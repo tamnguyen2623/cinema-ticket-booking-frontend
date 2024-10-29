@@ -14,10 +14,14 @@ const MovieLists = ({ movies, search, handleDelete, handleUpdate }) => {
             key={index}
             className="flex min-w-fit flex-grow rounded-md bg-white drop-shadow-md"
           >
-            <img
-              src={movie.img}
-              className="h-36 rounded-md object-contain drop-shadow-md sm:h-48"
-            />
+            <div className="w-full aspect-w-2 aspect-h-3 rounded-md overflow-hidden drop-shadow-md">
+              <img
+                src={movie.img}
+                className="object-cover w-full h-full"
+                alt="Movie Poster"
+              />
+            </div>
+
             <div className="flex flex-grow flex-col justify-between p-2">
               <div>
                 <p className="text-lg font-semibold sm:text-xl">{movie.name}</p>
@@ -32,20 +36,22 @@ const MovieLists = ({ movies, search, handleDelete, handleUpdate }) => {
                     : "No description available"}
                 </p>
               </div>
-              <button
-                className="flex w-fit items-center gap-1 self-end rounded-md bg-gradient-to-br from-green-700 to-yellow-600 py-1 pl-2 pr-1.5 text-sm font-medium text-white hover:from-green-600 hover:to-yellow-500"
-                onClick={() => handleUpdate(movie)}
-              >
-                Update
-                <PencilSquareIcon className="h-5 w-5" />
-              </button>
-              <button
-                className="flex w-fit items-center gap-1 self-end rounded-md bg-gradient-to-br from-red-700 to-rose-600 py-1 pl-2 pr-1.5 text-sm font-medium text-white hover:from-red-600 hover:to-rose-500"
-                onClick={() => handleDelete(movie)}
-              >
-                DELETE
-                <TrashIcon className="h-5 w-5" />
-              </button>
+              <div>
+                <button
+                  className="flex w-fit items-center gap-1 self-end rounded-md bg-gradient-to-br from-green-700 to-yellow-600 py-1 pl-2 pr-1.5 text-sm font-medium text-white hover:from-green-600 hover:to-yellow-500"
+                  onClick={() => handleUpdate(movie)}
+                >
+                  Update
+                  <PencilSquareIcon className="h-5 w-5" />
+                </button>
+                <button
+                  className="flex w-fit items-center gap-1 self-end rounded-md bg-gradient-to-br from-red-700 to-rose-600 py-1 pl-2 pr-1.5 text-sm font-medium text-white hover:from-red-600 hover:to-rose-500"
+                  onClick={() => handleDelete(movie)}
+                >
+                  DELETE
+                  <TrashIcon className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
         );

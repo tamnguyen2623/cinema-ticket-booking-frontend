@@ -190,7 +190,7 @@ const ShowtimeDetails = ({ showDeleteBtn, showtime, fetchShowtime }) => {
 					<div className="flex items-center">
 						<img src={showtime?.movie?.img} className="w-32 px-4 drop-shadow-md" />
 						<div className="flex flex-col">
-							<h4 className="mr-4 text-xl font-semibold sm:text-2xl md:text-3xl">
+							<h4 style={{cursor: "pointer"}} onClick={()=>{window.location.href=`/movie-detail/${showtime?.movie?._id}`}} className="mr-4 text-xl font-semibold sm:text-2xl md:text-3xl">
 								{showtime?.movie?.name}
 							</h4>
 							{showtime?.movie && (
