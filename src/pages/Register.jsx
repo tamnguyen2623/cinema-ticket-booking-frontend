@@ -68,6 +68,15 @@ const Register = () => {
 						className={inputClasses`${errors.email ? 'border-red-500' : ''}`}
 						placeholder="Email"
 					/>
+					{errors.fullname && <span className="text-sm text-red-500">Fullname is required</span>}
+					<input
+						name="fullname"
+						type="text"
+						autoComplete="fullname"
+						{...register('fullname', { required: true })}
+						className={inputClasses`${errors.fullname ? 'border-red-500' : ''}`}
+						placeholder="Fullname"
+					/>
 					{errors.username && <span className="text-sm text-red-500">Email is required</span>}
 					<input
 						name="password"

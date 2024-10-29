@@ -104,8 +104,12 @@ const Tickets = () => {
                           </p>
                         </div>
                       </div>
-                      <div className="flex h-full flex-col justify-between rounded-b-lg bg-gradient-to-br from-indigo-100 to-white text-center text-lg drop-shadow-lg md:flex-row">
-                        <button type="button" onClick={() => showQR(ticket._id)}>
+                      <div className="flex h-full flex-col items-center justify-center rounded-b-lg bg-gradient-to-br from-indigo-100 to-white text-center text-lg drop-shadow-lg md:flex-row">
+                        <button
+                          type="button"
+                          onClick={() => showQR(ticket._id)}
+                          className="px-4 py-2 mt-4 mb-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                        >
                           Show QR
                         </button>
                       </div>
