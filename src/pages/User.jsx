@@ -129,10 +129,13 @@ const User = () => {
 				</div>
 				<div
 					className={`mt-2 grid max-h-[60vh] overflow-auto rounded-md bg-gradient-to-br from-indigo-100 to-white`}
-					style={{ gridTemplateColumns: 'repeat(3, minmax(max-content, 1fr)) max-content max-content' }}
+					style={{ gridTemplateColumns: 'repeat(4, minmax(max-content, 1fr)) max-content max-content' }}
 				>
 					<p className="sticky top-0 bg-gradient-to-br from-gray-800 to-gray-700 px-2 py-1 text-center text-xl font-semibold text-white">
 						Username
+					</p>
+					<p className="sticky top-0 bg-gradient-to-br from-gray-800 to-gray-700 px-2 py-1 text-center text-xl font-semibold text-white">
+						Fullname
 					</p>
 					<p className="sticky top-0 bg-gradient-to-br from-gray-800 to-gray-700 px-2 py-1 text-center text-xl font-semibold text-white">
 						Email
@@ -147,24 +150,25 @@ const User = () => {
 						Action
 					</p>
 					{users
-						?.filter((user) => user.username.toLowerCase().includes(watch('search')?.toLowerCase() || ''))
+						?.filter((user) => user.fullname.toLowerCase().includes(watch('search')?.toLowerCase() || ''))
 						.map((user, index) => {
 							return (
 								<Fragment key={index}>
-									<div className="border-t-2 border-indigo-200 px-2 py-1">{user.username}</div>
+									<div className="border-t-2 border-indigo-200 px-2 py-1">{user.username || ""}</div>
+									<div className="border-t-2 border-indigo-200 px-2 py-1">{user.fullname}</div>
 									<div className="border-t-2 border-indigo-200 px-2 py-1">{user.email}</div>
 									<div className="border-t-2 border-indigo-200 px-2 py-1">{user.role}</div>
 									<div className="border-t-2 border-indigo-200 px-2 py-1">
 										<button
 											className={`flex items-center justify-center gap-1 rounded bg-gradient-to-r py-1 pl-2 pr-1.5 text-sm font-medium text-white  disabled:from-slate-500 disabled:to-slate-400
 										${
-											ticketsUser === user.username
+											ticketsUser === user.fullname
 												? 'from-indigo-600 to-blue-500 hover:from-indigo-500 hover:to-blue-400'
 												: 'from-gray-600 to-gray-500 hover:from-gray-500 hover:to-gray-400'
 										}`}
 											onClick={() => {
 												setTickets(user.tickets)
-												setTicketsUser(user.username)
+												setTicketsUser(user.fullname)
 											}}
 										>
 											View {user.tickets.length} Tickets
