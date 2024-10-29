@@ -7,6 +7,7 @@ const AuthContextProvider = ({ children }) => {
 	const [auth, setAuth] = useState(
 		JSON.parse(localStorage.getItem('auth')) || {
 			username: null,
+			fullname: null,
 			email: null,
 			role: null,
 			token: null
@@ -25,6 +26,7 @@ const AuthContextProvider = ({ children }) => {
 			const updatedAuth = {
 				...auth,
 				username: response.data.data.username,
+				fullname: response.data.data.fullname,
 				email: response.data.data.email,
 				role: response.data.data.role
 			}
@@ -32,7 +34,8 @@ const AuthContextProvider = ({ children }) => {
 			if (
 				updatedAuth.username !== auth.username ||
 				updatedAuth.email !== auth.email ||
-				updatedAuth.role !== auth.role
+				updatedAuth.role !== auth.role ||
+				updatedAuth.fullname !== auth.fullname
 			) {
 				setAuth(updatedAuth)
 			}
