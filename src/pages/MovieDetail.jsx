@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const MovieDetail = () => {
   const [movie, setMovie] = useState(null);
   const [isFetchingMoviesDone, setIsFetchingMoviesDone] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const fetchMovieDetail = async () => {
     try {
@@ -20,6 +21,10 @@ const MovieDetail = () => {
       setIsFetchingMoviesDone(true);
     }
   };
+
+  const handleBookNow = () => {
+    navigate(`/${id}`)
+  }
 
   useEffect(() => {
     fetchMovieDetail();
@@ -41,6 +46,23 @@ const MovieDetail = () => {
     width: "100%",
     height: "100%",
     border: 0,
+  };
+
+  const buttonStyle = {
+    backgroundColor: "#007bff",
+    color: "white",
+    padding: "10px 20px",
+    fontSize: "1rem",
+    fontWeight: "bold",
+    border: "none",
+    borderRadius: "5px",
+    marginTop: "10px",
+    cursor: "pointer",
+    transition: "background-color 0.3s ease",
+  };
+
+  const buttonHoverStyle = {
+    backgroundColor: "#0056b3",
   };
 
   return (
@@ -67,6 +89,21 @@ const MovieDetail = () => {
                 <p>
                   <strong>Ticket Price:</strong> {movie.price || 0} VND.
                 </p>
+                <button
+                  type="button"
+                  style={buttonStyle}
+                  onMouseEnter={(e) =>
+                    (e.target.style.backgroundColor =
+                      buttonHoverStyle.backgroundColor)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.target.style.backgroundColor =
+                      buttonStyle.backgroundColor)
+                  }
+                  onClick={() => handleBookNow()}
+                >
+                  BOOK NOW
+                </button>
               </div>
             </div>
           </div>

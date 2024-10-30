@@ -5,12 +5,16 @@ import Navbar from '../components/Navbar'
 import NowShowing from '../components/NowShowing'
 import TheaterListsByMovie from '../components/TheaterListsByMovie'
 import { AuthContext } from '../context/AuthContext'
+import { useParams } from 'react-router-dom'
 
 const Home = () => {
 	const { auth } = useContext(AuthContext)
 	const [selectedMovieIndex, setSelectedMovieIndex] = useState(parseInt(sessionStorage.getItem('selectedMovieIndex')))
 	const [movies, setMovies] = useState([])
 	const [isFetchingMoviesDone, setIsFetchingMoviesDone] = useState(false)
+	const {id} = useParams();
+
+	
 
 	const fetchMovies = async (data) => {
 		try {
@@ -38,6 +42,12 @@ const Home = () => {
 		fetchMovies()
 	}, [])
 
+	useEffect(() => {
+		if(id){
+			setSelectedMovieIndex(id)
+		}
+	}, [])
+
 	const props = {
 		movies,
 		selectedMovieIndex,
@@ -49,7 +59,7 @@ const Home = () => {
 		<div className="flex min-h-screen flex-col gap-4 bg-gradient-to-br from-indigo-900 to-blue-500 pb-8 sm:gap-8">
 			<Navbar />
 			<NowShowing {...props} />
-			{movies[selectedMovieIndex]?.name && <TheaterListsByMovie {...props} />}
+			{movies.find((movie)=>(movie._id===selectedMovieIndex))?.name && <TheaterListsByMovie {...props} />}
 		</div>
 	)
 }
