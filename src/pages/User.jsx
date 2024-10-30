@@ -123,7 +123,7 @@ const User = () => {
 					<input
 						type="search"
 						className="block w-full rounded-lg border border-gray-300 p-2 pl-10 text-gray-900"
-						placeholder="Search username"
+						placeholder="Search user's name"
 						{...register('search')}
 					/>
 				</div>

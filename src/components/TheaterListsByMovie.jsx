@@ -17,6 +17,7 @@ const TheaterListsByMovie = ({ movies, selectedMovieIndex, setSelectedMovieIndex
 	)
 	const [cinemas, setCinemas] = useState([])
 	const [isFetchingCinemas, setIsFetchingCinemas] = useState(true)
+	const [movie, setMovie] = useState()
 
 	const fetchCinemas = async (data) => {
 		try {
@@ -42,6 +43,8 @@ const TheaterListsByMovie = ({ movies, selectedMovieIndex, setSelectedMovieIndex
 
 	useEffect(() => {
 		fetchCinemas()
+		const movie = movies.find((movie)=>(movie._id===selectedMovieIndex));
+		setMovie(movie)
 	}, [])
 
 	const fetchTheaters = async (data) => {
@@ -51,7 +54,7 @@ const TheaterListsByMovie = ({ movies, selectedMovieIndex, setSelectedMovieIndex
 			if (auth.role === 'admin') {
 				response = await axios.get(
 					`/theater/movie/unreleased/${
-						movies[selectedMovieIndex]._id
+						selectedMovieIndex
 					}/${selectedDate.toISOString()}/${new Date().getTimezoneOffset()}`,
 					{
 						headers: {
@@ -62,7 +65,7 @@ const TheaterListsByMovie = ({ movies, selectedMovieIndex, setSelectedMovieIndex
 			} else {
 				response = await axios.get(
 					`/theater/movie/${
-						movies[selectedMovieIndex]._id
+						selectedMovieIndex
 					}/${selectedDate.toISOString()}/${new Date().getTimezoneOffset()}`
 				)
 			}
@@ -107,11 +110,11 @@ const TheaterListsByMovie = ({ movies, selectedMovieIndex, setSelectedMovieIndex
 					<DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 					<div className="flex flex-col gap-4 rounded-md bg-gradient-to-br from-indigo-100 to-white py-4">
 						<div className="flex items-center">
-							<img src={movies[selectedMovieIndex].img} className="w-32 px-4 drop-shadow-md" />
+							<img src={movies.find((movie)=>(movie._id===selectedMovieIndex)).img} className="w-32 px-4 drop-shadow-md" />
 							<div>
-								<h4 className="text-2xl font-semibold">{movies[selectedMovieIndex].name}</h4>
+								<h4 className="text-2xl font-semibold">{movies.find((movie)=>(movie._id===selectedMovieIndex)).name}</h4>
 								<p className="text-md font-medium">
-									length : {movies[selectedMovieIndex].length || '-'} min
+									length : {movies.find((movie)=>(movie._id===selectedMovieIndex)).length || '-'} min
 								</p>
 							</div>
 						</div>
@@ -139,7 +142,7 @@ const TheaterListsByMovie = ({ movies, selectedMovieIndex, setSelectedMovieIndex
 											theaterId={theater._id}
 											movies={movies}
 											selectedDate={selectedDate}
-											filterMovie={movies[selectedMovieIndex]}
+											filterMovie={movies.find((movie)=>(movie._id===selectedMovieIndex))}
 											rounded={
 												index == filteredTheaters.length ||
 												filteredTheaters[index + 1]?.cinema.name !==

@@ -10,7 +10,7 @@ const NowShowing = ({ movies, selectedMovieIndex, setSelectedMovieIndex, auth, i
 					<div className="mt-1 overflow-x-auto sm:mt-3">
 						<div className="mx-auto flex w-fit gap-4">
 							{movies?.map((movie, index) => {
-								return movies[selectedMovieIndex]?._id === movie._id ? (
+								return movies.find((movie)=>(movie._id===selectedMovieIndex))?._id === movie._id ? (
 									<div
 										key={index}
 										title={movie.name}
@@ -34,8 +34,8 @@ const NowShowing = ({ movies, selectedMovieIndex, setSelectedMovieIndex, auth, i
 										key={index}
 										className="flex w-[108px] flex-col rounded-md bg-white p-1 drop-shadow-md hover:bg-gradient-to-br hover:from-indigo-500 hover:to-blue-400 hover:text-white sm:w-[144px]"
 										onClick={() => {
-											setSelectedMovieIndex(index)
-											sessionStorage.setItem('selectedMovieIndex', index)
+											setSelectedMovieIndex(movie._id)
+											sessionStorage.setItem('selectedMovieIndex', movie._id)
 										}}
 									>
 										<img

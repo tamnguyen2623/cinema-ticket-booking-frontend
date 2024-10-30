@@ -5,7 +5,8 @@ import {
 	MagnifyingGlassIcon,
 	TicketIcon,
 	UsersIcon,
-	VideoCameraIcon
+	VideoCameraIcon,
+	NewspaperIcon
 } from '@heroicons/react/24/outline'
 import { Bars3Icon } from '@heroicons/react/24/solid'
 import axios from 'axios'
@@ -132,7 +133,7 @@ const Navbar = () => {
 										: 'bg-gray-600'
 								}`}
 							>
-								<UsersIcon className="h-6 w-6" />
+								<NewspaperIcon className="h-6 w-6" />
 								<p>Order</p>
 							</Link>
 						</>
