@@ -15,6 +15,7 @@ import Tickets from './pages/Tickets'
 import User from './pages/User'
 import MovieDetail from './pages/MovieDetail'
 import Order from './pages/Order'
+import Dashboard from './pages/Dashboard'
 
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL || 'http://localhost:8080'
 axios.defaults.withCredentials = true
@@ -64,6 +65,14 @@ function App() {
 					element={
 						<AdminRoute>
 							<Order />
+						</AdminRoute>
+					}
+				/>
+				<Route
+					path="/dashboard"
+					element={
+						<AdminRoute>
+							<Dashboard />
 						</AdminRoute>
 					}
 				/>

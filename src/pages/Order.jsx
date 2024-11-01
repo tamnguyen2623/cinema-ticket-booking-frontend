@@ -55,7 +55,6 @@ const Order = () => {
           return -1;
         })
       );
-
     } catch (error) {
       console.error(error);
     } finally {
@@ -85,18 +84,33 @@ const Order = () => {
   const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
+    const UTC_OFFSET = 7 * 60 * 60 * 1000; // Offset for UTC+7 in milliseconds
+
     if (startDate !== "" && endDate === "") {
       setFilteredOrders(
         orders.filter(
           (order) =>
-            new Date(order.createdAt).getTime() >= new Date(startDate).getTime()
+            new Date(order.createdAt).getTime() >=
+            Date.UTC(
+              new Date(startDate).getFullYear(),
+              new Date(startDate).getMonth(),
+              new Date(startDate).getDate()
+            ) -
+              UTC_OFFSET
         )
       );
     } else if (startDate === "" && endDate !== "") {
       setFilteredOrders(
         orders.filter(
           (order) =>
-            new Date(order.createdAt).getTime() <= new Date(endDate).getTime() + 24 * 60 * 60 * 1000
+            new Date(order.createdAt).getTime() <=
+            Date.UTC(
+              new Date(endDate).getFullYear(),
+              new Date(endDate).getMonth(),
+              new Date(endDate).getDate()
+            ) +
+              24 * 60 * 60 * 1000 -
+              UTC_OFFSET
         )
       );
     } else if (startDate !== "" && endDate !== "") {
@@ -104,12 +118,24 @@ const Order = () => {
         orders.filter(
           (order) =>
             new Date(order.createdAt).getTime() >=
-              new Date(startDate).getTime() &&
-            new Date(order.createdAt).getTime() <= new Date(endDate).getTime() + 24 * 60 * 60 * 1000
+              Date.UTC(
+                new Date(startDate).getFullYear(),
+                new Date(startDate).getMonth(),
+                new Date(startDate).getDate()
+              ) -
+                UTC_OFFSET &&
+            new Date(order.createdAt).getTime() <=
+              Date.UTC(
+                new Date(endDate).getFullYear(),
+                new Date(endDate).getMonth(),
+                new Date(endDate).getDate()
+              ) +
+                24 * 60 * 60 * 1000 -
+                UTC_OFFSET
         )
       );
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, orders]);
 
   const handleExport = async () => {
     try {
@@ -141,31 +167,56 @@ const Order = () => {
       console.error("Error exporting orders:", error);
     }
   };
+  function formatDateToUTC7NoSec(dateString) {
+    const date = new Date(dateString);
+
+    const adjustedDate = new Date(date.getTime() + 7 * 60 * 60 * 1000);
+
+    const hours = String(adjustedDate.getUTCHours()).padStart(2, "0");
+    const minutes = String(adjustedDate.getUTCMinutes()).padStart(2, "0");
+    const seconds = String(adjustedDate.getUTCSeconds()).padStart(2, "0");
+    const day = String(adjustedDate.getUTCDate()).padStart(2, "0");
+    const month = String(adjustedDate.getUTCMonth() + 1).padStart(2, "0");
+    const year = adjustedDate.getUTCFullYear();
+
+    return `${hours}:${minutes} ${day}/${month}/${year}`;
+  }
 
   return (
     <div className="flex min-h-screen flex-col gap-4 bg-gradient-to-br from-indigo-900 to-blue-500 pb-8 text-gray-900 sm:gap-8">
       <Navbar />
       <div className="mx-4 flex h-fit flex-col gap-2 rounded-lg bg-gradient-to-br from-indigo-200 to-blue-100 p-4 drop-shadow-xl sm:mx-8 sm:p-6">
         <h2 className="text-3xl font-bold text-gray-900">Orders</h2>
-        <div>
-          <label>
+        <div className="flex gap-4 items-center mb-4">
+          <label className="flex flex-col text-gray-900 font-semibold">
             Start Date:
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
+              className="border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </label>
-          <label>
+          <label className="flex flex-col text-gray-900 font-semibold">
             End Date:
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
+              className="border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </label>
-          <button onClick={handleExport}>Export File</button>
+          <label className="flex flex-col text-gray-900 font-semibold">
+            Export:
+            <button
+              onClick={handleExport}
+              className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-semibold rounded-md shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-blue-700 transition duration-200"
+            >
+              Export File
+            </button>
+          </label>
         </div>
+
         <div className="relative drop-shadow-sm">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <MagnifyingGlassIcon className="h-5 w-5 stroke-2 text-gray-500" />
@@ -181,7 +232,7 @@ const Order = () => {
           className={`mt-2 grid max-h-[60vh] overflow-auto rounded-md bg-gradient-to-br from-indigo-100 to-white`}
           style={{
             gridTemplateColumns:
-              "repeat(8, minmax(max-content, 1fr)) max-content max-content",
+              "repeat(9, minmax(max-content, 1fr)) max-content max-content",
           }}
         >
           <p className="sticky top-0 bg-gradient-to-br from-gray-800 to-gray-700 px-2 py-1 text-center text-xl font-semibold text-white">
@@ -201,6 +252,9 @@ const Order = () => {
           </p>
           <p className="sticky top-0 bg-gradient-to-br from-gray-800 to-gray-700 px-2 py-1 text-center text-xl font-semibold text-white">
             Seat
+          </p>
+          <p className="sticky top-0 bg-gradient-to-br from-gray-800 to-gray-700 px-2 py-1 text-center text-xl font-semibold text-white">
+            Showtime
           </p>
           <p className="sticky top-0 bg-gradient-to-br from-gray-800 to-gray-700 px-2 py-1 text-center text-xl font-semibold text-white">
             Total Price
@@ -242,6 +296,9 @@ const Order = () => {
                     {order.seats
                       .map((seat) => seat.row + seat.number)
                       .join(", ")}
+                  </div>
+                  <div className="border-t-2 border-indigo-200 px-2 py-1">
+                    {formatDateToUTC7NoSec(order.showtime.showtime)}
                   </div>
                   <div className="border-t-2 border-indigo-200 px-2 py-1">
                     {order.price} VND
