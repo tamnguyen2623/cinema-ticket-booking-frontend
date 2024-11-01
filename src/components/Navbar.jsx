@@ -77,7 +77,7 @@ const Navbar = () => {
 						<ClockIcon className="h-6 w-6" />
 						<p>Schedule</p>
 					</Link>
-					{auth.role && (
+					{auth.role === "user" && (
 						<Link
 							to={'/ticket'}
 							className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
@@ -135,6 +135,17 @@ const Navbar = () => {
 							>
 								<NewspaperIcon className="h-6 w-6" />
 								<p>Order</p>
+							</Link>
+							<Link
+								to={'/dashboard'}
+								className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
+									window.location.pathname === '/dashboard'
+										? 'bg-gradient-to-br from-indigo-800 to-blue-700'
+										: 'bg-gray-600'
+								}`}
+							>
+								<NewspaperIcon className="h-6 w-6" />
+								<p>Dashboard</p>
 							</Link>
 						</>
 					)}
