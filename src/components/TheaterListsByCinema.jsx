@@ -267,7 +267,7 @@ const TheaterListsByCinema = ({ cinemas, selectedCinemaIndex, setSelectedCinemaI
 										<ArrowsUpDownIcon className="h-6 w-6" />
 										<div className="my-1 flex flex-col items-end">
 											<label className="text-lg font-semibold leading-5">Last Row :</label>
-											<label className="text-xs font-semibold">(A-DZ)</label>
+											<label className="text-xs font-semibold">(A-Z)</label>
 										</div>
 										<input
 											title={errors.row ? errors.row.message : 'A to DZ'}

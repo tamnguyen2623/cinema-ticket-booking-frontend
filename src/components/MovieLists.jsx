@@ -17,8 +17,9 @@ const MovieLists = ({ movies, search, handleDelete, handleUpdate }) => {
             <div className="w-full aspect-w-2 aspect-h-3 rounded-md overflow-hidden drop-shadow-md">
               <img
                 src={movie.img}
-                className="object-cover w-full h-full"
+                className="object-cover h-full"
                 alt="Movie Poster"
+                style={{maxWidth: 200}}
               />
             </div>
 

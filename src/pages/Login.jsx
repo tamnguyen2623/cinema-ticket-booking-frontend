@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../context/AuthContext";
 import GoogleIcon from "@mui/icons-material/Google";
+import FormModal from "../components/form-modal";
 
 const getCookie = (name) => {
   const cookieArr = document.cookie.split("; ");
@@ -22,11 +23,116 @@ const Login = () => {
   const [errorsMessage, setErrorsMessage] = useState("");
   const [isLoggingIn, SetLoggingIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [isEmailFormOpen, setIsEmailFormOpen] = useState(false);
+  const [isOtpFormOpen, setIsOtpFormOpen] = useState(false);
+  const enterEmailForm = {
+    title: "Enter Your Email",
+    fields: [
+      {
+        value: email,
+        label: "Email",
+        name: "email",
+        type: "text",
+        required: true,
+        onChange: (e) => setEmail(e.target.value),
+      },
+    ],
+    submitText: "Get OTP",
+  };
+  const enterOtpForm = {
+    title: "Enter The OTP",
+    fields: [
+      {
+        value: email,
+        label: "Email",
+        name: "email",
+        type: "text",
+        disable: true,
+        required: true,
+        onChange: (e) => setEmail(e.target.value),
+      },
+      {
+        value: otp,
+        label: "OTP",
+        name: "otp",
+        type: "text",
+        required: true,
+        onChange: (e) => setOtp(e.target.value),
+      },
+    ],
+    submitText: "Verify OTP",
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const onGetOtp = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(`/auth/forget-password/getOtp`, {
+        email,
+      });
+      // console.log(response.data)
+      if (response.data.code == 1000) {
+        setIsEmailFormOpen(false);
+        toast.success("An email with OTP was sent to you!", {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+        });
+        setIsOtpFormOpen(true);
+      } else {
+        toast.error("User not found!", {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error", {
+        position: "top-center",
+        autoClose: 2000,
+        pauseOnHover: false,
+      });
+    }
+  };
+  const onGetPassword = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(`/auth/forget-password/verifyOtp`, {
+        email,
+        otp,
+      });
+      // console.log(response.data)
+      if (response.data.code == 1000) {
+        setIsEmailFormOpen(false);
+        toast.success("An email with new password was sent to you!", {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+        });
+        setIsOtpFormOpen(false);
+      } else {
+        toast.error("Invalid OTP!", {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error", {
+        position: "top-center",
+        autoClose: 2000,
+        pauseOnHover: false,
+      });
+    }
+  };
 
   useEffect(() => {
     const token = getCookie("token");
@@ -42,6 +148,10 @@ const Login = () => {
     }
     setIsLoading(false); // Loading is complete
   }, [navigate, setAuth]);
+
+  const showForgetPasswordForm = () => {
+    setIsEmailFormOpen(true);
+  };
 
   const onSubmit = async (data) => {
     SetLoggingIn(true);
@@ -73,12 +183,16 @@ const Login = () => {
   };
 
   const handleLoginGoogle = () => {
-    window.location.href="http://localhost:8080/login/google";
+    window.location.href = "http://localhost:8080/login/google";
   };
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
+  const handleFormModalClose = () => {
+    setIsEmailFormOpen(false);
+    setIsOtpFormOpen(false);
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-900 to-blue-500 py-12 px-4 sm:px-6 lg:px-8">
@@ -138,8 +252,34 @@ const Login = () => {
               Register here
             </Link>
           </p>
+          <p className="text-right">
+            Forget password?{" "}
+            <button
+              onClick={showForgetPasswordForm}
+              type="button"
+              className="font-bold text-blue-600"
+            >
+              Get password here
+            </button>
+          </p>
         </form>
       </div>
+      {isEmailFormOpen && (
+        <FormModal
+          handleClose={handleFormModalClose}
+          open={isEmailFormOpen}
+          formData={enterEmailForm}
+          onSubmit={onGetOtp}
+        />
+      )}
+      {isOtpFormOpen && (
+        <FormModal
+          handleClose={handleFormModalClose}
+          open={isOtpFormOpen}
+          formData={enterOtpForm}
+          onSubmit={onGetPassword}
+        />
+      )}
     </div>
   );
 };

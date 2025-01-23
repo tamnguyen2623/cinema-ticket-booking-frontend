@@ -37,7 +37,7 @@ const User = () => {
 					Authorization: `Bearer ${auth.token}`
 				}
 			})
-			// console.log(response.data.data)
+			console.log(response.data.data)
 			setUsers(response.data.data.filter((user)=>user.role!=="admin"))
 		} catch (error) {
 			console.error(error)
