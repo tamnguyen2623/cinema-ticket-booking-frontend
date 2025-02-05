@@ -101,7 +101,6 @@ const Navbar = () => {
           },
         }
       );
-      // console.log(response.data)
       if (response.data.code == 1000) {
         setIsModalOTPOpen(false);
         toast.success("Change password successful!", {
