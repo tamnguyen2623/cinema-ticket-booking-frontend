@@ -24,7 +24,9 @@ const Navbar = () => {
   const [newPassword, setNewPassword] = useState("");
   const [reNewPassword, setReNewPassword] = useState("");
   const [isModalOTPOpen, setIsModalOTPOpen] = useState(false);
-	
+  const [newUsername, setNewUsername] = useState("");
+  const [isModalUsernameOpen, setIsModalUsernameOpen] = useState(false);
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -58,10 +60,24 @@ const Navbar = () => {
     ],
     submitText: "Change Password",
   };
+  const changeUsernameForm = {
+    title: "Change Username",
+    fields: [
+      {
+        value: newUsername,
+        label: "New Username",
+        name: "newUsername",
+        type: "text",
+        required: true,
+        onChange: (e) => setNewUsername(e.target.value),
+      },
+    ],
+    submitText: "Change Username",
+  };
 
   const navigate = useNavigate();
   const onSubmitChangePassword = async (event) => {
-	event.preventDefault();
+    event.preventDefault();
     if (reNewPassword !== newPassword) {
       toast.error("Please re-enter your new password and confirm password!", {
         position: "top-center",
@@ -70,19 +86,23 @@ const Navbar = () => {
       });
       return;
     }
+    console.log("New Username:", newUsername);
     try {
-      const response = await axios.post(`/auth/change-password`, {
-		oldPassword,
-		newPassword,
-		reEnterPassword: reNewPassword
-	  },{
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
+      const response = await axios.post(
+        `/auth/change-password`,
+        {
+          oldPassword,
+          newPassword,
+          reEnterPassword: reNewPassword,
         },
-      });
-      // console.log(response.data)
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
       if (response.data.code == 1000) {
-		setIsModalOTPOpen(false)
+        setIsModalOTPOpen(false);
         toast.success("Change password successful!", {
           position: "top-center",
           autoClose: 2000,
@@ -105,8 +125,62 @@ const Navbar = () => {
     }
   };
 
+  const onSubmitChangeUsername = async (event) => {
+    event.preventDefault();
+    if (!newUsername.trim()) {
+      toast.error("Username cannot be empty!", {
+        position: "top-center",
+        autoClose: 2000,
+        pauseOnHover: false,
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `/auth/change-username`,
+        { newUsername },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+
+      // In response data để kiểm tra cấu trúc
+      console.log("Response:", response);
+
+      if (response.data.success) {
+        setAuth((prev) => ({ ...prev, username: newUsername }));
+        setIsModalUsernameOpen(false);
+        toast.success("Username changed successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+        });
+      } else {
+        toast.error("Failed to change username!", {
+          position: "top-center",
+          autoClose: 2000,
+          pauseOnHover: false,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      console.log(
+        "Error details:",
+        error.response ? error.response.data : error.message
+      );
+      toast.error("Error changing username!", {
+        position: "top-center",
+        autoClose: 2000,
+        pauseOnHover: false,
+      });
+    }
+  };
+
   const showChangePasswordForm = () => {
-	setIsModalOTPOpen(true)
+    setIsModalOTPOpen(true);
   };
 
   const onLogout = async () => {
@@ -239,14 +313,24 @@ const Navbar = () => {
               Welcome {auth.fullname}!
             </p>
           )}
-          {auth.username && auth.role !== "admin" && (
-            <button
-              className="rounded-lg bg-gradient-to-br from-indigo-600 to-blue-500 px-2 py-1 text-white drop-shadow-md hover:from-indigo-500 hover:to-blue-400 disabled:from-slate-500 disabled:to-slate-400"
-              onClick={() => showChangePasswordForm()}
-            >
-              Change Password
-            </button>
+          {auth.username && (
+            <>
+              <button
+                className="rounded-lg bg-gradient-to-br from-indigo-600 to-blue-500 px-2 py-1 text-white drop-shadow-md hover:from-indigo-500 hover:to-blue-400 disabled:from-slate-500 disabled:to-slate-400"
+                onClick={() => showChangePasswordForm()}
+              >
+                Change Password
+              </button>
+
+              <button
+                className="rounded-lg bg-gradient-to-br from-indigo-600 to-blue-500 px-2 py-1 text-white drop-shadow-md hover:from-indigo-500 hover:to-blue-400 disabled:from-slate-500 disabled:to-slate-400"
+                onClick={() => setIsModalUsernameOpen(true)}
+              >
+                Change Username
+              </button>
+            </>
           )}
+
           {auth.token ? (
             <button
               className="rounded-lg bg-gradient-to-br from-indigo-600 to-blue-500 px-2 py-1 text-white drop-shadow-md hover:from-indigo-500 hover:to-blue-400 disabled:from-slate-500 disabled:to-slate-400"
@@ -300,6 +384,14 @@ const Navbar = () => {
           open={isModalOTPOpen}
           formData={changePasswordForm}
           onSubmit={onSubmitChangePassword}
+        />
+      )}
+      {isModalUsernameOpen && (
+        <FormModal
+          handleClose={() => setIsModalUsernameOpen(false)}
+          open={isModalUsernameOpen}
+          formData={changeUsernameForm}
+          onSubmit={onSubmitChangeUsername}
         />
       )}
     </nav>
