@@ -1,4 +1,3 @@
-// roomApi.js
 import axios from "axios";
 
 const apiUrl = "/room/rooms";
