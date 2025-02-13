@@ -131,7 +131,7 @@ const Room = () => {
     try {
       const detail = await DetailRoom(auth.token, roomId);
       console.log("room", detail.room.roomname);
-      setRoomDetail(detail); 
+      setRoomDetail(detail);
       setIsFormDetailVisible(true);
       notification.success({
         message: "Room details loaded successfully!",
@@ -173,9 +173,14 @@ const Room = () => {
       key: "roomtype",
     },
     {
-      title: "Seats",
-      dataIndex: "seatnumber",
-      key: "seatnumber",
+      title: "Row Number",
+      dataIndex: "row",
+      key: "row",
+    },
+    {
+      title: "Colum Number",
+      dataIndex: "colum",
+      key: "colum",
     },
     {
       title: "Actions",
@@ -302,7 +307,10 @@ const Room = () => {
                 <strong>Type:</strong> {roomDetail.room?.roomtype}
               </p>
               <p>
-                <strong>Seats:</strong> {roomDetail.room?.seatnumber}
+                <strong>row:</strong> {roomDetail.room?.row}
+              </p>
+              <p>
+                <strong>colum:</strong> {roomDetail.room?.colum}
               </p>
             </div>
           ) : (
@@ -313,7 +321,8 @@ const Room = () => {
                 cinema: editingRoom?.cinema?._id,
                 roomname: editingRoom?.roomname,
                 roomtype: editingRoom?.roomtype,
-                seatnumber: editingRoom?.seatnumber,
+                row: editingRoom?.row,
+                colum: editingRoom?.colum,
               }}
             >
               <Form.Item
@@ -356,7 +365,27 @@ const Room = () => {
               </Form.Item>
 
               <Form.Item
-                name="seatnumber"
+                name="row"
+                label="Number of Seats"
+                rules={[
+                  { required: true, message: "Number of Seats is required" },
+                  {
+                    min: 1,
+                    max: 300,
+                    message: "Seat number must be between 1 and 300",
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Enter Seat Number"
+                  min={1}
+                  max={300}
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="colum"
                 label="Number of Seats"
                 rules={[
                   { required: true, message: "Number of Seats is required" },
