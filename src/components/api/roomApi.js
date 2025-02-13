@@ -65,3 +65,16 @@ export const deleteRoom = async (token, roomId) => {
     throw new Error("Error deleting room: " + error.message);
   }
 };
+
+export const DetailRoom = async (token, roomId) => {
+  try {
+    const response = await axios.get(`${apiUrl}/${roomId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Error deleting room: " + error.message);
+  }
+};

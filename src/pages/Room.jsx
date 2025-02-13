@@ -18,6 +18,7 @@ import {
   fetchRooms,
   createOrUpdateRoom,
   deleteRoom,
+  DetailRoom,
 } from "../components/api/roomApi";
 const { Option } = Select;
 
@@ -31,7 +32,8 @@ const Room = () => {
   const [editingRoom, setEditingRoom] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCinema, setSelectedCinema] = useState("");
-
+  const [roomDetail, setRoomDetail] = useState([]);
+  const [isFormDetailVisible, setIsFormDetailVisible] = useState(false);
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -117,6 +119,33 @@ const Room = () => {
     }
   };
 
+  const handleDetail = async (roomId) => {
+    if (!auth.token) {
+      notification.error({
+        message: "Unauthorized",
+        description: "You are not authorized to view room details.",
+      });
+      return;
+    }
+
+    try {
+      const detail = await DetailRoom(auth.token, roomId);
+      console.log("room", detail.room.roomname);
+      setRoomDetail(detail); 
+      setIsFormDetailVisible(true);
+      notification.success({
+        message: "Room details loaded successfully!",
+      });
+    } catch (error) {
+      console.error("Error fetching room details:", error);
+      notification.error({
+        message: "Failed to load room details",
+        description:
+          error.message || "An error occurred while fetching details.",
+      });
+    }
+  };
+
   const filteredRooms = rooms.filter((room) => {
     const matchesSearchTerm = room.roomname
       .toLowerCase()
@@ -153,6 +182,21 @@ const Room = () => {
       key: "actions",
       render: (_, record) => (
         <div>
+          <Button
+            type="primary"
+            size="small"
+            onClick={() => {
+              handleDetail(record._id);
+            }}
+            style={{
+              marginRight: "8px",
+              backgroundColor: "#0000FF",
+              borderColor: "#0000FF",
+            }}
+          >
+            <EditOutlined style={{ marginRight: "5px" }} />
+            Detail
+          </Button>
           <Button
             type="primary"
             size="small"
@@ -229,102 +273,127 @@ const Room = () => {
         />
 
         <Modal
-          title={editingRoom ? "Edit Room" : "Create Room"}
-          visible={isFormVisible}
+          title={
+            roomDetail
+              ? "Room Details"
+              : editingRoom
+              ? "Edit Room"
+              : "Create Room"
+          }
+          visible={isFormVisible || isFormDetailVisible}
           onCancel={() => {
             setIsFormVisible(false);
+            setIsFormDetailVisible(false);
             setEditingRoom(null);
+            setRoomDetail(null);
           }}
           footer={null}
           width="80%"
         >
-          <Form
-            layout="vertical"
-            onFinish={onFinish}
-            initialValues={{
-              cinema: editingRoom?.cinema?._id,
-              roomname: editingRoom?.roomname,
-              roomtype: editingRoom?.roomtype,
-              seatnumber: editingRoom?.seatnumber,
-            }}
-          >
-            <Form.Item
-              name="cinema"
-              label="Cinema"
-              rules={[{ required: true, message: "Cinema is required" }]}
-            >
-              {loadingCinemas ? (
-                <Spin size="small" />
-              ) : (
-                <Select placeholder="Select Cinema" disabled={!!editingRoom}>
-                  {cinemas.map((cinema) => (
-                    <Option key={cinema._id} value={cinema._id}>
-                      {cinema.name}
-                    </Option>
-                  ))}
-                </Select>
-              )}
-            </Form.Item>
-
-            <Form.Item
-              name="roomname"
-              label="Room Name"
-              rules={[{ required: true, message: "Room Name is required" }]}
-            >
-              <Input placeholder="Enter Room Name" />
-            </Form.Item>
-
-            <Form.Item
-              name="roomtype"
-              label="Room Type"
-              rules={[{ required: true, message: "Room Type is required" }]}
-            >
-              <Select placeholder="Select Room Type">
-                <Option value="Regular">Regular </Option>
-                <Option value="Premium">Premium </Option>
-                <Option value="VIP">VIP</Option>
-                <Option value="Luxury">7D</Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              name="seatnumber"
-              label="Number of Seats"
-              rules={[
-                { required: true, message: "Number of Seats is required" },
-                {
-                  min: 1,
-                  max: 300,
-                  message: "Seat number must be between 1 and 300",
-                },
-              ]}
-            >
-              <Input
-                type="number"
-                placeholder="Enter Seat Number"
-                min={1}
-                max={300}
-              />
-            </Form.Item>
-
-            <div className="modalFooter">
-              <Button
-                onClick={() => setIsFormVisible(false)}
-                style={{ marginRight: 8 }}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={isSubmitting}
-                disabled={isSubmitting}
-                className="saveChangesButton"
-              >
-                {editingRoom ? "Save Changes" : "Create Room"}
-              </Button>
+          {roomDetail ? (
+            <div>
+              <p>
+                <strong>Room Name:</strong> {roomDetail.room?.roomname}
+              </p>
+              <p>
+                <strong>Cinema:</strong> {roomDetail.room?.cinema?.name}
+              </p>
+              <p>
+                <strong>Type:</strong> {roomDetail.room?.roomtype}
+              </p>
+              <p>
+                <strong>Seats:</strong> {roomDetail.room?.seatnumber}
+              </p>
             </div>
-          </Form>
+          ) : (
+            <Form
+              layout="vertical"
+              onFinish={onFinish}
+              initialValues={{
+                cinema: editingRoom?.cinema?._id,
+                roomname: editingRoom?.roomname,
+                roomtype: editingRoom?.roomtype,
+                seatnumber: editingRoom?.seatnumber,
+              }}
+            >
+              <Form.Item
+                name="cinema"
+                label="Cinema"
+                rules={[{ required: true, message: "Cinema is required" }]}
+              >
+                {loadingCinemas ? (
+                  <Spin size="small" />
+                ) : (
+                  <Select placeholder="Select Cinema" disabled={!!editingRoom}>
+                    {cinemas.map((cinema) => (
+                      <Option key={cinema._id} value={cinema._id}>
+                        {cinema.name}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </Form.Item>
+
+              <Form.Item
+                name="roomname"
+                label="Room Name"
+                rules={[{ required: true, message: "Room Name is required" }]}
+              >
+                <Input placeholder="Enter Room Name" />
+              </Form.Item>
+
+              <Form.Item
+                name="roomtype"
+                label="Room Type"
+                rules={[{ required: true, message: "Room Type is required" }]}
+              >
+                <Select placeholder="Select Room Type">
+                  <Option value="Regular">Regular</Option>
+                  <Option value="Premium">Premium</Option>
+                  <Option value="VIP">VIP</Option>
+                  <Option value="Luxury">7D</Option>
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                name="seatnumber"
+                label="Number of Seats"
+                rules={[
+                  { required: true, message: "Number of Seats is required" },
+                  {
+                    min: 1,
+                    max: 300,
+                    message: "Seat number must be between 1 and 300",
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Enter Seat Number"
+                  min={1}
+                  max={300}
+                />
+              </Form.Item>
+
+              <div className="modalFooter">
+                <Button
+                  onClick={() => setIsFormVisible(false)}
+                  style={{ marginRight: 8 }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                  className="saveChangesButton"
+                >
+                  {editingRoom ? "Save Changes" : "Create Room"}
+                </Button>
+              </div>
+            </Form>
+          )}
         </Modal>
       </div>
     </div>
