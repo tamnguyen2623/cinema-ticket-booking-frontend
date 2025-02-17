@@ -17,6 +17,9 @@ import MovieDetail from "./pages/MovieDetail";
 import Order from "./pages/Order";
 import Dashboard from "./pages/Dashboard";
 import Room from "./pages/Room";
+import MovieTypePage from "./pages/MovieType/MovieTypePage";
+import ComboPage from "./pages/Combo/ComboPage";
+
 axios.defaults.baseURL =
   import.meta.env.VITE_SERVER_URL || "http://localhost:8080";
 axios.defaults.withCredentials = true;
@@ -82,6 +85,22 @@ function App() {
           element={
             <AdminRoute>
               <Room />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/movietype"
+          element={
+            <AdminRoute>
+              <MovieTypePage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/combo"
+          element={
+            <AdminRoute>
+              <ComboPage />
             </AdminRoute>
           }
         />

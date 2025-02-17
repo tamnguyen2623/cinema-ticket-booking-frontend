@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../context/AuthContext";
 import GoogleIcon from "@mui/icons-material/Google";
 import FormModal from "../components/form-modal";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const getCookie = (name) => {
   const cookieArr = document.cookie.split("; ");
@@ -16,6 +17,7 @@ const getCookie = (name) => {
   }
   return null;
 };
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -157,7 +159,11 @@ const Login = () => {
     SetLoggingIn(true);
     try {
       const response = await axios.post("/auth/login", data);
-      // console.log(response.data)
+      //phúc thêm
+      const token = response.data.token;
+      if (token) {
+        await AsyncStorage.setItem("token", token); // Lưu token vào AsyncStorage
+      }
       toast.success("Login successful!", {
         position: "top-center",
         autoClose: 2000,

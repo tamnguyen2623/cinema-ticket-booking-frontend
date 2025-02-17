@@ -214,22 +214,20 @@ const Navbar = () => {
         <div className="flex flex-col gap-2 lg:flex-row">
           <Link
             to={"/cinema"}
-            className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-              window.location.pathname === "/cinema"
+            className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/cinema"
                 ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                 : "bg-gray-600"
-            }`}
+              }`}
           >
             <HomeModernIcon className="h-6 w-6" />
             <p>Cinema</p>
           </Link>
           <Link
             to={"/schedule"}
-            className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-              window.location.pathname === "/schedule"
+            className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/schedule"
                 ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                 : "bg-gray-600"
-            }`}
+              }`}
           >
             <ClockIcon className="h-6 w-6" />
             <p>Schedule</p>
@@ -237,11 +235,10 @@ const Navbar = () => {
           {auth.role === "user" && (
             <Link
               to={"/ticket"}
-              className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-                window.location.pathname === "/ticket"
+              className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/ticket"
                   ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                   : "bg-gray-600"
-              }`}
+                }`}
             >
               <TicketIcon className="h-6 w-6" />
               <p>Ticket</p>
@@ -251,69 +248,83 @@ const Navbar = () => {
             <>
               <Link
                 to={"/movie"}
-                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-                  window.location.pathname === "/movie"
+                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/movie"
                     ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                     : "bg-gray-600"
-                }`}
+                  }`}
               >
                 <VideoCameraIcon className="h-6 w-6" />
                 <p>Movie</p>
               </Link>
               <Link
                 to={"/search"}
-                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-                  window.location.pathname === "/search"
+                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/search"
                     ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                     : "bg-gray-600"
-                }`}
+                  }`}
               >
                 <MagnifyingGlassIcon className="h-6 w-6" />
                 <p>Search</p>
               </Link>
               <Link
                 to={"/user"}
-                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-                  window.location.pathname === "/user"
+                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/user"
                     ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                     : "bg-gray-600"
-                }`}
+                  }`}
               >
                 <UsersIcon className="h-6 w-6" />
                 <p>User</p>
               </Link>
               <Link
                 to={"/order"}
-                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-                  window.location.pathname === "/order"
+                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/order"
                     ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                     : "bg-gray-600"
-                }`}
+                  }`}
               >
                 <NewspaperIcon className="h-6 w-6" />
                 <p>Order</p>
               </Link>
               <Link
                 to={"/dashboard"}
-                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-                  window.location.pathname === "/dashboard"
+                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/dashboard"
                     ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                     : "bg-gray-600"
-                }`}
+                  }`}
               >
                 <NewspaperIcon className="h-6 w-6" />
                 <p>Dashboard</p>
               </Link>
               <Link
                 to={"/room"}
-                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-                  window.location.pathname === "/management-room"
+                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/management-room"
                     ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                     : "bg-gray-600"
-                }`}
+                  }`}
               >
                 <HomeModernIcon className="h-6 w-6" />
                 <p>Management Room</p>
+              </Link>
+              <Link
+                to={"/movietype"}
+                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/movietype"
+                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                    : "bg-gray-600"
+                  }`}
+              >
+                <HomeModernIcon className="h-6 w-6" />
+                <p>MovieType</p>
+              </Link>
+              <Link
+                to={"/combo"}
+                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/combo"
+                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                    : "bg-gray-600"
+                  }`}
+              >
+                <HomeModernIcon className="h-6 w-6" />
+                <p>Combo</p>
               </Link>
             </>
           )}
