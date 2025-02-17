@@ -249,7 +249,7 @@ const Room = () => {
   ];
   return (
     <div className="container-fluid">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="container_content">
         <h2 className="roomHeader">Rooms List</h2>
 
