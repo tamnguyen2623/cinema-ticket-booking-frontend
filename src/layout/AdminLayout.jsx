@@ -12,7 +12,7 @@ const AdminLayout = () => {
 
   return (
     <div>
-      {/* <Sidebar /> */}
+      <Sidebar />
       <Outlet />
     </div>
   );

@@ -17,6 +17,7 @@ import Order from "../pages/Order";
 import Dashboard from "../pages/Dashboard";
 import Room from "../pages/Room";
 import Ticket from "../pages/Ticket";
+import Booking from "../pages/Booking";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
   { path: "/purchase/:id", element: <Purchase /> },
   { path: "/ticket", element: <Tickets /> },
   { path: "/schedule", element: <Schedule /> },
+  { path: "/booking", element: <Booking /> },
   {
     path: "/",
     element: <AdminLayout />,

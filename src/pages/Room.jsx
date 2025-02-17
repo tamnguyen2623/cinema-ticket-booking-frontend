@@ -39,10 +39,12 @@ const Room = () => {
   const [selectedCinema, setSelectedCinema] = useState("");
   const [roomDetail, setRoomDetail] = useState([]);
   const [isFormDetailVisible, setIsFormDetailVisible] = useState(false);
+  
   useEffect(() => {
     const loadData = async () => {
       try {
         const cinemasData = await fetchCinemas();
+        console.log("Fetched Cinemas:", cinemasData);
         setCinemas(cinemasData);
         const roomsData = await fetchRooms(auth.token);
         setRooms(roomsData);
@@ -318,7 +320,8 @@ const Room = () => {
                 <strong>Room Name:</strong> {roomDetail.room?.roomname}
               </p>
               <p>
-                <strong>Cinema:</strong> {roomDetail.room?.cinema?.name}
+                <strong>Cinema:</strong> {roomDetail.room?.cinema?.name} -
+                {roomDetail.room?.cinema?.address}
               </p>
               <p>
                 <strong>Type:</strong> {roomDetail.room?.roomtype}
@@ -359,7 +362,7 @@ const Room = () => {
                   <Select placeholder="Select Cinema" disabled={!!editingRoom}>
                     {cinemas.map((cinema) => (
                       <Option key={cinema._id} value={cinema._id}>
-                        {cinema.name}
+                        {cinema.name} - {cinema.address}
                       </Option>
                     ))}
                   </Select>
