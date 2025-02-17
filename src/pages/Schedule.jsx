@@ -164,7 +164,7 @@ const Schedule = () => {
 
 	return (
 		<div className="flex min-h-screen flex-col gap-4 bg-gradient-to-br from-indigo-900 to-blue-500 pb-8 text-gray-900 sm:gap-8">
-			<Navbar />
+			{/* <Navbar /> */}
 			<CinemaLists {...props} />
 			{selectedCinemaIndex !== null &&
 				(cinemas[selectedCinemaIndex]?.theaters?.length ? (

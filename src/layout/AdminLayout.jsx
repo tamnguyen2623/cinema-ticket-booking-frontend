@@ -13,7 +13,9 @@ const AdminLayout = () => {
   return (
     <div>
       <Sidebar />
-      <Outlet />
+      <div style={{ marginLeft: "200px" }}>
+        <Outlet />
+      </div>
     </div>
   );
 };

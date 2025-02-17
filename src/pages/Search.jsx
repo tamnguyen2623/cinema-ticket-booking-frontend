@@ -37,7 +37,7 @@ const Search = () => {
 	const [filterDateFrom, setFilterDateFrom] = useState(null)
 	const [filterDateTo, setFilterDateTo] = useState(null)
 	const [filterPastDate, setFilterPastDate] = useState(null)
-	const [filterToday, setFilterToday] = useState(null)
+	// const [filterToday, setFilterToday] = useState(null)
 	const [filterFutureDate, setFilterFutureDate] = useState(null)
 	const [filterTime, setFilterTime] = useState(null)
 	const [filterTimeFrom, setFilterTimeFrom] = useState(null)
@@ -82,16 +82,16 @@ const Search = () => {
 				(!filterDate || filterDate.map((showtime) => showtime.value).includes(formattedDate)) &&
 				(!filterDateFrom || new Date(filterDateFrom.value) <= new Date(formattedDate)) &&
 				(!filterDateTo || new Date(filterDateTo.value) >= new Date(formattedDate)) &&
-				(!filterPastDate ||
-					new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) >
-						new Date(formattedDate)) &&
-				(!filterToday ||
-					(new Date().getFullYear() === new Date(formattedDate).getFullYear() &&
-						new Date().getMonth() === new Date(formattedDate).getMonth() &&
-						new Date().getDate() === new Date(formattedDate).getDate())) &&
-				(!filterFutureDate ||
-					new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) <
-						new Date(formattedDate)) &&
+				// (!filterPastDate ||
+				// 	new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) >
+				// 		new Date(formattedDate)) &&
+				// (!filterToday ||
+				// 	(new Date().getFullYear() === new Date(formattedDate).getFullYear() &&
+				// 		new Date().getMonth() === new Date(formattedDate).getMonth() &&
+				// 		new Date().getDate() === new Date(formattedDate).getDate())) &&
+				// (!filterFutureDate ||
+				// 	new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) <
+				// 		new Date(formattedDate)) &&
 				(!filterTime || filterTime.map((showtime) => showtime.value).includes(formattedTime)) &&
 				(!filterTimeFrom || filterTimeFrom.value <= formattedTime) &&
 				(!filterTimeTo || filterTimeTo.value >= formattedTime) &&
@@ -418,111 +418,7 @@ const Search = () => {
 									isSearchable={true}
 									primaryColor="indigo"
 								/>
-								<div className="my-2 flex flex-col items-start gap-x-2 gap-y-1 sm:flex-row sm:items-center">
-									<label className="text-md font-semibold text-gray-800">From</label>
-									<Select
-										value={filterDateFrom}
-										options={Array.from(
-											new Set(
-												showtimes.map((showtime) => {
-													const showtimeDate = new Date(showtime.showtime)
-													const year = showtimeDate.getFullYear()
-													const month = showtimeDate.toLocaleString('default', {
-														month: 'short'
-													})
-													const day = showtimeDate.getDate().toString().padStart(2, '0')
-													return `${day} ${month} ${year}`
-												})
-											)
-										)
-											// .filter((value) => !filterDateTo || new Date(filterDateTo.value) >= new Date(value))
-											.map((value) => ({
-												value,
-												label: value
-											}))}
-										onChange={(value) => {
-											setFilterDateFrom(value)
-											resetState()
-										}}
-										isClearable={true}
-										isSearchable={true}
-										primaryColor="indigo"
-									/>
-									<label className="text-md font-semibold text-gray-800">To</label>
-									<Select
-										value={filterDateTo}
-										options={Array.from(
-											new Set(
-												showtimes.map((showtime) => {
-													const showtimeDate = new Date(showtime.showtime)
-													const year = showtimeDate.getFullYear()
-													const month = showtimeDate.toLocaleString('default', {
-														month: 'short'
-													})
-													const day = showtimeDate.getDate().toString().padStart(2, '0')
-													return `${day} ${month} ${year}`
-												})
-											)
-										)
-											// .filter((value) => !filterDateFrom || new Date(filterDateFrom.value) <= new Date(value))
-											.map((value) => ({
-												value,
-												label: value
-											}))}
-										onChange={(value) => {
-											setFilterDateTo(value)
-											resetState()
-										}}
-										isClearable={true}
-										isSearchable={true}
-										primaryColor="indigo"
-									/>
 								</div>
-								<div className="flex flex-col items-start gap-x-8 gap-y-2 sm:flex-row sm:items-center">
-									<label className="text-md flex items-center justify-between gap-2 font-semibold text-gray-800">
-										Past Date
-										<input
-											type="checkbox"
-											className="h-6 w-6"
-											checked={filterPastDate}
-											onClick={(event) => {
-												setFilterPastDate(event.target.checked)
-												setFilterToday(false)
-												setFilterFutureDate(false)
-												resetState()
-											}}
-										/>
-									</label>
-									<label className="text-md flex items-center justify-between gap-2 font-semibold text-gray-800">
-										Today
-										<input
-											type="checkbox"
-											className="h-6 w-6"
-											checked={filterToday}
-											onClick={(event) => {
-												setFilterPastDate(false)
-												setFilterToday(event.target.checked)
-												setFilterFutureDate(false)
-												resetState()
-											}}
-										/>
-									</label>
-									<label className="text-md flex items-center justify-between gap-2 font-semibold text-gray-800">
-										Future Date
-										<input
-											type="checkbox"
-											className="h-6 w-6"
-											checked={filterFutureDate}
-											onClick={(event) => {
-												setFilterPastDate(false)
-												setFilterToday(false)
-												setFilterFutureDate(event.target.checked)
-												resetState()
-											}}
-										/>
-									</label>
-								</div>
-							</div>
 							<div className="flex flex-col">
 								<h4 className="pt-1 text-lg font-bold text-gray-800">Time :</h4>
 								<Select
@@ -551,66 +447,7 @@ const Search = () => {
 									isSearchable={true}
 									primaryColor="indigo"
 								/>
-								<div className="my-2 flex flex-col items-start gap-x-2 gap-y-1 sm:flex-row sm:items-center">
-									<label className="text-md font-semibold text-gray-800">From</label>
-									<Select
-										value={filterTimeFrom}
-										options={Array.from(
-											new Set(
-												showtimes.map((showtime) => {
-													const showtimeDate = new Date(showtime.showtime)
-													const hours = showtimeDate.getHours().toString().padStart(2, '0')
-													const minutes = showtimeDate
-														.getMinutes()
-														.toString()
-														.padStart(2, '0')
-													return `${hours} : ${minutes}`
-												})
-											)
-										)
-											.sort()
-											.map((value) => ({
-												value,
-												label: value
-											}))}
-										onChange={(value) => {
-											setFilterTimeFrom(value)
-											resetState()
-										}}
-										isClearable={true}
-										isSearchable={true}
-										primaryColor="indigo"
-									/>
-									<label className="text-md font-semibold text-gray-800">To</label>
-									<Select
-										value={filterTimeTo}
-										options={Array.from(
-											new Set(
-												showtimes.map((showtime) => {
-													const showtimeDate = new Date(showtime.showtime)
-													const hours = showtimeDate.getHours().toString().padStart(2, '0')
-													const minutes = showtimeDate
-														.getMinutes()
-														.toString()
-														.padStart(2, '0')
-													return `${hours} : ${minutes}`
-												})
-											)
-										)
-											.sort()
-											.map((value) => ({
-												value,
-												label: value
-											}))}
-										onChange={(value) => {
-											setFilterTimeTo(value)
-											resetState()
-										}}
-										isClearable={true}
-										isSearchable={true}
-										primaryColor="indigo"
-									/>
-								</div>
+								
 							</div>
 							<div className="flex flex-col">
 								<h4 className="pt-1 text-lg font-bold text-gray-800">Release :</h4>
@@ -703,7 +540,7 @@ const Search = () => {
 
 				<div
 					className={`mb-4 grid max-h-screen overflow-auto rounded-md bg-gradient-to-br from-indigo-100 to-white`}
-					style={{ gridTemplateColumns: '34px repeat(7, minmax(max-content, 1fr)) 104px' }}
+					style={{ gridTemplateColumns: '34px repeat(7, minmax(max-content, 1fr)) ' }}
 				>
 					<p className="sticky top-0 flex items-center justify-center rounded-tl-md bg-gradient-to-br from-gray-800 to-gray-700 text-center text-xl font-semibold text-white">
 						<input
@@ -816,10 +653,7 @@ const Search = () => {
 						{sortRelease === 1 && <ChevronUpIcon className="ml-auto w-6 h-6" />}
 						{sortRelease === -1 && <ChevronDownIcon className="ml-auto w-6 h-6" />}
 					</button>
-					<p className="sticky top-0 z-[1] flex items-center justify-center gap-2 rounded-tr-md bg-gradient-to-br from-gray-800 to-gray-700 px-2 py-1 text-center text-xl font-semibold text-white">
-						<MapIcon className="h-6 w-6" />
-						View
-					</p>
+					
 					{isFetchingShowtimesDone &&
 						filteredShowtimes.map((showtime, index) => {
 							const showtimeDate = new Date(showtime.showtime)
@@ -902,13 +736,7 @@ const Search = () => {
 											<EyeSlashIcon className="h-5 w-5" title="Unreleased showtime" />
 										)}
 									</div>
-									<button
-										className="flex items-center justify-center gap-2 bg-gradient-to-br from-indigo-600 to-blue-500 px-2 py-1 text-white drop-shadow-md hover:from-indigo-500 hover:to-blue-400 disabled:from-slate-500 disabled:to-slate-400"
-										onClick={() => navigate(`/showtime/${showtime._id}`)}
-									>
-										<MapIcon className="h-6 w-6" />
-										View
-									</button>
+									
 								</Fragment>
 							)
 						})}
