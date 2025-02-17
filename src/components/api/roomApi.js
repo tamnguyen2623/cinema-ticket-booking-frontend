@@ -30,7 +30,8 @@ export const createOrUpdateRoom = async (token, roomData, editingRoom) => {
       cinema: roomData.cinema,
       roomname: roomData.roomname,
       roomtype: roomData.roomtype,
-      seatnumber: roomData.seatnumber,
+      row: roomData.row,
+      colum: roomData.colum,
     };
 
     let response;

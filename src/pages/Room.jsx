@@ -9,7 +9,12 @@ import {
   notification,
   Spin,
 } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import { AuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import "../components/styles/roomStyle.css";
@@ -58,6 +63,7 @@ const Room = () => {
       notification.error({
         message: "Unauthorized",
         description: "You are not authorized to create or update a room.",
+        duration: 2,
       });
       return;
     }
@@ -103,6 +109,7 @@ const Room = () => {
       notification.error({
         message: "Unauthorized",
         description: "You are not authorized to delete a room.",
+        duration: 2,
       });
       return;
     }
@@ -113,6 +120,7 @@ const Room = () => {
       notification.success({
         message: "Room deleted successfully!",
         description: "The room has been deleted.",
+        duration: 2,
       });
     } catch (error) {
       console.error("Error deleting room:", error);
@@ -124,6 +132,7 @@ const Room = () => {
       notification.error({
         message: "Unauthorized",
         description: "You are not authorized to view room details.",
+        duration: 2,
       });
       return;
     }
@@ -131,10 +140,11 @@ const Room = () => {
     try {
       const detail = await DetailRoom(auth.token, roomId);
       console.log("room", detail.room.roomname);
-      setRoomDetail(detail); 
+      setRoomDetail(detail);
       setIsFormDetailVisible(true);
       notification.success({
         message: "Room details loaded successfully!",
+        duration: 2,
       });
     } catch (error) {
       console.error("Error fetching room details:", error);
@@ -142,6 +152,7 @@ const Room = () => {
         message: "Failed to load room details",
         description:
           error.message || "An error occurred while fetching details.",
+        duration: 2,
       });
     }
   };
@@ -173,9 +184,14 @@ const Room = () => {
       key: "roomtype",
     },
     {
-      title: "Seats",
-      dataIndex: "seatnumber",
-      key: "seatnumber",
+      title: "Row Number",
+      dataIndex: "row",
+      key: "row",
+    },
+    {
+      title: "Colum Number",
+      dataIndex: "colum",
+      key: "colum",
     },
     {
       title: "Actions",
@@ -190,12 +206,13 @@ const Room = () => {
             }}
             style={{
               marginRight: "8px",
-              backgroundColor: "#0000FF",
-              borderColor: "#0000FF",
+              backgroundColor: "#1acc3b",
+              borderColor: "#1acc3b",
+              marginRight: "5px",
+              color: "white",
             }}
           >
-            <EditOutlined style={{ marginRight: "5px" }} />
-            Detail
+            <InfoCircleOutlined />
           </Button>
           <Button
             type="primary"
@@ -208,19 +225,23 @@ const Room = () => {
               marginRight: "8px",
               backgroundColor: "#0000FF",
               borderColor: "#0000FF",
+              marginRight: "5px",
+              color: "white",
             }}
           >
-            <EditOutlined style={{ marginRight: "5px" }} />
-            Edit
+            <EditOutlined />
           </Button>
           <Button
             type="danger"
             size="small"
             onClick={() => handleDelete(record._id)}
-            style={{ backgroundColor: "#ff0000", borderColor: "ff0000" }}
+            style={{
+              backgroundColor: "#ff0000",
+              borderColor: "ff0000",
+              color: "white",
+            }}
           >
-            <DeleteOutlined style={{ marginRight: "5px" }} />
-            Delete
+            <DeleteOutlined />
           </Button>
         </div>
       ),
@@ -255,12 +276,13 @@ const Room = () => {
             </Select>
           </div>
           <Button
+            icon={<PlusOutlined style={{ color: "white" }} />}
             type="primary"
             block
             className="createRoomButton"
             onClick={() => setIsFormVisible(true)}
           >
-            Create Room
+            Add room
           </Button>
         </div>
 
@@ -302,7 +324,16 @@ const Room = () => {
                 <strong>Type:</strong> {roomDetail.room?.roomtype}
               </p>
               <p>
-                <strong>Seats:</strong> {roomDetail.room?.seatnumber}
+                <strong>row:</strong> {roomDetail.room?.row}
+              </p>
+              <p>
+                <strong>colum:</strong> {roomDetail.room?.colum}
+              </p>
+              <p>
+                <strong>CreactAt:</strong> {roomDetail.room?.createdAt}
+              </p>
+              <p>
+                <strong>UpdateAt:</strong> {roomDetail.room?.updatedAt}
               </p>
             </div>
           ) : (
@@ -313,7 +344,8 @@ const Room = () => {
                 cinema: editingRoom?.cinema?._id,
                 roomname: editingRoom?.roomname,
                 roomtype: editingRoom?.roomtype,
-                seatnumber: editingRoom?.seatnumber,
+                row: editingRoom?.row,
+                colum: editingRoom?.colum,
               }}
             >
               <Form.Item
@@ -348,15 +380,37 @@ const Room = () => {
                 rules={[{ required: true, message: "Room Type is required" }]}
               >
                 <Select placeholder="Select Room Type">
-                  <Option value="Regular">Regular</Option>
-                  <Option value="Premium">Premium</Option>
-                  <Option value="VIP">VIP</Option>
-                  <Option value="Luxury">7D</Option>
+                  <Option value="Standard">Standard</Option>
+                  <Option value="IMAX">IMAX</Option>
+                  <Option value="4DX">4DX</Option>
+                  <Option value="Dolby">Dolby</Option>
+                  <Option value="ScreenX">ScreenX</Option>
+                  <Option value="Private">ScreenX</Option>
                 </Select>
               </Form.Item>
 
               <Form.Item
-                name="seatnumber"
+                name="row"
+                label="Number of Seats"
+                rules={[
+                  { required: true, message: "Number of Seats is required" },
+                  {
+                    min: 1,
+                    max: 300,
+                    message: "Seat number must be between 1 and 300",
+                  },
+                ]}
+              >
+                <Input
+                  type="number"
+                  placeholder="Enter Seat Number"
+                  min={1}
+                  max={300}
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="colum"
                 label="Number of Seats"
                 rules={[
                   { required: true, message: "Number of Seats is required" },
