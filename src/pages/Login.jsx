@@ -164,7 +164,7 @@ const Login = () => {
         pauseOnHover: false,
       });
       setAuth((prev) => ({ ...prev, token: response.data.token }));
-      navigate("/");
+      navigate("/admindashboard");
     } catch (error) {
       console.error(error.response.data);
       setErrorsMessage(error.response.data);

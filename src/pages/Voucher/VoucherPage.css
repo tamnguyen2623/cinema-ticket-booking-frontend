@@ -1,0 +1,25 @@
+.content {
+  padding: 20px;
+  margin-left: 250px;
+}
+
+.custom-edit-btn {
+  background-color: #1890ff !important;
+  color: white !important;
+  border-color: #1890ff;
+}
+
+.custom-edit-btn:hover {
+  opacity: 0.8;
+}
+
+
+.custom-ok-btn {
+  background-color: #1890ff !important;
+  color: white !important;
+  border-color: #1890ff;
+}
+
+.custom-ok-btn:hover {
+  opacity: 0.8;
+}

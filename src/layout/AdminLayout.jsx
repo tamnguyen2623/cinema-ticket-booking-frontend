@@ -17,15 +17,6 @@ const AdminLayout = () => {
         <Outlet />
       </div>
     </div>
-
-    // <div className="d-flex">
-    //   <div className="col-2 bg-light p-3">
-    //     <Sidebar />
-    //   </div>
-    //   <div className="col-10 p-4">
-    //     <Outlet />
-    //   </div>
-    // </div>
   );
 };
 

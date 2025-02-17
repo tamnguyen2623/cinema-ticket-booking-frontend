@@ -20,7 +20,7 @@
     "@mui/material": "^5.16.7",
     "@mui/styled-engine": "^6.1.4",
     "antd": "^5.24.0",
-    "axios": "^1.4.0",
+    "axios": "^1.7.9",
     "install": "^0.13.0",
     "npm": "^9.8.1",
     "react": "^18.2.0",
