@@ -1,0 +1,118 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 210px;
+  height: 100vh;
+  background: #1e1e2d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 30px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.role {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.menu-icon,
+.logout-icon {
+  font-size: 20px;
+  width: 25px;
+  text-align: center;
+}
+
+.menu-bar {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding-top: 20px;
+  overflow-y: auto; /* Kích hoạt cuộn dọc */
+}
+
+.menu-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-link {
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  transition: background 0.3s ease-in-out;
+}
+
+.nav-link a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  background: #29293d;
+}
+
+.nav-link a:hover {
+  color: #00aaff;
+}
+
+.active-link {
+  background: #29293d;
+  color: #00aaff;
+  font-weight: bold;
+  border-left: 4px solid #00aaff;
+}
+
+.active-link a {
+  color: #00aaff;
+}
+
+.active-link:hover {
+  background: #29293d;
+}

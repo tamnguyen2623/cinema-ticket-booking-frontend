@@ -97,7 +97,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex min-h-screen flex-col gap-4 bg-gradient-to-br from-indigo-900 to-blue-500 pb-8 text-gray-900 sm:gap-8">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="mx-4 flex h-fit flex-col gap-6 rounded-lg bg-gradient-to-br from-indigo-200 to-blue-100 p-6 drop-shadow-xl sm:mx-8 sm:p-8">
         <h2 className="text-3xl font-bold text-gray-900">Dashboard</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

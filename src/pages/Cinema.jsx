@@ -59,7 +59,7 @@ const Cinema = () => {
 	}
 	return (
 		<div className="flex min-h-screen flex-col gap-4 bg-gradient-to-br from-indigo-900 to-blue-500 pb-8 sm:gap-8">
-			<Navbar />
+			{/* <Navbar /> */}
 			<CinemaLists {...props} />
 			{cinemas[selectedCinemaIndex]?.name && <TheaterListsByCinema {...props} />}
 		</div>
