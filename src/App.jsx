@@ -16,6 +16,10 @@ import User from './pages/User'
 import MovieDetail from './pages/MovieDetail'
 import Order from './pages/Order'
 import Dashboard from './pages/Dashboard'
+import Voucher from './pages/Voucher/VoucherPage'
+import MovieList from './pages/Movie/MoviePage'
+
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
 
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL || 'http://localhost:8080'
 axios.defaults.withCredentials = true
@@ -26,10 +30,12 @@ function App() {
 			<ToastContainer />
 			<Routes>
 				<Route path="/" element={<Home />} />
+				<Route path="/admindashboard" element={<AdminDashboard />} />
 				<Route path="/:id" element={<Home />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/cinema" element={<Cinema />} />
+				<Route path="/voucher" element={<Voucher />} />
 				<Route
 					path="/movie"
 					element={
@@ -52,6 +58,8 @@ function App() {
 				<Route path="/purchase/:id" element={<Purchase />} />
 				<Route path="/ticket" element={<Tickets />} />
 				<Route path="/schedule" element={<Schedule />} />
+				<Route path="/movielist" element={<MovieList />} />
+
 				<Route
 					path="/user"
 					element={

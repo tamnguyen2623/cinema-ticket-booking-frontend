@@ -254,6 +254,7 @@ const TheaterListsByCinema = ({ cinemas, selectedCinemaIndex, setSelectedCinemaI
 					</>
 				)}
 			</div>
+			
 			<div className="flex flex-col gap-6 p-4 sm:p-6 overflow-y-auto">
 				<DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 				<form className="flex flex-col gap-4" onSubmit={handleSubmit(onIncreaseTheater)}>
