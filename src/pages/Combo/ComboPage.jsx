@@ -27,29 +27,45 @@ const ComboPage = () => {
         }
     };
 
-    const handleUploadChange = ({ file }) => {
-        console.log("Selected file:", file);
-        setImageFile(file.originFileObj);
+    const handleUploadChange = ({ fileList }) => {
+        if (fileList.length > 0) {
+            const file = fileList[0].originFileObj || fileList[0];
+            console.log("File selected:", file);
+            setImageFile(file);
+        } else {
+            setImageFile(null);
+        }
     };
-
 
     const handleAddCombo = async () => {
         try {
             const values = await form.validateFields();
-            console.log("Form Values:", values); // Kiểm tra giá trị nhập vào
             const token = await AsyncStorage.getItem("token");
             const formData = new FormData();
-
             formData.append("name", values.name);
             formData.append("description", values.description);
+            formData.append("price", values.price);
+
+            // Kiểm tra xem có file ảnh hay không
             if (imageFile) {
+                console.log("Appending image file:", imageFile);
                 formData.append("image", imageFile);
+            } else {
+                console.warn("No image file selected!");
+                toast.error("Please select an image before submitting.");
+                return; // Dừng hàm nếu không có ảnh
+            }
+
+            // Log toàn bộ formData để kiểm tra
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}:`, value);
             }
 
             await axios.post(`/combo`, formData, {
                 headers: {
+                    "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`
-                }
+                },
             });
 
             fetchCombos();
@@ -58,9 +74,11 @@ const ComboPage = () => {
             setImageFile(null);
             toast.success("Combo created successfully!");
         } catch (error) {
-            console.error("Lỗi khi thêm combo:", error);
+            console.error("Lỗi khi thêm combo:", error.response?.data || error);
         }
     };
+
+
 
 
     const handleEditCombo = async () => {
@@ -129,16 +147,17 @@ const ComboPage = () => {
     );
 
     const columns = [
-        { title: "Tên Combo", dataIndex: "name", key: "name", width: 200 },
-        { title: "Mô Tả", dataIndex: "description", key: "description", width: 300 },
+        { title: "Name Combo", dataIndex: "name", key: "name", width: 200 },
+        { title: "Description", dataIndex: "description", key: "description", width: 300 },
+        { title: "Price", dataIndex: "price", key: "price", width: 300 },
         {
-            title: "Hình Ảnh",
+            title: "Image",
             dataIndex: "image",
             key: "image",
             render: (image) => <img src={image} alt="combo" style={{ width: 50, height: 50 }} />,
         },
         {
-            title: "Hành Động",
+            title: "Action",
             key: "action",
             render: (record) => (
                 <div style={{ display: "flex", gap: "10px" }}>
@@ -174,23 +193,39 @@ const ComboPage = () => {
                 <Form form={form} layout="vertical" initialValues={{ name: "", description: "" }}>
                     <Form.Item
                         name="name"
-                        label="Tên Combo"
-                        rules={[{ required: true, message: "Vui lòng nhập tên combo!" }]}
+                        label="Name combo"
+                        rules={[{ required: true, message: "Please enter a name!" }]}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         name="description"
-                        label="Mô Tả"
-                        rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
+                        label="Description"
+                        rules={[{ required: true, message: "Please enter a description!" }]}
                     >
                         <Input.TextArea />
                     </Form.Item>
-                    <Form.Item name="image" label="Hình Ảnh">
-                        <Upload beforeUpload={() => false} listType="picture" onChange={handleUploadChange}>
-                            <Button icon={<UploadOutlined />}>Tải lên</Button>
+                    <Form.Item
+                        name="price"
+                        label="Price"
+                        rules={[{ required: true, message: "Please enter a price!" }]}
+                    >
+                        <Input.TextArea />
+                    </Form.Item>
+                    <Form.Item name="image" label="Image">
+                        <Upload
+                            listType="picture"
+                            beforeUpload={(file) => {
+                                console.log("Before Upload File:", file);
+                                setImageFile(file);
+                                return false; // Không tự động upload
+                            }}
+                            onChange={handleUploadChange}
+                        >
+                            <Button icon={<UploadOutlined />}>Upload</Button>
                         </Upload>
                     </Form.Item>
+
                 </Form>
             </Modal>
 

@@ -96,7 +96,7 @@ const Order = () => {
               new Date(startDate).getMonth(),
               new Date(startDate).getDate()
             ) -
-              UTC_OFFSET
+            UTC_OFFSET
         )
       );
     } else if (startDate === "" && endDate !== "") {
@@ -109,8 +109,8 @@ const Order = () => {
               new Date(endDate).getMonth(),
               new Date(endDate).getDate()
             ) +
-              24 * 60 * 60 * 1000 -
-              UTC_OFFSET
+            24 * 60 * 60 * 1000 -
+            UTC_OFFSET
         )
       );
     } else if (startDate !== "" && endDate !== "") {
@@ -118,20 +118,20 @@ const Order = () => {
         orders.filter(
           (order) =>
             new Date(order.createdAt).getTime() >=
-              Date.UTC(
-                new Date(startDate).getFullYear(),
-                new Date(startDate).getMonth(),
-                new Date(startDate).getDate()
-              ) -
-                UTC_OFFSET &&
+            Date.UTC(
+              new Date(startDate).getFullYear(),
+              new Date(startDate).getMonth(),
+              new Date(startDate).getDate()
+            ) -
+            UTC_OFFSET &&
             new Date(order.createdAt).getTime() <=
-              Date.UTC(
-                new Date(endDate).getFullYear(),
-                new Date(endDate).getMonth(),
-                new Date(endDate).getDate()
-              ) +
-                24 * 60 * 60 * 1000 -
-                UTC_OFFSET
+            Date.UTC(
+              new Date(endDate).getFullYear(),
+              new Date(endDate).getMonth(),
+              new Date(endDate).getDate()
+            ) +
+            24 * 60 * 60 * 1000 -
+            UTC_OFFSET
         )
       );
     }
@@ -314,8 +314,8 @@ const Order = () => {
                       order.status === "done"
                         ? { color: "green" }
                         : order.status === "pending"
-                        ? { color: "black" }
-                        : { color: "red" }
+                          ? { color: "black" }
+                          : { color: "red" }
                     }
                     className="border-t-2 border-indigo-200 px-2 py-1"
                   >

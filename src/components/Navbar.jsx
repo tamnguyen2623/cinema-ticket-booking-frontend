@@ -215,8 +215,8 @@ const Navbar = () => {
           <Link
             to={"/cinema"}
             className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/cinema"
-                ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                : "bg-gray-600"
+              ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+              : "bg-gray-600"
               }`}
           >
             <HomeModernIcon className="h-6 w-6" />
@@ -225,8 +225,8 @@ const Navbar = () => {
           <Link
             to={"/schedule"}
             className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/schedule"
-                ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                : "bg-gray-600"
+              ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+              : "bg-gray-600"
               }`}
           >
             <ClockIcon className="h-6 w-6" />
@@ -236,8 +236,8 @@ const Navbar = () => {
             <Link
               to={"/ticket"}
               className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/ticket"
-                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                  : "bg-gray-600"
+                ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                : "bg-gray-600"
                 }`}
             >
               <TicketIcon className="h-6 w-6" />
@@ -249,8 +249,8 @@ const Navbar = () => {
               <Link
                 to={"/movie"}
                 className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/movie"
-                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                    : "bg-gray-600"
+                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                  : "bg-gray-600"
                   }`}
               >
                 <VideoCameraIcon className="h-6 w-6" />
@@ -259,8 +259,8 @@ const Navbar = () => {
               <Link
                 to={"/search"}
                 className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/search"
-                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                    : "bg-gray-600"
+                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                  : "bg-gray-600"
                   }`}
               >
                 <MagnifyingGlassIcon className="h-6 w-6" />
@@ -269,8 +269,8 @@ const Navbar = () => {
               <Link
                 to={"/user"}
                 className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/user"
-                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                    : "bg-gray-600"
+                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                  : "bg-gray-600"
                   }`}
               >
                 <UsersIcon className="h-6 w-6" />
@@ -279,8 +279,8 @@ const Navbar = () => {
               <Link
                 to={"/order"}
                 className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/order"
-                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                    : "bg-gray-600"
+                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                  : "bg-gray-600"
                   }`}
               >
                 <NewspaperIcon className="h-6 w-6" />
@@ -289,8 +289,8 @@ const Navbar = () => {
               <Link
                 to={"/dashboard"}
                 className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/dashboard"
-                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                    : "bg-gray-600"
+                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                  : "bg-gray-600"
                   }`}
               >
                 <NewspaperIcon className="h-6 w-6" />
@@ -299,8 +299,8 @@ const Navbar = () => {
               <Link
                 to={"/room"}
                 className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/management-room"
-                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                    : "bg-gray-600"
+                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                  : "bg-gray-600"
                   }`}
               >
                 <HomeModernIcon className="h-6 w-6" />
@@ -309,8 +309,8 @@ const Navbar = () => {
               <Link
                 to={"/movietype"}
                 className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/movietype"
-                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                    : "bg-gray-600"
+                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                  : "bg-gray-600"
                   }`}
               >
                 <HomeModernIcon className="h-6 w-6" />
@@ -319,12 +319,22 @@ const Navbar = () => {
               <Link
                 to={"/combo"}
                 className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/combo"
-                    ? "bg-gradient-to-br from-indigo-800 to-blue-700"
-                    : "bg-gray-600"
+                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                  : "bg-gray-600"
                   }`}
               >
                 <HomeModernIcon className="h-6 w-6" />
                 <p>Combo</p>
+              </Link>
+              <Link
+                to={"/showtime"}
+                className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${window.location.pathname === "/showtime"
+                  ? "bg-gradient-to-br from-indigo-800 to-blue-700"
+                  : "bg-gray-600"
+                  }`}
+              >
+                <HomeModernIcon className="h-6 w-6" />
+                <p>Showtime</p>
               </Link>
             </>
           )}

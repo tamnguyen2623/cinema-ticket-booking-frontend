@@ -145,7 +145,7 @@ const User = () => {
 						Authorization: `Bearer ${auth.token}`
 					}
 				}
-				
+
 			);
 			toast.success('User added successfully!', {
 				position: 'top-center',
@@ -170,17 +170,17 @@ const User = () => {
 			<div className="mx-4 flex h-fit flex-col gap-2 rounded-lg bg-gradient-to-br from-indigo-200 to-blue-100 p-4 drop-shadow-xl sm:mx-8 sm:p-6">
 				<h2 className="text-3xl font-bold text-gray-900">Users</h2>
 				<div>
-				
+
 					<div className="flex justify-end">
 
-					<button
-						onClick={() => setIsFormVisible(!isFormVisible)}
-						className={`mb-1 rounded px-4 py-2 text-white ${isFormVisible ? 'bg-red-500' : 'bg-blue-500'
-							}`}
-					
-					>
-						{isFormVisible ? 'Close' : 'Add User'}
-					</button>
+						<button
+							onClick={() => setIsFormVisible(!isFormVisible)}
+							className={`mb-1 rounded px-4 py-2 text-white ${isFormVisible ? 'bg-red-500' : 'bg-blue-500'
+								}`}
+
+						>
+							{isFormVisible ? 'Close' : 'Add User'}
+						</button>
 					</div>
 
 					{isFormVisible && (
@@ -219,7 +219,7 @@ const User = () => {
 									{isAdding ? 'Adding...' : 'Submit'}
 								</button>
 							</div>
-							
+
 						</form>
 					)}
 				</div>
