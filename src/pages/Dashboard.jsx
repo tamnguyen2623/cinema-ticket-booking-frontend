@@ -9,6 +9,8 @@ import Navbar from "../components/Navbar";
 import { AuthContext } from "../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import { AnalyticsCurrentVisits } from "../components/AnalysisCircle";
+import { ApexColumnChart } from "../components/chart/column-chart";
+import { ApexBarChart } from "../components/chart/bar-chart";
 
 const Dashboard = () => {
   const { auth } = useContext(AuthContext);
@@ -17,6 +19,9 @@ const Dashboard = () => {
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [cinemaAnalysis, setCinemaAnalysis] = useState([]);
+  const [revenueByMonth, setRevenueByMonth] = useState([]);
+  const [revenueByMovie, setRevenueByMovie] = useState([]);
+  const [year, setYear] = useState("2025");
 
   const fetchTotalUsers = async (data) => {
     try {
@@ -73,7 +78,7 @@ const Dashboard = () => {
   const analyzeCinema = async (data) => {
     try {
       // setIsFetchingShowtimesDone(false)
-      const response = await axios.get("/order/analysis", {
+      const response = await axios.get("/order/revenue-by-cinema", {
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
@@ -83,17 +88,66 @@ const Dashboard = () => {
       console.error(error);
     }
   };
+  const getTotalRevenueByMonth = async (year) => {
+    try {
+      const response = await axios.get("/order/revenue-by-month?year=" + year, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      console.log(response.data)
+      setRevenueByMonth(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const formatNumber = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  const getTotalRevenueByMovie = async (year) => {
+    try {
+      const response = await axios.get("/order/revenue-by-movie", {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      setRevenueByMovie(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    fetchTotalUsers();
-    fetchTotalMovies();
-    fetchTotalOrders();
-    fetchTotalRevenue();
-    analyzeCinema();
-  }, []);
+    const fetchAllData = async () => {
+      try {
+        const [
+          totalUsers,
+          totalMovies,
+          totalOrders,
+          totalRevenue,
+          cinemaAnalysis,
+          revenueByMonth,
+          revenueByMovie,
+        ] = await Promise.all([
+          fetchTotalUsers(),
+          fetchTotalMovies(),
+          fetchTotalOrders(),
+          fetchTotalRevenue(),
+          analyzeCinema(),
+          getTotalRevenueByMonth(year),
+          getTotalRevenueByMovie(),
+        ]);
+
+        console.log("All data loaded successfully!");
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    };
+
+    fetchAllData();
+  }, [year]);
 
   return (
     <div className="flex min-h-screen flex-col gap-4 bg-gradient-to-br from-indigo-900 to-blue-500 pb-8 text-gray-900 sm:gap-8">
@@ -153,12 +207,78 @@ const Dashboard = () => {
       </div>
       <div className="mx-4 flex h-fit flex-col gap-6 rounded-lg bg-gradient-to-br from-indigo-200 to-blue-100 p-6 drop-shadow-xl sm:mx-8 sm:p-8">
         <h2 className="text-3xl font-bold text-gray-900">Analysis</h2>
-        <AnalyticsCurrentVisits
-          title="Statistics of ticket bookings by cinema"
-          chart={{
-            series: cinemaAnalysis || [{ label: "ABC", value: 1 }],
-          }}
-        />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="flex flex-col gap-1 rounded-lg bg-white p-6 drop-shadow-md transition-transform transform hover:scale-105">
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: "1.5rem",
+                lineHeight: 1.334,
+                textAlign: "center",
+              }}
+            >
+              Revenue By Cinema
+            </span>
+            <AnalyticsCurrentVisits
+              // title="Revenue By Cinema"
+              chart={{
+                series: cinemaAnalysis || [{ label: "ABC", value: 1 }],
+              }}
+            />
+            {/* <ApexColumnChart data={[1,2,3,5]} categories={["", "b", "c", "d"]}  /> */}
+          </div>
+          <div className="flex flex-col gap-1 rounded-lg bg-white p-6 drop-shadow-md transition-transform transform hover:scale-105">
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: "1.5rem",
+                lineHeight: 1.334,
+                textAlign: "center",
+              }}
+            >
+              Revenue By Movie
+            </span>
+            {revenueByMovie.totalRevenue && revenueByMovie.totalRevenue.length > 0 && (
+              <ApexBarChart
+                data={revenueByMovie.totalRevenue || []}
+                categories={revenueByMovie.categories || []}
+              />
+            )}
+
+            {/* <ApexColumnChart data={[1,2,3,5]} categories={["", "b", "c", "d"]}  /> */}
+          </div>
+          <div className="flex flex-col gap-1 rounded-lg bg-white p-6 drop-shadow-md transition-transform transform hover:scale-105">
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: "1.5rem",
+                lineHeight: 1.334,
+                textAlign: "center",
+              }}
+            >
+              Revenue By Month
+            </span>
+            {revenueByMonth && revenueByMonth.length > 0 && (
+              <ApexColumnChart
+                data={revenueByMonth || []}
+                categories={[
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12",
+                ]}
+              />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
