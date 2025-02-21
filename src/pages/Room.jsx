@@ -18,6 +18,7 @@ import {
 import { AuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import "../components/styles/roomStyle.css";
+import SeatMap from "../components/Seat/SeatMap";
 import {
   fetchCinemas,
   fetchRooms,
@@ -34,6 +35,7 @@ const Room = () => {
   const [loadingCinemas, setLoadingCinemas] = useState(true);
   const [rooms, setRooms] = useState([]);
   const { auth } = useContext(AuthContext);
+
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [editingRoom, setEditingRoom] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,6 +44,7 @@ const Room = () => {
   const [isFormDetailVisible, setIsFormDetailVisible] = useState(false);
 
   useEffect(() => {
+    console.log("User Role:", auth.role); // Kiểm tra role cụ thể
     const loadData = async () => {
       try {
         const cinemasData = await fetchCinemas();
@@ -201,6 +204,20 @@ const Room = () => {
       key: "actions",
       render: (_, record) => (
         <div>
+          <Button type="default" onClick={showModal}>
+            Open Modal
+          </Button>
+          <Modal
+            title="Basic Modal"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            okType={"default"}
+            style={{ marginLeft: "350px" }}
+            width={1000}
+          >
+            <SeatMap roomID={rooms._id} />
+          </Modal>
           <Button
             type="primary"
             size="small"
@@ -250,6 +267,19 @@ const Room = () => {
       ),
     },
   ];
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
     <div className="container-fluid">
       {/* <Navbar /> */}
@@ -389,7 +419,6 @@ const Room = () => {
                   <Option value="4DX">4DX</Option>
                   <Option value="Dolby">Dolby</Option>
                   <Option value="ScreenX">ScreenX</Option>
-                  <Option value="Private">ScreenX</Option>
                 </Select>
               </Form.Item>
 

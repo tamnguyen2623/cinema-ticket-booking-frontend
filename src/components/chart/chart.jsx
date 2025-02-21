@@ -1,4 +1,4 @@
-import ApexChart from 'react-apexcharts';
+import ApexCharts from 'react-apexcharts'
 
 import Box from '@mui/material/Box';
 
@@ -31,7 +31,7 @@ export function Chart({
       }}
       {...other}
     >
-      <ApexChart type={type} series={series} options={options} width="100%" height="100%" />
+      <ApexCharts type={type} series={series} options={options} width="100%" height="100%" />
     </Box>
   );
 }
