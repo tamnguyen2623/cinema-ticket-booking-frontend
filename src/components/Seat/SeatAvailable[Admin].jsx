@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, Button, Modal } from "antd";
-import SeatUpdate from "./SeatUpdate";
-import { getSeatsByRoomId } from "../api/seat";
+import { getSeatAvailablesBymovieShowingId } from "../api/seatAvailable";
 
-export default function seatMap({ roomInfo }) {
+export default function SeatAvailableForAdmin({ movieShowing }) {
   const [seats, setSeats] = useState([]);
-  const column = roomInfo.colum;
-  const [refresh, setRefresh] = useState(false);
+  const column = movieShowing.roomId.colum;
+  console.log(movieShowing);
+  
 
   const fetchSeats = async () => {
     try {
-      const data = await getSeatsByRoomId(roomInfo._id);
+      const data = await getSeatAvailablesBymovieShowingId(movieShowing._id);
       setSeats(data); // Cập nhật state với dữ liệu từ API
       console.log(data);
     } catch (error) {
@@ -20,7 +19,7 @@ export default function seatMap({ roomInfo }) {
 
   useEffect(() => {
     fetchSeats();
-  }, [refresh]);
+  }, [movieShowing]);
 
   const seatTypeColors = {
     Standard: "bg-purple-500",
@@ -40,28 +39,23 @@ export default function seatMap({ roomInfo }) {
         className="grid gap-2 ml-9"
         style={{ gridTemplateColumns: `repeat(${column}, minmax(40px, 1fr))` }}
       >
-        {seats.map((seat) => (
-          <Dropdown
-            key={seat._id}
-            overlay={
-              <SeatUpdate
-                seat={seat}
-                seatTypeColors={seatTypeColors}
-                setRefresh={setRefresh}
-              />
-            }
-            trigger={["hover"]}
-            placement="bottomCenter"
-          >
+        {seats.map((seat) => {
+          const isDisabled =
+            seat.seatId.type === "Disabled" || seat.isAvailable === false;
+
+          return (
             <div
+              key={seat.seatId._id}
               className={`w-8 h-8 flex items-center justify-center text-xs ${
-                seatTypeColors[seat.type]
+                isDisabled
+                  ? "relative bg-yellow-100 after:content-[''] after:absolute after:top-2.5 after:right-2.5 after:w-full after:h-full after:border-t-2 after:border-red-500 after:rotate-45 after:pointer-events-none"
+                  : seatTypeColors[seat.seatId.type]
               }`}
             >
-              {seat.name}
+              {seat.seatId.name}
             </div>
-          </Dropdown>
-        ))}
+          );
+        })}
       </div>
 
       <div className="mt-4 flex gap-4 justify-center">
@@ -76,7 +70,7 @@ export default function seatMap({ roomInfo }) {
         </span>
         <span className="flex items-center gap-2">
           <div className="relative w-4 h-4 bg-yellow-100 after:content-[''] after:absolute after:top-1 after:right-1 after:w-full after:h-full after:border-t-2 after:border-red-500 after:rotate-45 after:pointer-events-none"></div>
-          Không khả dụng
+          Đã đặt
         </span>
       </div>
     </div>
