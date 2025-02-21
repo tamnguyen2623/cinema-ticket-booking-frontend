@@ -1,4 +1,10 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "../layout/AdminLayout";
 import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer"
@@ -19,54 +25,65 @@ import Dashboard from "../pages/Dashboard";
 import Room from "../pages/Room";
 import Seat from "../pages/Seat";
 import VoucherPage from "../pages/Voucher/VoucherPage";
+import Booking from "../pages/Booking";
+import Ticket from "../pages/Ticket";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
-import MovieList from '../components/MovieList/MovieList';
-import DetailMovie from '../components/DetailMovie/DetailMovie';
-import Booking from '../components/Cinema/CinemaPage';
+import MovieShowingCustomer from "../components/MovieList/MovieList";
+import BookingTicketCustomer from "../components/Cinema/CinemaPage";
+const ProtectedAdminRoute = ({ element }) => {
+  const { auth } = useContext(AuthContext);
 
+  if (!auth.token || auth.role !== "admin") {
+    return <Navigate to="/login" replace />;
+  }
 
+  return element;
+};
 
 const router = createBrowserRouter([
-  
-  { path: "/:id", element: <Home /> },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
-  { path: "/showtime/:id", element: <Showtime /> },
-  { path: "/showtime/:id/:code", element: <Showtime /> },
-  { path: "/movie-detail/:id", element: <MovieDetail /> },
-  { path: "/purchase/:id", element: <Purchase /> },
- 
   {
     path: "/",
     element: <CustomerLayout />,
     children: [
-      { path: "/", element: <MovieList/> },
-      { path: "movielist", element: <MovieList /> },
+      { index: true, element: <MovieShowingCustomer /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      { path: "showtime/:id", element: <Showtime /> },
+      { path: "showtime/:id/:code", element: <Showtime /> },
+      { path: "movie-detail/:id", element: <MovieDetail /> },
+      { path: "purchase/:id", element: <Purchase /> },
+      { path: "ticket", element: <Tickets /> },
+      { path: "schedule", element: <Schedule /> },
+      { path: "booking/:transactionId", element: <Booking /> },
       { path: "booking", element: <Booking /> },
-      { path: "/movielist/:id", element: <DetailMovie /> },
+      { path: "movieshowing", element: <MovieShowingCustomer /> },
+      { path: "bookingticket", element: <BookingTicketCustomer /> },
     ],
   },
-
-
 
   {
     path: "/",
-    element: <AdminLayout />,
+    element: <ProtectedAdminRoute element={<AdminLayout />} />,
     children: [
-      { path: "movie", element: <Movie /> },
-      { path: "search", element: <Search /> },
-      { path: "user", element: <User /> },
-      { path: "order", element: <Order /> },
-      { path: "dashboard", element: <Dashboard /> },
-      { path: "cinema", element: <Cinema /> },
-      { path: "room", element: <Room /> },
-      { path: "seat", element: <Seat /> },
-      { path: "schedule", element: <Schedule /> },
-      { path: "ticket", element: <Tickets /> },
-      { path: "voucher", element: <VoucherPage /> },
-      { path: "movieshowing", element: <MovieShowing /> }
+      { index: true, element: <Navigate to="/admin/dashboard" replace /> },
+      { path: "/admin/dashboard", element: <Dashboard /> },
+      { path: "/admin/movie", element: <Movie /> },
+      { path: "/admin/search", element: <Search /> },
+      { path: "/admin/user", element: <User /> },
+      { path: "/admin/order", element: <Order /> },
+      { path: "/admin/cinema", element: <Cinema /> },
+      { path: "/admin/room", element: <Room /> },
+      { path: "/admin/seat", element: <Seat /> },
+      { path: "/admin/schedule", element: <Schedule /> },
+      { path: "/admin/ticketmanagement", element: <Ticket /> },
+
+      { path: "/admin/ticket", element: <Tickets /> },
+      { path: "/admin/voucher", element: <VoucherPage /> },
+      { path: "/admin/movieshowing", element: <MovieShowing /> },
     ],
   },
+
+  { path: "*", element: <Navigate to="/" replace /> },
 ]);
 
 const AppRouter = () => (

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import "../styles/AdminDashboard.css";
+import React, { useContext } from "react";
+import { Link, useLocation, Navigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import "./AdminDashboard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRightFromBracket,
@@ -13,277 +14,90 @@ import {
   faCommentDots,
   faGift,
 } from "@fortawesome/free-solid-svg-icons";
-import FormModal from "../../common/form-modal";
 
-const DashBroad = () => {
+const DashBoard = () => {
   const location = useLocation();
+  const { auth } = useContext(AuthContext);
+
+  if (!auth.token || auth.role !== "admin") {
+    return <Navigate to="/" replace />;
+  }
 
   const isActive = (path) => (location.pathname === path ? "active-link" : "");
 
-  const [isModalOTPOpen, setIsModalOTPOpen] = useState(false);
-  const [isModalUsernameOpen, setIsModalUsernameOpen] = useState(false);
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [reNewPassword, setReNewPassword] = useState("");
-  const [newUsername, setNewUsername] = useState("");
-
-  const changePasswordForm = {
-    title: "Change Password",
-    fields: [
-      {
-        value: oldPassword,
-        label: "Old password",
-        name: "oldPassword",
-        type: "password",
-        required: true,
-        onChange: (e) => setOldPassword(e.target.value),
-      },
-      {
-        value: newPassword,
-        label: "New password",
-        name: "newPassword",
-        type: "password",
-        required: true,
-        onChange: (e) => setNewPassword(e.target.value),
-      },
-      {
-        value: reNewPassword,
-        label: "Re-enter password",
-        name: "reEnter",
-        type: "password",
-        required: true,
-        onChange: (e) => setReNewPassword(e.target.value),
-      },
-    ],
-    submitText: "Change Password",
-  };
-  const changeUsernameForm = {
-    title: "Change Username",
-    fields: [
-      {
-        value: newUsername,
-        label: "New Username",
-        name: "newUsername",
-        type: "text",
-        required: true,
-        onChange: (e) => setNewUsername(e.target.value),
-      },
-    ],
-    submitText: "Change Username",
-  };
-
-  const showChangePasswordForm = () => {
-    setIsModalOTPOpen(true);
-  };
-
-  const handleFormModalClose = () => {
-    setIsModalOTPOpen(false);
-  };
-
-  const onSubmitChangePassword = async (event) => {
-    event.preventDefault();
-    if (reNewPassword !== newPassword) {
-      toast.error("Please re-enter your new password and confirm password!", {
-        position: "top-center",
-        autoClose: 2000,
-        pauseOnHover: false,
-      });
-      return;
-    }
-    console.log("New Username:", newUsername);
-    try {
-      const response = await axios.post(
-        `/auth/change-password`,
-        {
-          oldPassword,
-          newPassword,
-          reEnterPassword: reNewPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.token}`,
-          },
-        }
-      );
-      if (response.data.code == 1000) {
-        setIsModalOTPOpen(false);
-        toast.success("Change password successful!", {
-          position: "top-center",
-          autoClose: 2000,
-          pauseOnHover: false,
-        });
-      } else {
-        toast.error("Your password is incorrect!", {
-          position: "top-center",
-          autoClose: 2000,
-          pauseOnHover: false,
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error", {
-        position: "top-center",
-        autoClose: 2000,
-        pauseOnHover: false,
-      });
-    }
-  };
-
-  const onSubmitChangeUsername = async (event) => {
-    event.preventDefault();
-    if (!newUsername.trim()) {
-      toast.error("Username cannot be empty!", {
-        position: "top-center",
-        autoClose: 2000,
-        pauseOnHover: false,
-      });
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        `/auth/change-username`,
-        { newUsername },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.token}`,
-          },
-        }
-      );
-
-      // In response data để kiểm tra cấu trúc
-      console.log("Response:", response);
-
-      if (response.data.success) {
-        setAuth((prev) => ({ ...prev, username: newUsername }));
-        setIsModalUsernameOpen(false);
-        toast.success("Username changed successfully!", {
-          position: "top-center",
-          autoClose: 2000,
-          pauseOnHover: false,
-        });
-      } else {
-        toast.error("Failed to change username!", {
-          position: "top-center",
-          autoClose: 2000,
-          pauseOnHover: false,
-        });
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      console.log(
-        "Error details:",
-        error.response ? error.response.data : error.message
-      );
-      toast.error("Error changing username!", {
-        position: "top-center",
-        autoClose: 2000,
-        pauseOnHover: false,
-      });
-    }
-  };
-
   return (
     <nav className="sidebar">
-      <div>
-        <header>
-          <div className="profile">
-            <img
-              src="https://i.pravatar.cc/50"
-              alt="User Avatar"
-              className="avatar"
-            />
-            <div className="profile-text">
-              <span className="name">Huỳnh Tuấn Kiệt</span>
-              <span className="role">Admin</span>
-            </div>
+      <header className="sidebar-header">
+        <div className="profile">
+          <img
+            src="https://i.pravatar.cc/50"
+            alt="User Avatar"
+            className="avatar"
+          />
+          <div className="profile-text">
+            <span className="name">{auth.username || "Admin"}</span>
+            <span className="role">Admin</span>
           </div>
-        </header>
-        <div className="menu-bar sidebar-header">
-          <ul className="menu-links">
-            <li className={`nav-link ${isActive("")}`}>
-              <button onClick={() => showChangePasswordForm()}>
-                Change Password
-              </button>
-            </li>
-            <li className={`nav-link ${isActive("")}`}>
-              <button onClick={() => setIsModalUsernameOpen(true)}>
-                Change Username
-              </button>
-            </li>
-          </ul>
         </div>
-      </div>
+      </header>
 
       <div className="menu-bar">
         <ul className="menu-links">
-          <li className={`nav-link ${isActive("/dashboard")}`}>
-            <Link to="/dashboard">
+          <li className={`nav-link ${isActive("/admin/dashboard")}`}>
+            <Link to="/admin/dashboard">
               <FontAwesomeIcon icon={faFilm} className="menu-icon" />
-              <span>DashBoard</span>
+              <span>Dashboard</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/cinema")}`}>
-            <Link to="/cinema">
+          <li className={`nav-link ${isActive("/admin/cinema")}`}>
+            <Link to="/admin/cinema">
               <FontAwesomeIcon icon={faFilm} className="menu-icon" />
               <span>Cinema</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/room")}`}>
-            <Link to="/room">
-              <FontAwesomeIcon icon={faFilm} className="menu-icon" />
-              <span>Room</span>
+          <li className={`nav-link ${isActive("/admin/schedule")}`}>
+            <Link to="/admin/schedule">
+              <FontAwesomeIcon icon={faCalendarAlt} className="menu-icon" />
+              <span>Schedule</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/movieshowing")}`}>
-            <Link to="/movieshowing">
-              <FontAwesomeIcon icon={faFilm} className="menu-icon" />
-              <span>Movie Showing</span>
-            </Link>
-          </li>
-          <li className={`nav-link ${isActive("/seat")}`}>
-            <Link to="/seat">
-              <FontAwesomeIcon icon={faFilm} className="menu-icon" />
-              <span>Seat</span>
-            </Link>
-          </li>
-          <li className={`nav-link ${isActive("/ticket")}`}>
-            <Link to="/ticket">
+          <li className={`nav-link ${isActive("/admin/ticketmanagement")}`}>
+            <Link to="/admin/ticketmanagement">
               <FontAwesomeIcon icon={faTicketAlt} className="menu-icon" />
               <span>Ticket</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/booking")}`}>
-            <Link to="/booking">
+          <li className={`nav-link ${isActive("/admin/booking")}`}>
+            <Link to="/admin/booking">
               <FontAwesomeIcon icon={faClipboardList} className="menu-icon" />
               <span>Booking</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/role")}`}>
-            <Link to="/role">
+          <li className={`nav-link ${isActive("/admin/users")}`}>
+            <Link to="/admin/users">
               <FontAwesomeIcon icon={faUsers} className="menu-icon" />
-              <span>Role</span>
+              <span>Users</span>
             </Link>
           </li>
-          {/* <li className={`nav-link ${isActive("/revenue")}`}>
-            <Link to="/revenue">
+          <li className={`nav-link ${isActive("/admin/revenue")}`}>
+            <Link to="/admin/revenue">
               <FontAwesomeIcon icon={faChartBar} className="menu-icon" />
               <span>Revenue</span>
             </Link>
-          </li> */}
-          <li className={`nav-link ${isActive("/feedback")}`}>
-            <Link to="/feedback">
+          </li>
+          <li className={`nav-link ${isActive("/admin/feedback")}`}>
+            <Link to="/admin/feedback">
               <FontAwesomeIcon icon={faCommentDots} className="menu-icon" />
               <span>Feedback</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/voucher")}`}>
-            <Link to="/voucher">
+          <li className={`nav-link ${isActive("/admin/voucher")}`}>
+            <Link to="/admin/voucher">
               <FontAwesomeIcon icon={faGift} className="menu-icon" />
               <span>Voucher</span>
             </Link>
           </li>
-          <li className="nav-link button-logou">
+          <li className="nav-link button-logout">
             <Link to="/logout">
               <FontAwesomeIcon
                 icon={faRightFromBracket}
@@ -294,25 +108,8 @@ const DashBroad = () => {
           </li>
         </ul>
       </div>
-
-      {isModalOTPOpen && (
-        <FormModal
-          handleClose={handleFormModalClose}
-          open={isModalOTPOpen}
-          formData={changePasswordForm}
-          onSubmit={onSubmitChangePassword}
-        />
-      )}
-      {isModalUsernameOpen && (
-        <FormModal
-          handleClose={() => setIsModalUsernameOpen(false)}
-          open={isModalUsernameOpen}
-          formData={changeUsernameForm}
-          onSubmit={onSubmitChangeUsername}
-        />
-      )}
     </nav>
   );
 };
 
-export default DashBroad;
+export default DashBoard;

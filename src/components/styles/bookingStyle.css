@@ -1,0 +1,41 @@
+.booking-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.movies-section {
+  width: 50%;
+}
+
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.movie-card {
+  width: 200px;
+}
+
+.book-button {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.booking-form {
+  width: 50%;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.vip-seat {
+  background-color: gold !important;
+  color: black;
+  border: 1px solid #d4af37;
+}
+
+.selected-seat {
+  background-color: #ffcc00 !important;
+  color: white;
+}
