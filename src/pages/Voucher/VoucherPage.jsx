@@ -166,7 +166,6 @@ const VoucherPage = () => {
 
   return (
     <div className="content">
-      <SideBar />
       <Input
         placeholder="Tìm theo mã voucher..."
         prefix={<SearchOutlined />}

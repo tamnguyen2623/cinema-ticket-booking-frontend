@@ -185,32 +185,38 @@ const DashBroad = () => {
 
   return (
     <nav className="sidebar">
-      <header className="sidebar-header">
-        <div className="profile">
-          <img
-            src="https://i.pravatar.cc/50"
-            alt="User Avatar"
-            className="avatar"
-          />
-          <div className="profile-text">
-            <span className="name">Huỳnh Tuấn Kiệt</span>
-            <span className="role">Admin</span>
+      <div>
+        <header>
+          <div className="profile">
+            <img
+              src="https://i.pravatar.cc/50"
+              alt="User Avatar"
+              className="avatar"
+            />
+            <div className="profile-text">
+              <span className="name">Huỳnh Tuấn Kiệt</span>
+              <span className="role">Admin</span>
+            </div>
           </div>
+        </header>
+        <div className="menu-bar sidebar-header">
+          <ul className="menu-links">
+            <li className={`nav-link ${isActive("")}`}>
+              <button onClick={() => showChangePasswordForm()}>
+                Change Password
+              </button>
+            </li>
+            <li className={`nav-link ${isActive("")}`}>
+              <button onClick={() => setIsModalUsernameOpen(true)}>
+                Change Username
+              </button>
+            </li>
+          </ul>
         </div>
-      </header>
+      </div>
 
       <div className="menu-bar">
         <ul className="menu-links">
-          <li className={`nav-link ${isActive("")}`}>
-            <button onClick={() => showChangePasswordForm()}>
-              Change Password
-            </button>
-          </li>
-          <li className={`nav-link ${isActive("")}`}>
-            <button onClick={() => setIsModalUsernameOpen(true)}>
-              Change Username
-            </button>
-          </li>
           <li className={`nav-link ${isActive("/dashboard")}`}>
             <Link to="/dashboard">
               <FontAwesomeIcon icon={faFilm} className="menu-icon" />
