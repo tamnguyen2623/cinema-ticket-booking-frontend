@@ -3,7 +3,6 @@ import { Table, Tag, Button, Popconfirm, Modal, Form, Input, InputNumber, DatePi
 import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import "./VoucherPage.css";
-import SideBar from "../AdminDashboard/AdminDashboard";
 
 const VoucherPage = () => {
   const [vouchers, setVouchers] = useState([]);
@@ -166,6 +165,7 @@ const VoucherPage = () => {
 
   return (
     <div className="content">
+      
       <Input
         placeholder="Tìm theo mã voucher..."
         prefix={<SearchOutlined />}

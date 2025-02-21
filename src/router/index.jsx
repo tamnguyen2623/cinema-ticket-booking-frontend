@@ -17,7 +17,9 @@ import Order from "../pages/Order";
 import Dashboard from "../pages/Dashboard";
 import Room from "../pages/Room";
 import Seat from "../pages/Seat";
-import Voucher from "../pages/Voucher/VoucherPage";
+import VoucherPage from "../pages/Voucher/VoucherPage";
+import MovieShowing from "../pages/MovieShowing/MovieShowing";
+
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -45,7 +47,8 @@ const router = createBrowserRouter([
       { path: "seat", element: <Seat /> },
       { path: "schedule", element: <Schedule /> },
       { path: "ticket", element: <Tickets /> },
-      { path: "voucher", element: <Voucher /> },
+      { path: "voucher", element: <VoucherPage /> },
+      { path: "movieshowing", element: <MovieShowing/>}
     ],
   },
 ]);

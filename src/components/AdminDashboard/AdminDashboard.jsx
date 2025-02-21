@@ -235,16 +235,16 @@ const DashBroad = () => {
               <span>Room</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/movieshowing")}`}>
+            <Link to="/movieshowing">
+              <FontAwesomeIcon icon={faFilm} className="menu-icon" />
+              <span>Movie Showing</span>
+            </Link>
+          </li>
           <li className={`nav-link ${isActive("/seat")}`}>
             <Link to="/seat">
               <FontAwesomeIcon icon={faFilm} className="menu-icon" />
               <span>Seat</span>
-            </Link>
-          </li>
-          <li className={`nav-link ${isActive("/schedule")}`}>
-            <Link to="/schedule">
-              <FontAwesomeIcon icon={faCalendarAlt} className="menu-icon" />
-              <span>Movie Showing</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/ticket")}`}>

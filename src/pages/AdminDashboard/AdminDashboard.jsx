@@ -64,6 +64,12 @@ const DashBroad = () => {
                             <span>Booking</span>
                         </Link>
                     </li>
+                    <li className={`nav-link ${isActive('/booking')}`}>
+                        <Link to="/booking">
+                            <FontAwesomeIcon icon={faClipboardList} className="menu-icon" />
+                            <span>Huỳnh Kiệt</span>
+                        </Link>
+                    </li>
                     <li className={`nav-link ${isActive('/role')}`}>
                         <Link to="/role">
                             <FontAwesomeIcon icon={faUsers} className="menu-icon" />
