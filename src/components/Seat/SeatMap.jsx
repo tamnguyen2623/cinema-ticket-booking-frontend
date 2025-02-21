@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown } from "antd";
+import { Dropdown, Button, Modal } from "antd";
 import SeatUpdate from "./SeatUpdate";
 import { getSeatsByRoomId } from "../api/seat";
 
-export default function seatMap() {
+export default function seatMap({roomID}) {
   const [seats, setSeats] = useState([]);
   const [column, setColumn] = useState(15);
   const [refresh, setRefresh] = useState(false);
@@ -28,10 +28,10 @@ export default function seatMap() {
     Premium: "bg-pink-500",
     Disabled:
       "relative bg-yellow-100 after:content-[''] after:absolute after:top-2.5 after:right-2.5 after:w-full after:h-full after:border-t-2 after:border-red-500 after:rotate-45 after:pointer-events-none",
-  };
+  };  
 
   return (
-    <div className="p-11">
+    <div className="p-11">      
       {/* <h2 className="text-xl mb-4 text-center">Cập nhật ghế phòng chiếu</h2> */}
       <div className="bg-gray-800 text-white py-2 text-center mb-4">
         MÀN HÌNH

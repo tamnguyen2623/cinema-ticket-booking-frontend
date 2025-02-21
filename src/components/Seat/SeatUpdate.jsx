@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Menu } from "antd";
 import { updateSeat } from "../api/seat";
 
-export default function SeatUpdate({ seat, seatTypeColors, setRefresh }) {
+export default function seatUpdate({ seat, seatTypeColors, setRefresh }) {
 
   const handleUpdateSeat = (newType) => {
     try {
