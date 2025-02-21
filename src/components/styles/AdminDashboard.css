@@ -1,7 +1,7 @@
 * {
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
+  box-sizing: border-box;  
 }
 
 .sidebar {
@@ -17,6 +17,7 @@
   left: 0;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  overflow-y: auto;
 }
 
 .sidebar-header {

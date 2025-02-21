@@ -26,6 +26,7 @@ import {
   DetailRoom,
 } from "../components/api/roomApi";
 const { Option } = Select;
+import SeatMap from "../components/Seat/SeatMap";
 
 const Room = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -247,9 +248,37 @@ const Room = () => {
       ),
     },
   ];
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="container-fluid">
-      {/* <Navbar /> */}
+      <Button type="default" onClick={showModal}>
+        Open Modal
+      </Button>
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okType={"default"}
+        style={{ marginLeft: "350px" }}
+        width={1000}
+      >
+        <SeatMap roomID={_id} />
+      </Modal>
       <div className="container_content">
         <h2 className="roomHeader">Rooms List</h2>
 
