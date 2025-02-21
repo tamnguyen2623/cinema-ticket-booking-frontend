@@ -25,6 +25,7 @@ import {
   deleteRoom,
   DetailRoom,
 } from "../components/api/roomApi";
+import TotalSlide from "./TotalSlide";
 const { Option } = Select;
 
 const Room = () => {
@@ -39,7 +40,7 @@ const Room = () => {
   const [selectedCinema, setSelectedCinema] = useState("");
   const [roomDetail, setRoomDetail] = useState([]);
   const [isFormDetailVisible, setIsFormDetailVisible] = useState(false);
-  
+
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -251,7 +252,7 @@ const Room = () => {
   ];
   return (
     <div className="container-fluid">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="container_content">
         <h2 className="roomHeader">Rooms List</h2>
 
@@ -453,6 +454,7 @@ const Room = () => {
           )}
         </Modal>
       </div>
+      <TotalSlide />
     </div>
   );
 };

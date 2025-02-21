@@ -235,15 +235,15 @@ const Navbar = () => {
             <p>Schedule</p>
           </Link>
           <Link
-            to={"/booking"}
+            to={"/movielist"}
             className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-              window.location.pathname === "/ticket"
+              window.location.pathname === "/movielist"
                 ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                 : "bg-gray-600"
             }`}
           >
-            <TicketIcon className="h-6 w-6" />
-            <p>Booking</p>
+            <HomeModernIcon className="h-6 w-6" />
+            <p>Movie</p>
           </Link>
           {auth.role === "user" && (
             <Link
@@ -257,6 +257,7 @@ const Navbar = () => {
               <TicketIcon className="h-6 w-6" />
               <p>Ticket</p>
             </Link>
+            
           )}
           {auth.role === "admin" && (
             <>

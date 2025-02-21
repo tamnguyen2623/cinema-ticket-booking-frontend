@@ -18,20 +18,24 @@ import Dashboard from "../pages/Dashboard";
 import Room from "../pages/Room";
 import Ticket from "../pages/Ticket";
 import Booking from "../pages/Booking";
-
+import Seat from "../pages/Seat";
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/:id", element: <Home /> },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
-  { path: "/cinema", element: <Cinema /> },
+  // { path: "/cinema", element: <Cinema /> },
   { path: "/showtime/:id", element: <Showtime /> },
   { path: "/showtime/:id/:code", element: <Showtime /> },
   { path: "/movie-detail/:id", element: <MovieDetail /> },
   { path: "/purchase/:id", element: <Purchase /> },
   { path: "/ticket", element: <Tickets /> },
   { path: "/schedule", element: <Schedule /> },
-  { path: "/booking", element: <Booking /> },
+  // { path: "/booking", element: <Booking /> },
+  // { path: "/ticket", element: <Tickets /> },
+  // { path: "/schedule", element: <Schedule /> },
+  { path: "/booking/:transactionId", element: <Booking /> },
+
   {
     path: "/",
     element: <AdminLayout />,
@@ -41,8 +45,12 @@ const router = createBrowserRouter([
       { path: "user", element: <User /> },
       { path: "order", element: <Order /> },
       { path: "dashboard", element: <Dashboard /> },
+      { path: "cinema", element: <Cinema /> },
       { path: "room", element: <Room /> },
-      { path: "tickets", element: <Ticket /> },
+      { path: "seat", element: <Seat /> },
+      { path: "schedule", element: <Schedule /> },
+      { path: "ticketmanagement", element: <Ticket /> },
+      { path: "/booking", element: <Booking /> },
     ],
   },
 ]);

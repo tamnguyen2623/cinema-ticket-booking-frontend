@@ -225,7 +225,6 @@ const Ticket = () => {
 
   return (
     <div className="container-fluid">
-      <Navbar />
       <div className="container_content">
         <h2 className="roomHeader">Tickets List</h2>
         <div className="searchFilterCreactContainer">
