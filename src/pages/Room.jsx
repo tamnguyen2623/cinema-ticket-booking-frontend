@@ -266,10 +266,10 @@ const Room = () => {
   return (
     <div className="container-fluid">
       <Button type="default" onClick={showModal}>
-        Open Modal
+        Seat Map
       </Button>
       <Modal
-        title="Basic Modal"
+        title="Seat Map"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -277,7 +277,7 @@ const Room = () => {
         style={{ marginLeft: "350px" }}
         width={1000}
       >
-        <SeatMap roomID={_id} />
+        <SeatMap roomInfo={roomInfo} />
       </Modal>
       <div className="container_content">
         <h2 className="roomHeader">Rooms List</h2>
