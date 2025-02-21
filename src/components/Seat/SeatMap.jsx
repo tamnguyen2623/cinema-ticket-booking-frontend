@@ -10,7 +10,7 @@ export default function seatMap({roomID}) {
 
   const fetchSeats = async () => {
     try {
-      const data = await getSeatsByRoomId("67b53a0613e00442c6e9d8fd");
+      const data = await getSeatsByRoomId(roomID);
       setSeats(data); // Cập nhật state với dữ liệu từ API
       console.log(data);      
     } catch (error) {
