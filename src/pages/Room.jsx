@@ -28,6 +28,7 @@ import {
 } from "../components/api/roomApi";
 import TotalSlide from "./TotalSlide";
 const { Option } = Select;
+import SeatMap from "../components/Seat/SeatMap";
 
 const Room = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -282,7 +283,20 @@ const Room = () => {
   };
   return (
     <div className="container-fluid">
-      {/* <Navbar /> */}
+      <Button type="default" onClick={showModal}>
+        Seat Map
+      </Button>
+      <Modal
+        title="Seat Map"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okType={"default"}
+        style={{ marginLeft: "350px" }}
+        width={1000}
+      >
+        <SeatMap roomInfo={roomInfo} />
+      </Modal>
       <div className="container_content">
         <h2 className="roomHeader">Rooms List</h2>
 
