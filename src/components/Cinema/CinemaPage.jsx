@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography, Grid2 } from "@mui/material";
+import { Button, Typography, Grid } from "@mui/material";
 import { RightOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -89,9 +89,9 @@ const CinemaPage = () => {
         <div className="date-picker-container">
           <Button onClick={() => setCurrentWeek(currentWeek - 1)}>{"<"}</Button>
 
-          <Grid2 container spacing={5} justifyContent="center">
+          <Grid container spacing={5} justifyContent="center">
             {weekDays.map((day, index) => (
-              <Grid2
+              <Grid
                 key={index}
                 item
                 xs={1.5}
@@ -111,9 +111,9 @@ const CinemaPage = () => {
                     fontWeight: "bold"
                   }}>✓</span>
                 )}
-              </Grid2>
+              </Grid>
             ))}
-          </Grid2>
+          </Grid>
 
           <Button onClick={() => setCurrentWeek(currentWeek + 1)}>{">"}</Button>
         </div>

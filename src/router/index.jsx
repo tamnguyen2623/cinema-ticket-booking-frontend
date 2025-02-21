@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "../layout/AdminLayout";
+import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer"
 import Cinema from "../pages/Cinema";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -19,20 +20,35 @@ import Room from "../pages/Room";
 import Seat from "../pages/Seat";
 import VoucherPage from "../pages/Voucher/VoucherPage";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
+import MovieList from '../components/MovieList/MovieList';
+import DetailMovie from '../components/DetailMovie/DetailMovie';
+import Booking from '../components/Cinema/CinemaPage';
+
 
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
+  
   { path: "/:id", element: <Home /> },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
-  // { path: "/cinema", element: <Cinema /> },
   { path: "/showtime/:id", element: <Showtime /> },
   { path: "/showtime/:id/:code", element: <Showtime /> },
   { path: "/movie-detail/:id", element: <MovieDetail /> },
   { path: "/purchase/:id", element: <Purchase /> },
-  // { path: "/ticket", element: <Tickets /> },
-  // { path: "/schedule", element: <Schedule /> },
+ 
+  {
+    path: "/",
+    element: <CustomerLayout />,
+    children: [
+      { path: "/", element: <MovieList/> },
+      { path: "movielist", element: <MovieList /> },
+      { path: "booking", element: <Booking /> },
+      { path: "/movielist/:id", element: <DetailMovie /> },
+    ],
+  },
+
+
+
   {
     path: "/",
     element: <AdminLayout />,
@@ -48,7 +64,7 @@ const router = createBrowserRouter([
       { path: "schedule", element: <Schedule /> },
       { path: "ticket", element: <Tickets /> },
       { path: "voucher", element: <VoucherPage /> },
-      { path: "movieshowing", element: <MovieShowing/>}
+      { path: "movieshowing", element: <MovieShowing /> }
     ],
   },
 ]);

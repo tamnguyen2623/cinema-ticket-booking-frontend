@@ -19,7 +19,7 @@ const Navbar = () => {
             <div className='header_service'>
                 <ul className="menu_service">
                     <li><NavLink to="/booking" className={({ isActive }) => isActive ? "active" : ""}>MUA VÉ</NavLink></li>
-                    <li><NavLink to="/movie" className={activePath === '/movie' ? "active" : ""}>PHIM</NavLink></li>
+                    <li><NavLink to="/movielist" className={activePath === '/movie' ? "active" : ""}>PHIM</NavLink></li>
                     <li><NavLink to="/promotions" className={({ isActive }) => isActive ? "active" : ""}>KHUYẾN MÃI</NavLink></li>
                     <li><NavLink to="/contact" className={({ isActive }) => isActive ? "active" : ""}>LIÊN HỆ</NavLink></li>
                 </ul>

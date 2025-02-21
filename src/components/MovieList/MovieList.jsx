@@ -74,7 +74,7 @@ const MovieList = () => {
                       <p>Đặt vé</p>
                     </Link>
                   </button>
-                  <button className="btn btn-book"><Link to={`/movie/${movie._id}`}><p>Chi tiết</p></Link></button>
+                  <button className="btn btn-book"><Link to={`/movielist/${movie._id}`}><p>Chi tiết</p></Link></button>
                 </div>
               </div>
               <div className="movie-info">

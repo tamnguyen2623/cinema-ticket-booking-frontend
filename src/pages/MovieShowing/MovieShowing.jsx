@@ -186,7 +186,7 @@ const MovieShowingList = () => {
           </Form.Item>
 
           <Form.Item name="roomId" label="Phòng" rules={[{ required: true }]}>
-            <Select options={rooms.map(room => ({ value: room._id, label: room.roomname }))} />
+            <Select options={rooms.map(room => ({ value: room._id, label: room.roomtype }))} />
           </Form.Item>
 
           <Form.Item label="Ngày chiếu" name="date" rules={[{ required: true }]}>

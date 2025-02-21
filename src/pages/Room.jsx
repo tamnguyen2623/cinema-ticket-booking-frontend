@@ -84,9 +84,9 @@ const Room = () => {
           return prevRooms.map((room) =>
             room._id === editingRoom._id
               ? {
-                  ...roomData,
-                  cinema: { _id: values.cinema, name: cinemaName },
-                }
+                ...roomData,
+                cinema: { _id: values.cinema, name: cinemaName },
+              }
               : room
           );
         }
@@ -277,7 +277,7 @@ const Room = () => {
         style={{ marginLeft: "350px" }}
         width={1000}
       >
-        <SeatMap roomID={_id} />
+        <SeatMap roomID={rooms._id} />
       </Modal>
       <div className="container_content">
         <h2 className="roomHeader">Rooms List</h2>
@@ -328,8 +328,8 @@ const Room = () => {
             roomDetail
               ? "Room Details"
               : editingRoom
-              ? "Edit Room"
-              : "Create Room"
+                ? "Edit Room"
+                : "Create Room"
           }
           visible={isFormVisible || isFormDetailVisible}
           onCancel={() => {
