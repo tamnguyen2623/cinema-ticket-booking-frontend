@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography, Row, Col } from "antd";
+import { Button, Typography, Grid } from "@mui/material";
 import { RightOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -88,26 +88,48 @@ const CinemaPage = () => {
         <div className="date-picker-container">
           <Button onClick={() => setCurrentWeek(currentWeek - 1)}>{"<"}</Button>
 
-          <Row gutter={[16, 16]} justify="center">
+          <Grid container spacing={5} justifyContent="center">
             {weekDays.map((day, index) => (
-              <Col
+              <Grid
                 key={index}
-                xs={4}
-                sm={3}
-                md={2}
+                item
+                xs={1.5}
                 className={`date-item ${
                   selectedDate === day.format("YYYY-MM-DD") ? "active" : ""
                 }`}
-                onClick={() => setSelectedDate(day.format("YYYY-MM-DD"))}
-                style={{ textAlign: "center", cursor: "pointer" }}
+                onClick={() =>
+                  setSelectedDate(
+                    selectedDate === day.format("YYYY-MM-DD")
+                      ? null
+                      : day.format("YYYY-MM-DD")
+                  )
+                }
+                style={{
+                  position: "relative",
+                  textAlign: "center",
+                  cursor: "pointer",
+                }}
               >
-                <Typography.Text>{day.format("ddd")}</Typography.Text>
-                <Typography.Title level={5}>
-                  {day.format("DD")}
-                </Typography.Title>
-              </Col>
+                <Typography variant="body1">{day.format("ddd")}</Typography>
+                <Typography variant="h6">{day.format("DD")}</Typography>
+                {selectedDate === day.format("YYYY-MM-DD") && (
+                  <span
+                    className="checkmark"
+                    style={{
+                      position: "absolute",
+                      top: "3px",
+                      right: "7px",
+                      color: "black",
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ✓
+                  </span>
+                )}
+              </Grid>
             ))}
-          </Row>
+          </Grid>
 
           <Button onClick={() => setCurrentWeek(currentWeek + 1)}>{">"}</Button>
         </div>
@@ -164,7 +186,19 @@ const CinemaPage = () => {
             </div>
           </div>
         </div>
-
+        <div className="Summary-booking">
+          <div className="summary-item">
+            <span className="summary-label">Ngày:</span> {selectedDate}
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">Phim:</span>{" "}
+            {selectedMovie?.name || "Chưa chọn"}
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">Rạp:</span>{" "}
+            {selectedCinema?.name || "Chưa chọn"}
+          </div>
+        </div>
         <div className="showtime-wait">
           <h3>
             Giờ chiếu{" "}
@@ -177,11 +211,11 @@ const CinemaPage = () => {
         {selectedDate && selectedCinema ? (
           showtimes.length > 0 ? (
             <div className="movieshowtime-list">
-              {showtimes.map((showtime) => (
-                <div key={showtime._id} className="movieshowtime-item">
+              {selectedMovie ? (
+                <div className="movieshowtime-item">
                   <h4
                     className="movieshowtime-title"
-                    onClick={() => navigate(`/movie/${showtime.movie._id}`)}
+                    onClick={() => navigate(`/movie/${selectedMovie._id}`)}
                     style={{
                       cursor: "pointer",
                       display: "flex",
@@ -189,7 +223,7 @@ const CinemaPage = () => {
                       gap: "8px",
                     }}
                   >
-                    {showtime.movie.name}
+                    {selectedMovie.name}
                     <RightOutlined
                       style={{
                         fontSize: 14,
@@ -204,30 +238,112 @@ const CinemaPage = () => {
                     <dt className="nowzone">{selectedCinema.name}</dt>
                     <dd className="showtimes">
                       <ul className="showtime-ul">
-                        <li className="showtime-item">
-                          <Link
-                            to={`/book-tickets/${showtime._id}`}
-                            className="showtime-link"
-                            style={{ textDecoration: "none", color: "inherit" }}
-                          >
-                            <p className="room-name">
-                              {showtime.room.roomname}
-                            </p>
-                            <p className="showtime">
-                              {new Date(
-                                showtime.showtime.showtime
-                              ).toLocaleTimeString("vi-VN", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </p>
-                          </Link>
-                        </li>
+                        {showtimes
+                          .filter(
+                            (showtime) =>
+                              showtime.movie._id === selectedMovie._id
+                          )
+                          .map((showtime) => (
+                            <li key={showtime._id} className="showtime-item">
+                              <Link
+                                to={`/book-tickets/${showtime._id}`}
+                                className="showtime-link"
+                                style={{
+                                  textDecoration: "none",
+                                  color: "inherit",
+                                }}
+                              >
+                                <p className="room-name">
+                                  {showtime.room.roomname}
+                                </p>
+                                <p className="showtime">
+                                  {new Date(
+                                    showtime.showtime.showtime
+                                  ).toLocaleTimeString("vi-VN", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </p>
+                              </Link>
+                            </li>
+                          ))}
                       </ul>
                     </dd>
                   </dl>
                 </div>
-              ))}
+              ) : (
+                showtimes
+                  .reduce((uniqueMovies, showtime) => {
+                    const movie = showtime.movie;
+                    if (!uniqueMovies.find((m) => m._id === movie._id)) {
+                      uniqueMovies.push(movie);
+                    }
+                    return uniqueMovies;
+                  }, [])
+                  .map((movie) => (
+                    <div key={movie._id} className="movieshowtime-item">
+                      <h4
+                        className="movieshowtime-title"
+                        onClick={() => navigate(`/movie/${movie._id}`)}
+                        style={{
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
+                        {movie.name}
+                        <RightOutlined
+                          style={{
+                            fontSize: 14,
+                            backgroundColor: "white",
+                            padding: "5px",
+                            border: "1px solid black",
+                          }}
+                        />
+                      </h4>
+
+                      <dl className="showtime-list">
+                        <dt className="nowzone">{selectedCinema.name}</dt>
+                        <dd className="showtimes">
+                          <ul className="showtime-ul">
+                            {showtimes
+                              .filter(
+                                (showtime) => showtime.movie._id === movie._id
+                              )
+                              .map((showtime) => (
+                                <li
+                                  key={showtime._id}
+                                  className="showtime-item"
+                                >
+                                  <Link
+                                    to={`/book-tickets/${showtime._id}`}
+                                    className="showtime-link"
+                                    style={{
+                                      textDecoration: "none",
+                                      color: "inherit",
+                                    }}
+                                  >
+                                    <p className="room-name">
+                                      {showtime.room.roomname}
+                                    </p>
+                                    <p className="showtime">
+                                      {new Date(
+                                        showtime.showtime.showtime
+                                      ).toLocaleTimeString("vi-VN", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
+                                    </p>
+                                  </Link>
+                                </li>
+                              ))}
+                          </ul>
+                        </dd>
+                      </dl>
+                    </div>
+                  ))
+              )}
             </div>
           ) : (
             <p className="select-warning">Không có suất chiếu cho ngày này</p>
