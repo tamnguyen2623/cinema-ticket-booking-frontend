@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.header_service {
+    text-align: center
+}
+
+.menu_service {
+    padding: 20px 10px;
+}
+
+.menu_service li {
+    display: inline-block;
+    padding: 0 30px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 16px;
+    cursor: pointer;
+}
+
+
+.menu_service li:not(:last-child) {
+    border-right: 1px solid #ccc;
+}
+
+.menu_service li a {
+    color: #555;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+
+}
+
+.menu_service li a.active {
+    position: relative;
+    font-weight: bold;
+}
+
+
+.menu_service li a.active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -9px;
+    width: 6px;
+    height: 6px;
+    background-color: #555;
+    border-radius: 50%;
+    transform: translateX(-50%);
+}
