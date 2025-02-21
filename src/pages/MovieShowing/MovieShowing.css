@@ -2,6 +2,18 @@
   padding: 40px;
 }
 
+
+.custom-delete-btn {
+  background-color: #ff4d4f !important; 
+  border-color: #ff4d4f !important;
+}
+
+.custom-delete-btn:hover {
+  background-color: #d9363e !important; 
+  border-color: #d9363e !important;
+ 
+}
+
 .custom-edit-btn {
   background-color: #1890ff !important;
   color: white !important;
@@ -12,7 +24,6 @@
   opacity: 0.8;
 }
 
-
 .custom-ok-btn {
   background-color: #1890ff !important;
   color: white !important;
@@ -22,3 +33,5 @@
 .custom-ok-btn:hover {
   opacity: 0.8;
 }
+
+
