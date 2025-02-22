@@ -116,6 +116,8 @@ const MovieShowingList = () => {
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
+      setError('Lỗi khi xử lý suất chiếu');
+      console.error('Error:', error);
       setError("Lỗi khi xử lý suất chiếu");
       console.error("Error:", error);
     }
@@ -136,7 +138,7 @@ const MovieShowingList = () => {
       showtimeId: movieShowing.showtimeId?._id || null,
       cinemaId: movieShowing.cinemaId?._id || null,
       roomId: movieShowing.roomId?._id || null,
-      date: movieShowing.date ? moment(movieShowing.date, "YYYY-MM-DD") : null,
+      date: movieShowing.date ? moment(movieShowing.date, 'YYYY-MM-DD') : null
     });
   };
 
