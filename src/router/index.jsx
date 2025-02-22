@@ -45,7 +45,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <CustomerLayout />,
     children: [
-      { index: true, element: <MovieShowingCustomer /> },
+      { index: true, element: <Home /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "showtime/:id", element: <Showtime /> },
