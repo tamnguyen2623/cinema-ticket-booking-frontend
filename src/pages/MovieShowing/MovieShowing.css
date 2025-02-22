@@ -2,6 +2,15 @@
   padding: 40px;
 }
 
+.custom-map-btn {
+  background-color: #cb38d8 !important;
+  color: white !important;
+  border-color: #cb38d8;
+}
+
+.custom-map-btn:hover {
+  opacity: 0.8;
+}
 
 .custom-delete-btn {
   background-color: #ff4d4f !important; 

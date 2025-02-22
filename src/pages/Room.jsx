@@ -25,11 +25,13 @@ import {
   deleteRoom,
   DetailRoom,
 } from "../components/api/roomApi";
+import { createSeat } from "../components/api/seat";
 import TotalSlide from "./TotalSlide";
 const { Option } = Select;
-import SeatMap from "../components/Seat/SeatMap";
 
 const Room = () => {
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cinemas, setCinemas] = useState([]);
   const [loadingCinemas, setLoadingCinemas] = useState(true);
@@ -80,6 +82,13 @@ const Room = () => {
         values,
         editingRoom
       );
+      console.log("editingRoom", values);
+      await createSeat({
+        room: values._id,
+        column: values.colum,
+        row: values.row,
+      });
+
       const cinemaName =
         cinemas.find((cinema) => cinema._id === values.cinema)?.name ||
         "Unknown Cinema";
@@ -202,22 +211,12 @@ const Room = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, record) => (
+      render: (record) => (
         <div>
-          <Button type="default" onClick={showModal}>
-            Open Modal
+          <Button type="default" onClick={() => showModal(record)}>
+            Seat Map
           </Button>
-          <Modal
-            title="Basic Modal"
-            open={isModalOpen}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            okType={"default"}
-            style={{ marginLeft: "350px" }}
-            width={1000}
-          >
-            <SeatMap roomID={rooms._id} />
-          </Modal>
+
           <Button
             type="primary"
             size="small"
@@ -269,7 +268,9 @@ const Room = () => {
   ];
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const showModal = () => {
+  const showModal = (room) => {
+    console.log("Selected Room:", room); // Debug để kiểm tra dữ liệu
+    setSelectedRoom(room);
     setIsModalOpen(true);
   };
 
@@ -282,20 +283,6 @@ const Room = () => {
   };
   return (
     <div className="container-fluid">
-      <Button type="default" onClick={showModal}>
-        Open Modal
-      </Button>
-      <Modal
-        title="Basic Modal"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okType={"default"}
-        style={{ marginLeft: "350px" }}
-        width={1000}
-      >
-        <SeatMap roomID={rooms._id} />
-      </Modal>
       <div className="container_content">
         <h2 className="roomHeader">Rooms List</h2>
 
@@ -339,7 +326,17 @@ const Room = () => {
           pagination={{ pageSize: 5 }}
           className="table"
         />
-
+        <Modal
+          title="Seat Map"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          okType={"default"}
+          style={{ marginLeft: "350px" }}
+          width={1000}
+        >
+          <SeatMap roomInfo={selectedRoom} />
+        </Modal>
         <Modal
           title={
             roomDetail
