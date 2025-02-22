@@ -31,12 +31,12 @@ const Register = () => {
           navigate("/register");
           break;
         default:
-          toast.success("Registration successful!", {
+          toast.success("Registration successful! Please verify your OTP.", {
             position: "top-center",
             autoClose: 2000,
             pauseOnHover: false,
           });
-          navigate("/login");
+          navigate("/VerifyOtpRegister"); // Chuyển sang trang nhập OTP
       }
     } catch (error) {
       toast.error("Error! Please try again", {
