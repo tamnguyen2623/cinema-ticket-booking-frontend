@@ -11,10 +11,7 @@ const CinemaPage = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [selectedCinema, setSelectedCinema] = useState(null);
-  const [selectedSeat, setSelectedSeat] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(
-    dayjs().format("YYYY-MM-DD")
-  );
+  const [selectedDate, setSelectedDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [movies, setMovies] = useState([]);
   const [cinemas, setCinemas] = useState([]);
   const [showtimes, setShowtimes] = useState([]);
@@ -72,9 +69,8 @@ const CinemaPage = () => {
     }
   }, [location.state]);
 
-  const startOfWeek = dayjs()
-    .add(currentWeek * 7, "day")
-    .startOf("week");
+
+  const startOfWeek = dayjs().add(currentWeek * 7, "day").startOf("week");
   const weekDays = Array.from({ length: 7 }, (_, index) =>
     startOfWeek.add(index, "day")
   );
@@ -134,14 +130,12 @@ const CinemaPage = () => {
 
           <Button onClick={() => setCurrentWeek(currentWeek + 1)}>{">"}</Button>
         </div>
-
         <div className="banner-secondary">
           <img
             src="https://dskb4mmeexzvj.cloudfront.net/cinema-shop/product-management/image/1440x548_d6b6b039ea.jpg"
             alt="Khuyến mãi rạp chiếu phim"
           />
         </div>
-
         <div className="ticket-option">
           <div className="show-cinema">
             <h3>Rạp</h3>
@@ -149,16 +143,10 @@ const CinemaPage = () => {
               {cinemas.map((cinema) => (
                 <div
                   key={cinema._id}
-                  className={`cinema-option ${
-                    selectedCinema === cinema ? "active" : ""
-                  }`}
-                  onClick={() =>
-                    setSelectedCinema(selectedCinema === cinema ? null : cinema)
-                  }
+                  className={`cinema-option ${selectedCinema === cinema ? "active" : ""}`}
+                  onClick={() => setSelectedCinema(selectedCinema === cinema ? null : cinema)}
                 >
-                  {selectedCinema === cinema && (
-                    <span className="checkmark">✓</span>
-                  )}
+                  {selectedCinema === cinema && <span className="checkmark">✓</span>}
                   {cinema.name}
                 </div>
               ))}
@@ -171,16 +159,10 @@ const CinemaPage = () => {
               {movies.map((movie) => (
                 <div
                   key={movie._id}
-                  className={`movie-option ${
-                    selectedMovie === movie ? "active" : ""
-                  }`}
-                  onClick={() =>
-                    setSelectedMovie(selectedMovie === movie ? null : movie)
-                  }
+                  className={`movie-option ${selectedMovie === movie ? "active" : ""}`}
+                  onClick={() => setSelectedMovie(selectedMovie === movie ? null : movie)}
                 >
-                  {selectedMovie === movie && (
-                    <span className="checkmark">✓</span>
-                  )}
+                  {selectedMovie === movie && <span className="checkmark">✓</span>}
                   {movie.name}
                 </div>
               ))}
@@ -201,14 +183,8 @@ const CinemaPage = () => {
           </div>
         </div>
         <div className="showtime-wait">
-          <h3>
-            Giờ chiếu{" "}
-            <span className="text-display">
-              Thời gian có thể chênh lệch 15 phút
-            </span>
-          </h3>
+          <h3>Giờ chiếu <span className="text-display">Thời gian có thể chênh lệch 15 phút</span></h3>
         </div>
-
         {selectedDate && selectedCinema ? (
           showtimes.length > 0 ? (
             <div className="movieshowtime-list">
@@ -217,22 +193,10 @@ const CinemaPage = () => {
                   <h4
                     className="movieshowtime-title"
                     onClick={() => navigate(`/movie/${selectedMovie._id}`)}
-                    style={{
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                    }}
+                    style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
                   >
                     {selectedMovie.name}
-                    <RightOutlined
-                      style={{
-                        fontSize: 14,
-                        backgroundColor: "white",
-                        padding: "5px",
-                        border: "1px solid black",
-                      }}
-                    />
+                    <RightOutlined style={{ fontSize: 14, backgroundColor: "white", padding: "5px", border: "1px solid black" }} />
                   </h4>
 
                   <dl className="showtime-list">
@@ -350,9 +314,7 @@ const CinemaPage = () => {
             <p className="select-warning">Không có suất chiếu cho ngày này</p>
           )
         ) : (
-          <p className="select-warning">
-            Vui lòng chọn ngày và rạp để hiển thị suất chiếu
-          </p>
+          <p className="select-warning">Vui lòng chọn ngày và rạp để hiển thị suất chiếu</p>
         )}
       </div>
     </div>

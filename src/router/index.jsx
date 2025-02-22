@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "../layout/AdminLayout";
-import CustomerLayout from "../components/LayoutCustomer/LayoutCustomer";
+import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer"
 import Cinema from "../pages/Cinema";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <CustomerLayout />,
     children: [
-      { index: true, element: <MovieShowingCustomer /> },
+      { index: true, element: <Home /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "showtime/:id", element: <Showtime /> },

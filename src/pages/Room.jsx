@@ -18,7 +18,6 @@ import {
 import { AuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import "../components/styles/roomStyle.css";
-import SeatMap from "../components/Seat/SeatMap";
 import {
   fetchCinemas,
   fetchRooms,
@@ -99,9 +98,9 @@ const Room = () => {
           return prevRooms.map((room) =>
             room._id === editingRoom._id
               ? {
-                  ...roomData,
-                  cinema: { _id: values.cinema, name: cinemaName },
-                }
+                ...roomData,
+                cinema: { _id: values.cinema, name: cinemaName },
+              }
               : room
           );
         }
@@ -343,8 +342,8 @@ const Room = () => {
             roomDetail
               ? "Room Details"
               : editingRoom
-              ? "Edit Room"
-              : "Create Room"
+                ? "Edit Room"
+                : "Create Room"
           }
           visible={isFormVisible || isFormDetailVisible}
           onCancel={() => {
