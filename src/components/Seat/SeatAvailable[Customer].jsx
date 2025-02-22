@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { getSeatAvailablesBymovieShowingId } from "../api/seatAvailable";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
 
 export default function SeatAvailableForCustomer() {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]); 
   const [movieShowing, setMovieShowing] = useState();
+  const { auth } = useContext(AuthContext);
   // const [refresh, setRefresh] = useState(false);
   const { id } = useParams(); // Lấy _id từ URL
 
