@@ -25,25 +25,32 @@ import {
   deleteRoom,
   DetailRoom,
 } from "../components/api/roomApi";
+import { createSeat } from "../components/api/seat";
+import TotalSlide from "./TotalSlide";
 const { Option } = Select;
-import SeatMap from "../components/Seat/SeatMap";
 
 const Room = () => {
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cinemas, setCinemas] = useState([]);
   const [loadingCinemas, setLoadingCinemas] = useState(true);
   const [rooms, setRooms] = useState([]);
   const { auth } = useContext(AuthContext);
+
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [editingRoom, setEditingRoom] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCinema, setSelectedCinema] = useState("");
   const [roomDetail, setRoomDetail] = useState([]);
   const [isFormDetailVisible, setIsFormDetailVisible] = useState(false);
+
   useEffect(() => {
+    console.log("User Role:", auth.role); // Kiểm tra role cụ thể
     const loadData = async () => {
       try {
         const cinemasData = await fetchCinemas();
+        console.log("Fetched Cinemas:", cinemasData);
         setCinemas(cinemasData);
         const roomsData = await fetchRooms(auth.token);
         setRooms(roomsData);
@@ -75,6 +82,13 @@ const Room = () => {
         values,
         editingRoom
       );
+      console.log("editingRoom", values);
+      await createSeat({
+        room: values._id,
+        column: values.colum,
+        row: values.row,
+      });
+
       const cinemaName =
         cinemas.find((cinema) => cinema._id === values.cinema)?.name ||
         "Unknown Cinema";
@@ -84,9 +98,9 @@ const Room = () => {
           return prevRooms.map((room) =>
             room._id === editingRoom._id
               ? {
-                  ...roomData,
-                  cinema: { _id: values.cinema, name: cinemaName },
-                }
+                ...roomData,
+                cinema: { _id: values.cinema, name: cinemaName },
+              }
               : room
           );
         }
@@ -197,8 +211,12 @@ const Room = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, record) => (
+      render: (record) => (
         <div>
+          <Button type="default" onClick={() => showModal(record)}>
+            Seat Map
+          </Button>
+
           <Button
             type="primary"
             size="small"
@@ -248,10 +266,11 @@ const Room = () => {
       ),
     },
   ];
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const showModal = () => {
+  const showModal = (room) => {
+    console.log("Selected Room:", room); // Debug để kiểm tra dữ liệu
+    setSelectedRoom(room);
     setIsModalOpen(true);
   };
 
@@ -262,23 +281,8 @@ const Room = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
   return (
     <div className="container-fluid">
-      <Button type="default" onClick={showModal}>
-        Open Modal
-      </Button>
-      <Modal
-        title="Basic Modal"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okType={"default"}
-        style={{ marginLeft: "350px" }}
-        width={1000}
-      >
-        <SeatMap roomID={_id} />
-      </Modal>
       <div className="container_content">
         <h2 className="roomHeader">Rooms List</h2>
 
@@ -322,14 +326,24 @@ const Room = () => {
           pagination={{ pageSize: 5 }}
           className="table"
         />
-
+        <Modal
+          title="Seat Map"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          okType={"default"}
+          style={{ marginLeft: "350px" }}
+          width={1000}
+        >
+          <SeatMap roomInfo={selectedRoom} />
+        </Modal>
         <Modal
           title={
             roomDetail
               ? "Room Details"
               : editingRoom
-              ? "Edit Room"
-              : "Create Room"
+                ? "Edit Room"
+                : "Create Room"
           }
           visible={isFormVisible || isFormDetailVisible}
           onCancel={() => {
@@ -347,7 +361,8 @@ const Room = () => {
                 <strong>Room Name:</strong> {roomDetail.room?.roomname}
               </p>
               <p>
-                <strong>Cinema:</strong> {roomDetail.room?.cinema?.name}
+                <strong>Cinema:</strong> {roomDetail.room?.cinema?.name} -
+                {roomDetail.room?.cinema?.address}
               </p>
               <p>
                 <strong>Type:</strong> {roomDetail.room?.roomtype}
@@ -388,7 +403,7 @@ const Room = () => {
                   <Select placeholder="Select Cinema" disabled={!!editingRoom}>
                     {cinemas.map((cinema) => (
                       <Option key={cinema._id} value={cinema._id}>
-                        {cinema.name}
+                        {cinema.name} - {cinema.address}
                       </Option>
                     ))}
                   </Select>
@@ -414,7 +429,6 @@ const Room = () => {
                   <Option value="4DX">4DX</Option>
                   <Option value="Dolby">Dolby</Option>
                   <Option value="ScreenX">ScreenX</Option>
-                  <Option value="Private">ScreenX</Option>
                 </Select>
               </Form.Item>
 
@@ -479,6 +493,7 @@ const Room = () => {
           )}
         </Modal>
       </div>
+      <TotalSlide />
     </div>
   );
 };

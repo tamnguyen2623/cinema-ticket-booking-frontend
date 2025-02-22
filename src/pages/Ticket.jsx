@@ -29,9 +29,11 @@ const Ticket = () => {
   const [filter, setFilter] = useState("all");
   const [ticketDetail, setTicketDetail] = useState(null);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
-
   useEffect(() => {
     const fetchDataRoom = async () => {
+      console.log("Auth Context:", auth); // Kiểm tra toàn bộ object auth
+      console.log("User Role:", auth.role); // Kiểm tra role cụ thể
+
       try {
         const fetchedRooms = await fetchRooms(auth.token);
         setRooms(fetchedRooms);
@@ -225,7 +227,6 @@ const Ticket = () => {
 
   return (
     <div className="container-fluid">
-      <Navbar />
       <div className="container_content">
         <h2 className="roomHeader">Tickets List</h2>
         <div className="searchFilterCreactContainer">
