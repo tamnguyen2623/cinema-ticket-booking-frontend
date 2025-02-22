@@ -14,9 +14,9 @@ export const fetchCinemas = async () => {
 export const fetchRooms = async (token) => {
   try {
     const response = await axios.get(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
     });
     return response.data.rooms || [];
   } catch (error) {

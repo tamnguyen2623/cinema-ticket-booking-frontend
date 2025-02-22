@@ -4,6 +4,7 @@ import SeatUpdate from "./SeatUpdate";
 import { getSeatsByRoomId } from "../api/seat";
 
 export default function seatMap({ roomInfo }) {
+  console.log(roomInfo);
   const [seats, setSeats] = useState([]);
   const column = roomInfo.colum;
   const [refresh, setRefresh] = useState(false);
