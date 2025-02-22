@@ -86,14 +86,14 @@ const MovieList = () => {
                 <div className="movie-actions">
                   <button className="btn btn-detail">
                     <Link
-                      to={`/booking/${movie._id}`}
+                      to={`/bookingticket`}
                       state={{ selectedMovie: movie }}
                     >
                       <p>Đặt vé</p>
                     </Link>
                   </button>
                   <button className="btn btn-book">
-                    <Link to={`/movie/${movie._id}`}>
+                    <Link to={`/movielist/${movie._id}`}>
                       <p>Chi tiết</p>
                     </Link>
                   </button>

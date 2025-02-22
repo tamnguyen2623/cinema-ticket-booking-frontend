@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getSeatAvailablesBymovieShowingId } from "../api/seatAvailable";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
 
-export default function SeatAvailableForCustomer({ movieShowing }) {
+export default function SeatAvailableForCustomer() {
   const [seats, setSeats] = useState([]);
-  const [selectedSeats, setSelectedSeats] = useState([]); // Lưu ghế đã chọn
-  const column = movieShowing.roomId.colum;
-  const [refresh, setRefresh] = useState(false);
-
+  const [selectedSeats, setSelectedSeats] = useState([]); 
+  const [movieShowing, setMovieShowing] = useState();
+  const { auth } = useContext(AuthContext);
+  const { id } = useParams(); // Lấy _id từ URL
+  
   const fetchSeats = async () => {
     try {
-      const data = await getSeatAvailablesBymovieShowingId(movieShowing._id);
+      const movieShowingRes = await axios.get(`http://localhost:8080/movieshowing/${id}`);
+      const data = await getSeatAvailablesBymovieShowingId(id);
       setSeats(data);
+      setMovieShowing(movieShowingRes.data.data);
+      console.log(movieShowing)
       console.log(data);
     } catch (error) {
       console.error("Failed to fetch seats:", error);
@@ -19,7 +26,7 @@ export default function SeatAvailableForCustomer({ movieShowing }) {
 
   useEffect(() => {
     fetchSeats();
-  }, [movieShowing]);
+  }, [id]);
 
   const seatTypeColors = {
     Standard: "bg-purple-500",
@@ -29,7 +36,8 @@ export default function SeatAvailableForCustomer({ movieShowing }) {
 
   // Hàm xử lý chọn ghế
   const handleSelectSeat = (seat) => {
-    const isDisabled = seat.seatId.type === "Disabled" || seat.isAvailable === false;
+    const isDisabled =
+      seat.seatId.type === "Disabled" || seat.isAvailable === false;
     if (isDisabled) return; // Không cho phép chọn ghế đã bị disable
 
     setSelectedSeats((prev) =>
@@ -41,8 +49,15 @@ export default function SeatAvailableForCustomer({ movieShowing }) {
 
   // Hàm gửi danh sách ghế đã chọn
   const handleConfirmSelection = () => {
-    console.log("Ghế đã chọn:", selectedSeats);
-    alert(`Ghế bạn đã chọn: ${selectedSeats.map((s) => s.seatId.name).join(", ")}`);
+    const seatIds = selectedSeats.map((s) => s.seatId._id); // Lấy danh sách _id
+
+    console.log("Suất chiếu: ", movieShowing);
+    console.log("Thông tin chi tiết của các ghế: ", selectedSeats);    
+    console.log("Danh sách ID ghế đã chọn: ", seatIds);
+
+    alert(
+      `Ghế bạn đã chọn: ${selectedSeats.map((s) => s.seatId.name).join(", ")}`
+    );
   };
 
   return (
@@ -52,10 +67,11 @@ export default function SeatAvailableForCustomer({ movieShowing }) {
       </div>
       <div
         className="grid gap-2 ml-9"
-        style={{ gridTemplateColumns: `repeat(${column}, minmax(40px, 1fr))` }}
+        style={{ gridTemplateColumns: `repeat(${movieShowing?.roomId.colum}, minmax(40px, 1fr))` }}
       >
         {seats.map((seat) => {
-          const isDisabled = seat.seatId.type === "Disabled" || seat.isAvailable === false;
+          const isDisabled =
+            seat.seatId.type === "Disabled" || seat.isAvailable === false;
           const isSelected = selectedSeats.some((s) => s._id === seat._id);
 
           return (

@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "../layout/AdminLayout";
-import CustomerLayout from "../components/LayoutCustomer/LayoutCustomer";
+import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer"
 import Cinema from "../pages/Cinema";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -16,7 +16,6 @@ import Purchase from "../pages/Purchase";
 import Register from "../pages/Register";
 import Schedule from "../pages/Schedule";
 import Search from "../pages/Search";
-import Showtime from "../pages/Showtime";
 import Tickets from "../pages/Tickets";
 import User from "../pages/User";
 import MovieDetail from "../pages/MovieDetail";
@@ -28,6 +27,13 @@ import Seat from "../pages/Seat";
 import VoucherPage from "../pages/Voucher/VoucherPage";
 import Booking from "../pages/Booking";
 import Ticket from "../pages/Ticket";
+import MovieList from '../components/MovieList/MovieList';
+import DetailMovie from '../components/DetailMovie/DetailMovie';
+import ShowtimePage from '../pages/Showtimes/ShowtimePage';
+import MovietypePage from '../pages/MovieType/MovieTypePage';
+import ComboPage from '../pages/Combo/ComboPage';
+import VerifyOtpRegister from '../pages/VerifyOtpRegister';
+import SeatAvailable from "../components/Seat/SeatAvailable[Customer]";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
 import MovieShowingCustomer from "../components/MovieList/MovieList";
 import BookingTicketCustomer from "../components/Cinema/CinemaPage";
@@ -42,6 +48,14 @@ const ProtectedAdminRoute = ({ element }) => {
 };
 
 const router = createBrowserRouter([
+
+  { path: "/:id", element: <Home /> },
+  { path: "/login", element: <Login /> },
+  { path: "/register", element: <Register /> },
+  { path: "/VerifyOtpRegister", element: <VerifyOtpRegister /> },
+  { path: "/movie-detail/:id", element: <MovieDetail /> },
+  { path: "/purchase/:id", element: <Purchase /> },
+
   {
     path: "/",
     element: <CustomerLayout />,
@@ -49,8 +63,6 @@ const router = createBrowserRouter([
       { index: true, element: <MovieShowingCustomer /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
-      { path: "showtime/:id", element: <Showtime /> },
-      { path: "showtime/:id/:code", element: <Showtime /> },
       { path: "movie-detail/:id", element: <MovieDetail /> },
       { path: "purchase/:id", element: <Purchase /> },
       { path: "ticket", element: <Tickets /> },
@@ -59,6 +71,10 @@ const router = createBrowserRouter([
       { path: "booking", element: <Booking /> },
       { path: "movieshowing", element: <MovieShowingCustomer /> },
       { path: "bookingticket", element: <BookingTicketCustomer /> },
+      { path: "seatAvailable/:id", element: <SeatAvailable /> },
+      { path: "movielist", element: <MovieList /> },
+      { path: "movielist/:id", element: <DetailMovie /> }
+
     ],
   },
 

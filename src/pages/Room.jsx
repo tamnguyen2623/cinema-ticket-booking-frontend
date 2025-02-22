@@ -17,7 +17,6 @@ import {
 } from "@ant-design/icons";
 import { AuthContext } from "../context/AuthContext";
 import "../components/styles/roomStyle.css";
-import SeatMap from "../components/Seat/SeatMap";
 import {
   fetchCinemas,
   fetchRooms,
@@ -103,9 +102,9 @@ const Room = () => {
           return prevRooms.map((room) =>
             room._id === editingRoom._id
               ? {
-                  ...roomData,
-                  cinema: { _id: values.cinema, name: cinemaName },
-                }
+                ...roomData,
+                cinema: { _id: values.cinema, name: cinemaName },
+              }
               : room
           );
         }
@@ -352,6 +351,8 @@ const Room = () => {
             isFormDetailVisible
               ? "Room Details"
               : editingRoom
+                ? "Edit Room"
+                : "Create Room"
                 ? "Edit Room"
                 : "Create Room"
           }

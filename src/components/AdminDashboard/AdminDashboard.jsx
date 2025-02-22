@@ -85,6 +85,12 @@ const DashBoard = () => {
               <span>Users</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/movieshowing")}`}>
+            <Link to="/admin/movieshowing">
+              <FontAwesomeIcon icon={faUsers} className="menu-icon" />
+              <span>Movie Showing</span>
+            </Link>
+          </li>
           <li className={`nav-link ${isActive("/admin/revenue")}`}>
             <Link to="/admin/revenue">
               <FontAwesomeIcon icon={faChartBar} className="menu-icon" />
@@ -103,7 +109,25 @@ const DashBoard = () => {
               <span>Voucher</span>
             </Link>
           </li>
-          <li className="nav-link button-logout">
+          <li className={`nav-link ${isActive("/showtime")}`}>
+            <Link to="/showtime">
+              <FontAwesomeIcon icon={faGift} className="menu-icon" />
+              <span>Showtime</span>
+            </Link>
+          </li>
+          <li className={`nav-link ${isActive("/movietype")}`}>
+            <Link to="/movietype">
+              <FontAwesomeIcon icon={faGift} className="menu-icon" />
+              <span>MovieType</span>
+            </Link>
+          </li>
+          <li className={`nav-link ${isActive("/combo")}`}>
+            <Link to="/combo">
+              <FontAwesomeIcon icon={faGift} className="menu-icon" />
+              <span>Combo</span>
+            </Link>
+          </li>
+          <li className="nav-link button-logou">
             <Link to="/logout">
               <FontAwesomeIcon
                 icon={faRightFromBracket}

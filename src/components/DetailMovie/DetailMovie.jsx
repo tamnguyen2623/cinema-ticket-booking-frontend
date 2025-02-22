@@ -34,7 +34,7 @@ const MovieDetail = () => {
 
 
     const handleBookTicket = () => {
-        navigate("/booking", { state: { selectedMovie: movie } });
+        navigate("/bookingticket", { state: { selectedMovie: movie } });
     };
 
 
