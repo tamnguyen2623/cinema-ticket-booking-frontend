@@ -76,7 +76,6 @@ const router = createBrowserRouter([
       { path: "/admin/seat", element: <Seat /> },
       { path: "/admin/schedule", element: <Schedule /> },
       { path: "/admin/ticketmanagement", element: <Ticket /> },
-
       { path: "/admin/ticket", element: <Tickets /> },
       { path: "/admin/voucher", element: <VoucherPage /> },
       { path: "/admin/movieshowing", element: <MovieShowing /> },

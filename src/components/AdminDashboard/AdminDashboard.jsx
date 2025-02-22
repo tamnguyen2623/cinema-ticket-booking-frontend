@@ -67,6 +67,12 @@ const DashBoard = () => {
               <span>Ticket</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/room")}`}>
+            <Link to="/admin/room">
+              <FontAwesomeIcon icon={faTicketAlt} className="menu-icon" />
+              <span>Room</span>
+            </Link>
+          </li>
           <li className={`nav-link ${isActive("/admin/booking")}`}>
             <Link to="/admin/booking">
               <FontAwesomeIcon icon={faClipboardList} className="menu-icon" />
