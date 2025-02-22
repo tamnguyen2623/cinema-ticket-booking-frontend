@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { getSeatAvailablesBymovieShowingId } from "../api/seatAvailable";
 
-export default function SeatAvailableForCustomer({ movieShowing }) {
+export default function SeatAvailableForCustomer() {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]); // Lưu ghế đã chọn
   const column = movieShowing.roomId.colum;
-  const [refresh, setRefresh] = useState(false);
+  // const [refresh, setRefresh] = useState(false);
+  const { id } = useParams(); // Lấy _id từ URL
 
   const fetchSeats = async () => {
     try {
-      const data = await getSeatAvailablesBymovieShowingId(movieShowing._id);
+      const data = await getSeatAvailablesBymovieShowingId(id);
       setSeats(data);
       console.log(data);
     } catch (error) {
@@ -29,7 +30,8 @@ export default function SeatAvailableForCustomer({ movieShowing }) {
 
   // Hàm xử lý chọn ghế
   const handleSelectSeat = (seat) => {
-    const isDisabled = seat.seatId.type === "Disabled" || seat.isAvailable === false;
+    const isDisabled =
+      seat.seatId.type === "Disabled" || seat.isAvailable === false;
     if (isDisabled) return; // Không cho phép chọn ghế đã bị disable
 
     setSelectedSeats((prev) =>
@@ -42,7 +44,9 @@ export default function SeatAvailableForCustomer({ movieShowing }) {
   // Hàm gửi danh sách ghế đã chọn
   const handleConfirmSelection = () => {
     console.log("Ghế đã chọn:", selectedSeats);
-    alert(`Ghế bạn đã chọn: ${selectedSeats.map((s) => s.seatId.name).join(", ")}`);
+    alert(
+      `Ghế bạn đã chọn: ${selectedSeats.map((s) => s.seatId.name).join(", ")}`
+    );
   };
 
   return (
@@ -55,7 +59,8 @@ export default function SeatAvailableForCustomer({ movieShowing }) {
         style={{ gridTemplateColumns: `repeat(${column}, minmax(40px, 1fr))` }}
       >
         {seats.map((seat) => {
-          const isDisabled = seat.seatId.type === "Disabled" || seat.isAvailable === false;
+          const isDisabled =
+            seat.seatId.type === "Disabled" || seat.isAvailable === false;
           const isSelected = selectedSeats.some((s) => s._id === seat._id);
 
           return (

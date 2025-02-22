@@ -318,7 +318,7 @@ const CinemaPage = () => {
                                   className="showtime-item"
                                 >
                                   <Link
-                                    to={`/book-tickets/${showtime._id}`}
+                                    to={`/seatAvailable/${showtime._id}`}
                                     className="showtime-link"
                                     style={{
                                       textDecoration: "none",
