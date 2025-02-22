@@ -70,6 +70,10 @@ const router = createBrowserRouter([
       { path: "booking", element: <Booking /> },
       { path: "movieshowing", element: <MovieShowingCustomer /> },
       { path: "bookingticket", element: <BookingTicketCustomer /> },
+      { path: "seatAvailable/:id", element: <SeatAvailable /> },
+      { path: "movielist", element: <MovieList /> },
+      { path: "movielist/:id", element: <DetailMovie /> }
+
     ],
   },
 

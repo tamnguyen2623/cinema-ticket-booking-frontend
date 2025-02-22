@@ -15,6 +15,7 @@ const CinemaPage = () => {
   const [movies, setMovies] = useState([]);
   const [cinemas, setCinemas] = useState([]);
   const [showtimes, setShowtimes] = useState([]);
+  const [movieShowing, setMovieShowing] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -26,12 +27,14 @@ const CinemaPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [moviesRes, cinemasRes] = await Promise.all([
+        const [moviesRes, cinemasRes, movieShowingRes] = await Promise.all([
           axios.get("http://localhost:8080/movie/"),
           axios.get("http://localhost:8080/cinema/"),
+          axios.get("http://localhost:8080/movieshowing/"),
         ]);
         setMovies(moviesRes.data.data || []);
         setCinemas(cinemasRes.data.data || []);
+        setMovieShowing(movieShowingRes.data.data || []);
       } catch (err) {
         setError("Lỗi khi tải dữ liệu");
         console.error("Error fetching data:", err);
@@ -91,9 +94,8 @@ const CinemaPage = () => {
                 key={index}
                 item
                 xs={1.5}
-                className={`date-item ${
-                  selectedDate === day.format("YYYY-MM-DD") ? "active" : ""
-                }`}
+                className={`date-item ${selectedDate === day.format("YYYY-MM-DD") ? "active" : ""
+                  }`}
                 onClick={() =>
                   setSelectedDate(
                     selectedDate === day.format("YYYY-MM-DD")
@@ -211,7 +213,7 @@ const CinemaPage = () => {
                           .map((showtime) => (
                             <li key={showtime._id} className="showtime-item">
                               <Link
-                                to={`/book-tickets/${showtime._id}`}
+                                to={`/seatAvailable/${showtime._id}`}
                                 className="showtime-link"
                                 style={{
                                   textDecoration: "none",

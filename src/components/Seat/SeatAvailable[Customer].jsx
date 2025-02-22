@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { getSeatAvailablesBymovieShowingId } from "../api/seatAvailable";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 export default function SeatAvailableForCustomer() {
   const [seats, setSeats] = useState([]);
-  const [selectedSeats, setSelectedSeats] = useState([]); // Lưu ghế đã chọn
-  const column = movieShowing.roomId.colum;
+  const [selectedSeats, setSelectedSeats] = useState([]); 
+  const [movieShowing, setMovieShowing] = useState();
   // const [refresh, setRefresh] = useState(false);
   const { id } = useParams(); // Lấy _id từ URL
 
+
+
   const fetchSeats = async () => {
     try {
+      const movieShowingRes = await axios.get(`http://localhost:8080/movieshowing/${id}`);
       const data = await getSeatAvailablesBymovieShowingId(id);
       setSeats(data);
+      setMovieShowing(movieShowingRes.data.data);
+      console.log(movieShowing)
       console.log(data);
     } catch (error) {
       console.error("Failed to fetch seats:", error);
@@ -20,7 +27,7 @@ export default function SeatAvailableForCustomer() {
 
   useEffect(() => {
     fetchSeats();
-  }, [movieShowing]);
+  }, [id]);
 
   const seatTypeColors = {
     Standard: "bg-purple-500",
@@ -56,7 +63,7 @@ export default function SeatAvailableForCustomer() {
       </div>
       <div
         className="grid gap-2 ml-9"
-        style={{ gridTemplateColumns: `repeat(${column}, minmax(40px, 1fr))` }}
+        style={{ gridTemplateColumns: `repeat(${10}, minmax(40px, 1fr))` }}
       >
         {seats.map((seat) => {
           const isDisabled =

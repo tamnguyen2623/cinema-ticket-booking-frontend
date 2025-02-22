@@ -16,7 +16,6 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import { AuthContext } from "../context/AuthContext";
-import Navbar from "../components/Navbar";
 import "../components/styles/roomStyle.css";
 import {
   fetchCinemas,
@@ -26,6 +25,7 @@ import {
   DetailRoom,
 } from "../components/api/roomApi";
 import { createSeat } from "../components/api/seat";
+import SeatMap from "../components/Seat/SeatMap"
 import TotalSlide from "./TotalSlide";
 const { Option } = Select;
 
