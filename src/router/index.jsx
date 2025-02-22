@@ -30,6 +30,7 @@ import Ticket from "../pages/Ticket";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
 import MovieShowingCustomer from "../components/MovieList/MovieList";
 import BookingTicketCustomer from "../components/Cinema/CinemaPage";
+import SeatAvailable from "../components/Seat/SeatAvailable[Customer]"
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
 
@@ -57,7 +58,8 @@ const router = createBrowserRouter([
       { path: "booking/:transactionId", element: <Booking /> },
       { path: "booking", element: <Booking /> },
       { path: "movieshowing", element: <MovieShowingCustomer /> },
-      { path: "bookingticket", element: <BookingTicketCustomer /> },
+      // { path: "bookingticket", element: <BookingTicketCustomer /> },
+      { path: "seatAvailable", element: <SeatAvailable /> },
     ],
   },
 

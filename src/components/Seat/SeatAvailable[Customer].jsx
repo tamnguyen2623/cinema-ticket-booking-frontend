@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { getSeatAvailablesBymovieShowingId } from "../api/seatAvailable";
 
-export default function SeatAvailableForCustomer({ movieShowing }) {
+export default function SeatAvailableForCustomer() {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]); // Lưu ghế đã chọn
   const column = movieShowing.roomId.colum;
-  const [refresh, setRefresh] = useState(false);
+  // const [refresh, setRefresh] = useState(false);
+  const { id } = useParams(); // Lấy _id từ URL
 
   const fetchSeats = async () => {
     try {
-      const data = await getSeatAvailablesBymovieShowingId(movieShowing._id);
+      const data = await getSeatAvailablesBymovieShowingId(id);
       setSeats(data);
       console.log(data);
     } catch (error) {
