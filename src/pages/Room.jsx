@@ -16,7 +16,6 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import { AuthContext } from "../context/AuthContext";
-import Navbar from "../components/Navbar";
 import "../components/styles/roomStyle.css";
 import SeatMap from "../components/Seat/SeatMap";
 import {
@@ -27,7 +26,6 @@ import {
   DetailRoom,
 } from "../components/api/roomApi";
 import { createSeat } from "../components/api/seat";
-import TotalSlide from "./TotalSlide";
 const { Option } = Select;
 
 const Room = () => {
@@ -38,7 +36,6 @@ const Room = () => {
   const [loadingCinemas, setLoadingCinemas] = useState(true);
   const [rooms, setRooms] = useState([]);
   const { auth } = useContext(AuthContext);
-
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [editingRoom, setEditingRoom] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,7 +44,7 @@ const Room = () => {
   const [isFormDetailVisible, setIsFormDetailVisible] = useState(false);
 
   useEffect(() => {
-    console.log("User Role:", auth.role); // Kiểm tra role cụ thể
+    console.log("User Role:", auth.role);
     const loadData = async () => {
       try {
         const cinemasData = await fetchCinemas();
@@ -83,12 +80,19 @@ const Room = () => {
         values,
         editingRoom
       );
-      console.log("editingRoom", values);
-      await createSeat({
-        room: values._id,
-        column: values.colum,
-        row: values.row,
-      });
+
+      const roomId = editingRoom ? editingRoom._id : roomData._id;
+
+      console.log("roomId:", roomId);
+      if (roomId) {
+        await createSeat({
+          room: roomId,
+          column: values.colum,
+          row: values.row,
+        });
+      } else {
+        console.error("Room ID is missing!");
+      }
 
       const cinemaName =
         cinemas.find((cinema) => cinema._id === values.cinema)?.name ||
@@ -314,7 +318,12 @@ const Room = () => {
             type="primary"
             block
             className="createRoomButton"
-            onClick={() => setIsFormVisible(true)}
+            onClick={() => {
+              setIsFormVisible(true);
+              setIsFormDetailVisible(false); 
+              setRoomDetail(null); 
+              setEditingRoom(null); 
+            }}
           >
             Add room
           </Button>
@@ -340,18 +349,18 @@ const Room = () => {
         </Modal>
         <Modal
           title={
-            roomDetail
+            isFormDetailVisible
               ? "Room Details"
               : editingRoom
-              ? "Edit Room"
-              : "Create Room"
+                ? "Edit Room"
+                : "Create Room"
           }
-          visible={isFormVisible || isFormDetailVisible}
+          open={isFormVisible || isFormDetailVisible}
           onCancel={() => {
             setIsFormVisible(false);
             setIsFormDetailVisible(false);
-            setEditingRoom(null);
             setRoomDetail(null);
+            setEditingRoom(null);
           }}
           footer={null}
           width="80%"
@@ -494,7 +503,6 @@ const Room = () => {
           )}
         </Modal>
       </div>
-      <TotalSlide />
     </div>
   );
 };

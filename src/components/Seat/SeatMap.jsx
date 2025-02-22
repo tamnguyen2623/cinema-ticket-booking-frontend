@@ -13,7 +13,7 @@ export default function seatMap({ roomInfo }) {
     try {
       const data = await getSeatsByRoomId(roomInfo._id);
       setSeats(data); // Cập nhật state với dữ liệu từ API
-      console.log(data);
+      console.log("data", data);
     } catch (error) {
       console.error("Failed to fetch seats:", error);
     }

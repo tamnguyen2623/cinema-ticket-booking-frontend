@@ -7,8 +7,6 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { AuthContext } from "../context/AuthContext";
-import Navbar from "../components/Navbar";
-import "../components/styles/roomStyle.css";
 import {
   fetchRooms,
   fetchTicket,

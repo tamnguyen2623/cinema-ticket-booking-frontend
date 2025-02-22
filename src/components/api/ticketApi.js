@@ -36,10 +36,12 @@ export const createOrUpdateTicket = async (
 ) => {
   try {
     const requestData = {
-      roomType: ticketData.roomType,
+      roomId: ticketData.roomId,
       seatType: ticketData.seatType,
-      price: ticketData.price,
+      price: Number(ticketData.price), // ✅ Chuyển thành số
     };
+
+    console.log("📡 Dữ liệu gửi lên API:", requestData); // ✅ Debug
 
     let response;
     if (editingTicket) {
@@ -47,20 +49,19 @@ export const createOrUpdateTicket = async (
         `${apiUrl}/${editingTicket._id}`,
         requestData,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
     } else {
       response = await axios.post(apiUrl, requestData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
     }
+
+    console.log("✅ API response:", response.data);
     return response.data.ticketPrices;
   } catch (error) {
+    console.error("❌ Lỗi API:", error.response?.data || error.message);
     throw new Error("Error creating/updating ticket: " + error.message);
   }
 };
