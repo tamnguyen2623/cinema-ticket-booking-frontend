@@ -36,7 +36,7 @@ const Register = () => {
             autoClose: 2000,
             pauseOnHover: false,
           });
-          navigate("/VerifyOtpRegister"); // Chuyển sang trang nhập OTP
+          navigate("/VerifyOtpRegister", { state: { email: data.email } });
       }
     } catch (error) {
       toast.error("Error! Please try again", {

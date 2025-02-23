@@ -3,18 +3,23 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
-const VerifyOtpRegister = ({ email }) => {
+const VerifyOtpRegister = () => {
     const navigate = useNavigate();
     const [isVerifying, setIsVerifying] = useState(false);
     const [isResending, setIsResending] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const location = useLocation();
+    const email = location.state?.email; // Lấy email từ state
 
     const onSubmit = async (data) => {
         setIsVerifying(true);
+
         try {
-            const response = await axios.post("/auth/verifyOtp", { email, otp: data.otp });
+            console.log("niude", email);
+            const response = await axios.post("/auth/verifyotpregister", { email, otp: data.otp });
             if (response.data.success) {
                 toast.success("OTP verified successfully!", { position: "top-center", autoClose: 2000 });
                 navigate("/login");

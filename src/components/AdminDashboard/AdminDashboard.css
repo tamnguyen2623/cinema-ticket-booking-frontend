@@ -11,6 +11,7 @@
     color: white;
     display: flex;
     flex-direction: column;
+    overflow-x: scroll;
     padding: 20px 10px;
     position: fixed;
     top: 0;
@@ -113,7 +114,7 @@
     background: #29293d;
     color: #00aaff;
     font-weight: bold;
-    border-left: 4px solid #00aaff; 
+    border-left: 4px solid #00aaff;
 }
 
 

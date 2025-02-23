@@ -93,7 +93,7 @@ const MovieList = () => {
                     </Link>
                   </button>
                   <button className="btn btn-book">
-                    <Link to={`/movie/${movie._id}`}>
+                    <Link to={`/movielist/${movie._id}`}>
                       <p>Chi tiết</p>
                     </Link>
                   </button>
