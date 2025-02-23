@@ -86,7 +86,7 @@ const MovieList = () => {
                 <div className="movie-actions">
                   <button className="btn btn-detail">
                     <Link
-                      to={`/booking/${movie._id}`}
+                      to={`/bookingticket`}
                       state={{ selectedMovie: movie }}
                     >
                       <p>Đặt vé</p>
