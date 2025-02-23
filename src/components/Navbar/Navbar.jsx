@@ -29,7 +29,7 @@ const Navbar = () => {
           <li>
             <NavLink
               to="/movielist"
-              className={activePath === "/movie" ? "active" : ""}
+              className={activePath === "/movielist" ? "active" : ""}
             >
               PHIM
             </NavLink>
