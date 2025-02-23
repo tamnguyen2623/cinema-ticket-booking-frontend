@@ -22,6 +22,10 @@
 
 
 .navigation-list li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: #fff;
     text-align: center;
     padding: 20px 0 10px 0;
@@ -30,19 +34,24 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.icon {
-    font-size: 26px;
-    transition: transform 0.3s ease;
-}
-
-
 .navigation-list li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     color: black;
     font-size: 15px;
     font-family: Arial;
     transition: color 0.3s ease;
 }
+
+.icon {
+    font-size: 26px;
+    transition: transform 0.3s ease;
+    margin-bottom: 5px; /* Tạo khoảng cách giữa icon và chữ */
+}
+
 
 .navigation-list li:hover {
     background-color: black;

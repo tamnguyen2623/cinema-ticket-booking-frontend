@@ -54,9 +54,8 @@
     bottom: 0px;
     background-color: #CDC197;
     padding: 8px 15px;
-    border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
     white-space: nowrap;
-    /* Giữ cho nội dung không bị xuống dòng */
+    height: 35px;
 }
