@@ -1,120 +1,93 @@
-// import React, { useEffect, useState } from "react";
-// import { Card, Row, Col, Typography, Image, Divider } from "antd";
-
-// const { Title, Text } = Typography;
-
-// // Đối tượng booking ban đầu
-// const initialBooking = {
-//   img: "https://m.media-amazon.com/images/I/71niXI3lxlL._AC_SL1500_.jpg",
-//   name: "Avenger",
-//   date: "17/02/2025",
-//   showtime: "19:30 ~ 21:30",
-//   cinema: "CGV - Can Tho",
-//   seat: "A1, A2",
-//   total: "$20",
-// };
-
-// export default function Booking() {
-//   const [booking, setBooking] = useState({});
-//   useEffect(() => {
-//     setBooking(initialBooking);
-//   }, []);
-
-//   return (
-//     <Card bordered style={{ maxWidth: 800, margin: "20px auto" }}>
-//       {booking.name ? (
-//         <Row gutter={16} align="middle">
-//           <Col span={6}>
-//             <Image
-//               src={booking.img}
-//               alt={booking.name}
-//               style={{ borderRadius: 10 }}
-//             />
-//             <Title level={4} style={{ marginTop: 10, textAlign: "center" }}>
-//               {booking.name}
-//             </Title>
-//           </Col>
-//           <Col span={12}>
-//             <Title level={4}>🎟️ Thông Tin Vé</Title>
-//             <Divider />
-//             <Text>
-//               <strong>📅 Ngày:</strong> {booking.date}
-//             </Text>
-//             <br />
-//             <Text>
-//               <strong>🕒 Giờ chiếu:</strong> {booking.showtime}
-//             </Text>
-//             <br />
-//             <Text>
-//               <strong>🏛️ Rạp:</strong> {booking.cinema}
-//             </Text>
-//             <br />
-//             <Text>
-//               <strong>💺 Ghế ngồi:</strong> {booking.seat}
-//             </Text>
-//           </Col>
-//           <Col span={6} style={{ textAlign: "center" }}>
-//             <Title level={4}>💰 Tổng Giá</Title>
-//             <Divider />
-//             <Title level={3} style={{ color: "#e74c3c" }}>
-//               {booking.total}
-//             </Title>
-//           </Col>
-//         </Row>
-//       ) : (
-//         <Text>Đang tải dữ liệu...</Text>
-//       )}
-//     </Card>
-//   );
-// }
-
-import React, { useEffect, useState, useContext } from "react";
-
-import {
-  Card,
-  Row,
-  Col,
-  Typography,
-  Image,
-  Divider,
-  Button,
-  message,
-} from "antd";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { message, Radio, Button } from "antd";
 import axios from "axios";
-
-const { Title, Text } = Typography;
 import { AuthContext } from "../context/AuthContext";
-// Đối tượng booking ban đầu
-const initialBooking = {
-  img: "https://m.media-amazon.com/images/I/71niXI3lxlL._AC_SL1500_.jpg",
-  name: "Avenger",
-  date: "17/02/2025",
-  showtime: "19:30 ~ 21:30",
-  cinema: "CGV - Can Tho",
-  seat: "A1, A2",
-  total: 20,
-};
-
-export default function Booking() {
-  const [booking, setBooking] = useState({});
+import "../components/styles/slide.css";
+import { fetchTicket } from "../components/api/ticketApi";
+export default function PaymentTicket() {
   const { auth } = useContext(AuthContext);
-  useEffect(() => {
-    setBooking(initialBooking);
-  }, []);
+  const { id } = useParams();
+  const [paymentMethod, setPaymentMethod] = useState("vnpay");
+  const [ticketPrice, setTicketPrice] = useState([]);
+  const [bookingData, setBookingData] = useState(() => {
+    try {
+      const savedBooking = localStorage.getItem("bookingData");
+      return savedBooking ? JSON.parse(savedBooking) : null;
+    } catch (error) {
+      console.error(" Error retrieving data from localStorage:", error);
+      return null;
+    }
+  });
 
+  useEffect(() => {
+    const loadTicket = async () => {
+      try {
+        const response = await fetchTicket(auth.token);
+        setTicketPrice(response);
+      } catch (error) {
+        console.error("Error fetching ticket:", error);
+        message.error("Failed to load ticket details!");
+      }
+    };
+
+    loadTicket();
+  }, [auth.token]);
+
+  useEffect(() => {}, [id, bookingData]);
+
+  if (!bookingData) {
+    return (
+      <div className="payment-container">
+        <h2>Ticket Details</h2>
+        <p>
+          No ticket data found. Please select a ticket before viewing
+          details.
+        </p>
+      </div>
+    );
+  }
+
+  const selectedSeats = bookingData.selectedSeats || [];
+  const selectedShowing = bookingData.selectedShowtime || [];
+  const seatNames = selectedSeats.map((seat) => seat.seatId.name).join(", ");
+  console.log(bookingData);
+
+  const findMatchingPrice = (roomType, seatType) => {
+    const matchingTicket = ticketPrice.find(
+      (ticket) => ticket.roomType === roomType && ticket.seatType === seatType
+    );
+    return matchingTicket ? matchingTicket.price : 0;
+  };
+  const totalPrice = selectedSeats.reduce((sum, seat) => {
+    return (
+      sum + findMatchingPrice(selectedShowing.room.roomtype, seat.seatId.type)
+    );
+  }, 0);
   const handlePayment = async () => {
     if (!auth?.token) {
-      return message.error("⚠️ Vui lòng đăng nhập để thanh toán!");
+      return message.error("Please log in to proceed with the payment!");
     }
 
     try {
+      const currency = "USD";
+      const requestData = {
+        movieName: bookingData.selectedMovie?.name || "N/A",
+        cinema: bookingData.selectedCinema?.name || "N/A",
+        address: bookingData.selectedCinema?.address || "N/A",
+        seats: selectedSeats.map((seat) => seat.seatId.name),
+        seatsId: selectedSeats.map((seat) => seat._id),
+        showtime: new Date(
+          bookingData.selectedShowtime?.showtime?.showtime
+        ).toISOString(),
+        room: selectedShowing.room?.roomname || "N/A",
+        date: bookingData.selectedDate || "N/A",
+        price: totalPrice,
+        currency,
+      };
       const response = await axios.post(
-        "/booking/booking/vnpay/order",
-        {
-          price: 200000, // Gán cứng giá trị hợp lệ
-          seats: "A1, A2",
-          showtime: "19:30 ~ 21:30",
-        },
+        `http://localhost:8080/booking/booking/${paymentMethod}/order`,
+        requestData,
         {
           headers: {
             "Content-Type": "application/json",
@@ -123,78 +96,82 @@ export default function Booking() {
         }
       );
 
-      // Kiểm tra phản hồi từ server
-      console.log("📦 Response từ server:", response.data);
-
       if (response.data.paymentUrl) {
-        console.log("🌐 Chuyển hướng đến:", response.data.paymentUrl);
         window.location.href = response.data.paymentUrl;
       } else {
-        console.error("❌ Không có URL thanh toán được trả về!");
-        message.error("Không thể tạo yêu cầu thanh toán.");
+        message.error("No payment URL returned!");
       }
     } catch (error) {
-      console.error("💥 Lỗi xử lý thanh toán:", error);
-      message.error("Thanh toán không thành công!");
+      console.error(" Payment error:", error.response?.data || error.message);
+      message.error(`Payment failed! ${error.response?.data?.message || ""}`);
     }
   };
 
   return (
-    <Card bordered style={{ maxWidth: 800, margin: "20px auto" }}>
-      {booking.name ? (
-        <Row gutter={16} align="middle">
-          {/* Cột 1: Thông tin phim */}
-          <Col span={6}>
-            <Image
-              src={booking.img}
-              alt={booking.name}
-              style={{ borderRadius: 10 }}
-            />
-            <Title level={4} style={{ marginTop: 10, textAlign: "center" }}>
-              {booking.name}
-            </Title>
-          </Col>
-
-          {/* Cột 2: Thông tin vé */}
-          <Col span={12}>
-            <Title level={4}>🎟️ Thông Tin Vé</Title>
-            <Divider />
-            <Text>
-              <strong>📅 Ngày:</strong> {booking.date}
-            </Text>
-            <br />
-            <Text>
-              <strong>🕒 Giờ chiếu:</strong> {booking.showtime}
-            </Text>
-            <br />
-            <Text>
-              <strong>🏛️ Rạp:</strong> {booking.cinema}
-            </Text>
-            <br />
-            <Text>
-              <strong>💺 Ghế ngồi:</strong> {booking.seat}
-            </Text>
-          </Col>
-
-          {/* Cột 3: Tổng giá và nút thanh toán */}
-          <Col span={6} style={{ textAlign: "center" }}>
-            <Title level={4}>💰 Tổng Giá</Title>
-            <Divider />
-            <Title level={3} style={{ color: "#e74c3c" }}>
-              ${booking.total}
-            </Title>
-            <Button
-              type="primary"
-              onClick={handlePayment}
-              style={{ marginTop: 20 }}
+    <div className="payment-container">
+      <div className="payment-ticket">
+        <div className="payment-left">
+          <img
+            src={bookingData.selectedMovie?.img}
+            alt={bookingData.selectedMovie?.name}
+            className="movie-poster"
+          />
+        </div>
+        <div className="payment-right">
+          <h2 className="movie-title">{bookingData.selectedMovie?.name}</h2>
+          <div className="payment-info">
+            <p>
+              <strong>Date:</strong> {bookingData.selectedDate}
+            </p>
+            <p>
+              <strong>Cinema:</strong> {bookingData.selectedCinema?.name}
+            </p>
+            <p>
+              <strong>Address:</strong> {bookingData.selectedCinema?.address}
+            </p>
+            <p>
+              <strong>Seats:</strong> {seatNames || "No seats selected"}
+            </p>
+            <p>
+              <strong>Screening Room:</strong>
+              {selectedShowing.room.roomname} - {selectedShowing.room.roomtype}
+            </p>
+            <p>
+              <strong>Showtime: </strong>
+              {new Date(selectedShowing.showtime.showtime).toLocaleTimeString(
+                "en-US",
+                {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                }
+              )}
+            </p>
+            <p>
+              <strong>Total Price: </strong>
+              {`$ ${totalPrice.toLocaleString()}`}
+            </p>
+          </div>
+          <div className="payment-method">
+            <h3>Select Payment Method</h3>
+            <Radio.Group
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              value={paymentMethod}
             >
-              Thanh toán
-            </Button>
-          </Col>
-        </Row>
-      ) : (
-        <Text>Đang tải dữ liệu...</Text>
-      )}
-    </Card>
+              <Radio value="vnpay">VNPay</Radio>
+              <Radio value="momo">MoMo</Radio>
+            </Radio.Group>
+          </div>
+
+          <Button
+            type="primary"
+            className="payment-button"
+            onClick={handlePayment}
+          >
+            Pay Now
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
