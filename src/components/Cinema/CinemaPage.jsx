@@ -76,28 +76,17 @@ const CinemaPage = () => {
     }
   }, [location.state]);
 
-  //luu tạm
+  // luu vao localstorage
   useEffect(() => {
     const bookingData = {
       selectedDate,
       selectedMovie,
       selectedCinema,
-      selectedShowtime, // ✅ Thêm suất chiếu đã chọn vào lưu trữ
+      selectedShowtime,
     };
     localStorage.setItem("bookingData", JSON.stringify(bookingData));
   }, [selectedDate, selectedMovie, selectedCinema, selectedShowtime]);
 
-  // useEffect(() => {
-  //   const savedBooking = localStorage.getItem("bookingData");
-  //   if (savedBooking) {
-  //     const { selectedDate, selectedMovie, selectedCinema } =
-  //       JSON.parse(savedBooking);
-
-  //     if (selectedDate) setSelectedDate(selectedDate);
-  //     if (selectedMovie) setSelectedMovie(selectedMovie);
-  //     if (selectedCinema) setSelectedCinema(selectedCinema);
-  //   }
-  // }, []);
   const startOfWeek = dayjs()
     .add(currentWeek * 7, "day")
     .startOf("week");
@@ -186,7 +175,9 @@ const CinemaPage = () => {
               {cinemas.map((cinema) => (
                 <div
                   key={cinema._id}
-                  className={`cinema-option ${selectedCinema === cinema ? "active" : ""}`}
+                  className={`cinema-option ${
+                    selectedCinema === cinema ? "active" : ""
+                  }`}
                   onClick={() =>
                     setSelectedCinema(selectedCinema === cinema ? null : cinema)
                   }
@@ -206,7 +197,9 @@ const CinemaPage = () => {
               {movies.map((movie) => (
                 <div
                   key={movie._id}
-                  className={`movie-option ${selectedMovie === movie ? "active" : ""}`}
+                  className={`movie-option ${
+                    selectedMovie === movie ? "active" : ""
+                  }`}
                   onClick={() =>
                     setSelectedMovie(selectedMovie === movie ? null : movie)
                   }
@@ -232,20 +225,6 @@ const CinemaPage = () => {
             <span className="summary-label">Rạp:</span>{" "}
             {selectedCinema?.name || "Chưa chọn"}
           </div>
-          {/* Nút Tiếp Theo */}
-          <Button
-            variant="contained"
-            color="primary"
-            style={{
-              marginTop: "10px",
-              backgroundColor: "#FF5733",
-              color: "white",
-              fontWeight: "bold",
-            }}
-            onClick={handleNextStep}
-          >
-            Tiếp theo
-          </Button>
         </div>
         <div className="showtime-wait">
           <h3>
