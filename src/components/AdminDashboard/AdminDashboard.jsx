@@ -103,26 +103,27 @@ const DashBoard = () => {
               <span>Feedback</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/showtime")}`}>
+            <Link to="/admin/showtime">
+              <FontAwesomeIcon icon={faGift} className="menu-icon" />
+              <span>Showtime</span>
+            </Link>
+          </li>
           <li className={`nav-link ${isActive("/admin/voucher")}`}>
             <Link to="/admin/voucher">
               <FontAwesomeIcon icon={faGift} className="menu-icon" />
               <span>Voucher</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/showtime")}`}>
-            <Link to="/showtime">
-              <FontAwesomeIcon icon={faGift} className="menu-icon" />
-              <span>Showtime</span>
-            </Link>
-          </li>
-          <li className={`nav-link ${isActive("/movietype")}`}>
-            <Link to="/movietype">
+         
+          <li className={`nav-link ${isActive("/admin/movietype")}`}>
+            <Link to="/admin/movietype">
               <FontAwesomeIcon icon={faGift} className="menu-icon" />
               <span>MovieType</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/combo")}`}>
-            <Link to="/combo">
+          <li className={`nav-link ${isActive("/admin/combo")}`}>
+            <Link to="/admin/combo">
               <FontAwesomeIcon icon={faGift} className="menu-icon" />
               <span>Combo</span>
             </Link>

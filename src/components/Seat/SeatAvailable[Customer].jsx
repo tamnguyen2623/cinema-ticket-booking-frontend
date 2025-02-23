@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getSeatAvailablesBymovieShowingId } from "../api/seatAvailable";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -9,11 +9,8 @@ export default function SeatAvailableForCustomer() {
   const [selectedSeats, setSelectedSeats] = useState([]); 
   const [movieShowing, setMovieShowing] = useState();
   const { auth } = useContext(AuthContext);
-  // const [refresh, setRefresh] = useState(false);
   const { id } = useParams(); // Lấy _id từ URL
-
-
-
+  
   const fetchSeats = async () => {
     try {
       const movieShowingRes = await axios.get(`http://localhost:8080/movieshowing/${id}`);
@@ -52,7 +49,12 @@ export default function SeatAvailableForCustomer() {
 
   // Hàm gửi danh sách ghế đã chọn
   const handleConfirmSelection = () => {
-    console.log("Ghế đã chọn:", selectedSeats);
+    const seatIds = selectedSeats.map((s) => s.seatId._id); // Lấy danh sách _id
+
+    console.log("Suất chiếu: ", movieShowing);
+    console.log("Thông tin chi tiết của các ghế: ", selectedSeats);    
+    console.log("Danh sách ID ghế đã chọn: ", seatIds);
+
     alert(
       `Ghế bạn đã chọn: ${selectedSeats.map((s) => s.seatId.name).join(", ")}`
     );
@@ -65,7 +67,7 @@ export default function SeatAvailableForCustomer() {
       </div>
       <div
         className="grid gap-2 ml-9"
-        style={{ gridTemplateColumns: `repeat(${10}, minmax(40px, 1fr))` }}
+        style={{ gridTemplateColumns: `repeat(${movieShowing?.roomId.colum}, minmax(40px, 1fr))` }}
       >
         {seats.map((seat) => {
           const isDisabled =
