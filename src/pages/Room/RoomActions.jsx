@@ -8,9 +8,6 @@ import {
 import { createSeat } from "../../components/api/seat";
 import { notification } from "antd";
 
-/**
- * 📌 Load danh sách rạp & phòng
- */
 export const loadRoomsAndCinemas = async (
   setCinemas,
   setRooms,
@@ -30,9 +27,6 @@ export const loadRoomsAndCinemas = async (
   }
 };
 
-/**
- * 📌 Xóa phòng và cập nhật danh sách ngay lập tức
- */
 export const handleDeleteRoom = async (roomId, setRooms, token) => {
   if (!token) {
     return notification.error({
@@ -43,11 +37,8 @@ export const handleDeleteRoom = async (roomId, setRooms, token) => {
 
   try {
     await deleteRoom(token, roomId);
-
-    // 🔄 Fetch lại danh sách phòng ngay sau khi xóa
     const updatedRooms = await fetchRooms(token);
     setRooms(updatedRooms);
-
     notification.success({ message: "Room deleted successfully!" });
   } catch (error) {
     console.error("Error deleting room:", error);
@@ -55,9 +46,6 @@ export const handleDeleteRoom = async (roomId, setRooms, token) => {
   }
 };
 
-/**
- * 📌 Lấy chi tiết phòng
- */
 export const handleDetailRoom = async (
   roomId,
   setRoomDetail,
@@ -70,7 +58,6 @@ export const handleDetailRoom = async (
       description: "You are not authorized to view room details.",
     });
   }
-
   try {
     const detail = await DetailRoom(token, roomId);
     setRoomDetail(detail);
@@ -84,15 +71,11 @@ export const handleDetailRoom = async (
   }
 };
 
-/**
- * 📌 Tạo ghế cho phòng
- */
 const createSeatsForRoom = async (roomId, values) => {
   if (!roomId) {
     console.error("Room ID is missing!");
     return;
   }
-
   try {
     await createSeat({
       room: roomId,
@@ -104,9 +87,6 @@ const createSeatsForRoom = async (roomId, values) => {
   }
 };
 
-/**
- * 📌 Tạo / Cập nhật phòng và cập nhật danh sách ngay lập tức
- */
 export const handleRoomSubmit = async (
   values,
   auth,
@@ -121,18 +101,13 @@ export const handleRoomSubmit = async (
       description: "You are not authorized to create or update a room.",
     });
   }
-
   try {
     const roomData = await createOrUpdateRoom(auth.token, values, editingRoom);
     const roomId = editingRoom ? editingRoom._id : roomData._id;
-
     await createSeatsForRoom(roomId, values);
-
-    // 🔄 Fetch lại danh sách phòng ngay sau khi thêm/sửa
     const updatedRooms = await fetchRooms(auth.token);
     console.log("object updated", updatedRooms);
     setRooms(updatedRooms);
-
     setIsFormVisible(false);
     setEditingRoom(null);
     notification.success({ message: "Room saved successfully!" });

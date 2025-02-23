@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "../layout/AdminLayout";
-import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer"
+import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer";
 import Cinema from "../pages/Cinema";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -22,17 +22,18 @@ import MovieDetail from "../pages/MovieDetail";
 import Order from "../pages/Order";
 import Dashboard from "../pages/Dashboard";
 // import Room from "../pages/Room";
-import Room from "../pages/Rooms/Room";
+import Room from "../pages/Room/Room";
 import Seat from "../pages/Seat";
 import VoucherPage from "../pages/Voucher/VoucherPage";
 import Booking from "../pages/Booking";
 import Ticket from "../pages/Ticket";
-import MovieList from '../components/MovieList/MovieList';
-import DetailMovie from '../components/DetailMovie/DetailMovie';
-import ShowtimePage from '../pages/Showtimes/ShowtimePage';
-import MovietypePage from '../pages/MovieType/MovieTypePage';
-import ComboPage from '../pages/Combo/ComboPage';
-import VerifyOtpRegister from '../pages/VerifyOtpRegister';
+import TotalSlide from "../pages/TotalSlide";
+import MovieList from "../components/MovieList/MovieList";
+import DetailMovie from "../components/DetailMovie/DetailMovie";
+import ShowtimePage from "../pages/Showtimes/ShowtimePage";
+import MovietypePage from "../pages/MovieType/MovieTypePage";
+import ComboPage from "../pages/Combo/ComboPage";
+import VerifyOtpRegister from "../pages/VerifyOtpRegister";
 import SeatAvailable from "../components/Seat/SeatAvailable[Customer]";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
 import MovieShowingCustomer from "../components/MovieList/MovieList";
@@ -48,7 +49,6 @@ const ProtectedAdminRoute = ({ element }) => {
 };
 
 const router = createBrowserRouter([
-
   { path: "/:id", element: <Home /> },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
@@ -73,8 +73,8 @@ const router = createBrowserRouter([
       { path: "bookingticket", element: <BookingTicketCustomer /> },
       { path: "seatAvailable/:id", element: <SeatAvailable /> },
       { path: "movielist", element: <MovieList /> },
-      { path: "movielist/:id", element: <DetailMovie /> }
-
+      { path: "movielist/:id", element: <DetailMovie /> },
+      { path: "totalslide", element: <TotalSlide /> },
     ],
   },
 

@@ -25,7 +25,7 @@ const Room = () => {
 
   useEffect(() => {
     console.log("🔄 Rooms updated in Room.js:", rooms);
-  }, [rooms]); // Kiểm tra rooms có được cập nhật không
+  }, [rooms]); 
 
   const handleEdit = useCallback((room) => {
     setEditingRoom(room);
@@ -46,7 +46,7 @@ const Room = () => {
   return (
     <div className="room-container">
       <RoomList
-        rooms={rooms} // 🔥 Truyền rooms vào RoomList
+        rooms={rooms}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         handleDetail={handleDetail}

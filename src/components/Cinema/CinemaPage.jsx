@@ -11,7 +11,11 @@ const CinemaPage = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [selectedCinema, setSelectedCinema] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(dayjs().format("YYYY-MM-DD"));
+  const [selectedShowtime, setSelectedShowtime] = useState(null);
+
+  const [selectedDate, setSelectedDate] = useState(
+    dayjs().format("YYYY-MM-DD")
+  );
   const [movies, setMovies] = useState([]);
   const [cinemas, setCinemas] = useState([]);
   const [showtimes, setShowtimes] = useState([]);
@@ -72,12 +76,48 @@ const CinemaPage = () => {
     }
   }, [location.state]);
 
+  //luu tạm
+  useEffect(() => {
+    const bookingData = {
+      selectedDate,
+      selectedMovie,
+      selectedCinema,
+      selectedShowtime, // ✅ Thêm suất chiếu đã chọn vào lưu trữ
+    };
+    localStorage.setItem("bookingData", JSON.stringify(bookingData));
+  }, [selectedDate, selectedMovie, selectedCinema, selectedShowtime]);
 
-  const startOfWeek = dayjs().add(currentWeek * 7, "day").startOf("week");
+  // useEffect(() => {
+  //   const savedBooking = localStorage.getItem("bookingData");
+  //   if (savedBooking) {
+  //     const { selectedDate, selectedMovie, selectedCinema } =
+  //       JSON.parse(savedBooking);
+
+  //     if (selectedDate) setSelectedDate(selectedDate);
+  //     if (selectedMovie) setSelectedMovie(selectedMovie);
+  //     if (selectedCinema) setSelectedCinema(selectedCinema);
+  //   }
+  // }, []);
+  const startOfWeek = dayjs()
+    .add(currentWeek * 7, "day")
+    .startOf("week");
   const weekDays = Array.from({ length: 7 }, (_, index) =>
     startOfWeek.add(index, "day")
   );
-
+  const handleNextStep = () => {
+    if (!selectedDate || !selectedCinema || !selectedMovie) {
+      alert("Vui lòng chọn đầy đủ Ngày, Rạp và Phim trước khi tiếp tục!");
+      return;
+    }
+    const firstShowtime = showtimes.find(
+      (showtime) => showtime.movie._id === selectedMovie._id
+    );
+    if (!firstShowtime) {
+      alert("Không có suất chiếu cho phim này!");
+      return;
+    }
+    navigate(`/totalslide/${firstShowtime._id}`);
+  };
   return (
     <div className="cinema-container">
       <div className="movie-detail-header">
@@ -94,8 +134,9 @@ const CinemaPage = () => {
                 key={index}
                 item
                 xs={1.5}
-                className={`date-item ${selectedDate === day.format("YYYY-MM-DD") ? "active" : ""
-                  }`}
+                className={`date-item ${
+                  selectedDate === day.format("YYYY-MM-DD") ? "active" : ""
+                }`}
                 onClick={() =>
                   setSelectedDate(
                     selectedDate === day.format("YYYY-MM-DD")
@@ -146,9 +187,13 @@ const CinemaPage = () => {
                 <div
                   key={cinema._id}
                   className={`cinema-option ${selectedCinema === cinema ? "active" : ""}`}
-                  onClick={() => setSelectedCinema(selectedCinema === cinema ? null : cinema)}
+                  onClick={() =>
+                    setSelectedCinema(selectedCinema === cinema ? null : cinema)
+                  }
                 >
-                  {selectedCinema === cinema && <span className="checkmark">✓</span>}
+                  {selectedCinema === cinema && (
+                    <span className="checkmark">✓</span>
+                  )}
                   {cinema.name}
                 </div>
               ))}
@@ -162,9 +207,13 @@ const CinemaPage = () => {
                 <div
                   key={movie._id}
                   className={`movie-option ${selectedMovie === movie ? "active" : ""}`}
-                  onClick={() => setSelectedMovie(selectedMovie === movie ? null : movie)}
+                  onClick={() =>
+                    setSelectedMovie(selectedMovie === movie ? null : movie)
+                  }
                 >
-                  {selectedMovie === movie && <span className="checkmark">✓</span>}
+                  {selectedMovie === movie && (
+                    <span className="checkmark">✓</span>
+                  )}
                   {movie.name}
                 </div>
               ))}
@@ -183,9 +232,28 @@ const CinemaPage = () => {
             <span className="summary-label">Rạp:</span>{" "}
             {selectedCinema?.name || "Chưa chọn"}
           </div>
+          {/* Nút Tiếp Theo */}
+          <Button
+            variant="contained"
+            color="primary"
+            style={{
+              marginTop: "10px",
+              backgroundColor: "#FF5733",
+              color: "white",
+              fontWeight: "bold",
+            }}
+            onClick={handleNextStep}
+          >
+            Tiếp theo
+          </Button>
         </div>
         <div className="showtime-wait">
-          <h3>Giờ chiếu <span className="text-display">Thời gian có thể chênh lệch 15 phút</span></h3>
+          <h3>
+            Giờ chiếu{" "}
+            <span className="text-display">
+              Thời gian có thể chênh lệch 15 phút
+            </span>
+          </h3>
         </div>
         {selectedDate && selectedCinema ? (
           showtimes.length > 0 ? (
@@ -195,10 +263,22 @@ const CinemaPage = () => {
                   <h4
                     className="movieshowtime-title"
                     onClick={() => navigate(`/movie/${selectedMovie._id}`)}
-                    style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
                   >
                     {selectedMovie.name}
-                    <RightOutlined style={{ fontSize: 14, backgroundColor: "white", padding: "5px", border: "1px solid black" }} />
+                    <RightOutlined
+                      style={{
+                        fontSize: 14,
+                        backgroundColor: "white",
+                        padding: "5px",
+                        border: "1px solid black",
+                      }}
+                    />
                   </h4>
 
                   <dl className="showtime-list">
@@ -211,7 +291,18 @@ const CinemaPage = () => {
                               showtime.movie._id === selectedMovie._id
                           )
                           .map((showtime) => (
-                            <li key={showtime._id} className="showtime-item">
+                            <li
+                              key={showtime._id}
+                              className={`showtime-item ${
+                                selectedShowtime?._id === showtime._id
+                                  ? "active"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                console.log("🟢 Selected Showtime:", showtime);
+                                setSelectedShowtime(showtime);
+                              }}
+                            >
                               <Link
                                 to={`/seatAvailable/${showtime._id}`}
                                 className="showtime-link"
@@ -221,7 +312,8 @@ const CinemaPage = () => {
                                 }}
                               >
                                 <p className="room-name">
-                                  {showtime.room.roomname}
+                                  {showtime.room.roomname} -
+                                  {showtime.room.roomtype}
                                 </p>
                                 <p className="showtime">
                                   {new Date(
@@ -281,7 +373,11 @@ const CinemaPage = () => {
                               .map((showtime) => (
                                 <li
                                   key={showtime._id}
-                                  className="showtime-item"
+                                  className={`showtime-item ${
+                                    selectedShowtime?._id === showtime._id
+                                      ? "active"
+                                      : ""
+                                  }`}
                                 >
                                   <Link
                                     to={`/seatAvailable/${showtime._id}`}
@@ -316,7 +412,9 @@ const CinemaPage = () => {
             <p className="select-warning">Không có suất chiếu cho ngày này</p>
           )
         ) : (
-          <p className="select-warning">Vui lòng chọn ngày và rạp để hiển thị suất chiếu</p>
+          <p className="select-warning">
+            Vui lòng chọn ngày và rạp để hiển thị suất chiếu
+          </p>
         )}
       </div>
     </div>

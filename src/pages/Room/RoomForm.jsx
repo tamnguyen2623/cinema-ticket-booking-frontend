@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Input, Select, Button, Spin } from "antd";
-import SeatMap from "../../components/Seat/SeatMap"; // 🛠 Import SeatMap
+import SeatMap from "../../components/Seat/SeatMap";
 
 const { Option } = Select;
 
@@ -12,11 +12,9 @@ const RoomForm = ({
   cinemas,
   loadingCinemas,
   isSubmitting,
-  roomDetail, // 🛠 Thêm roomDetail để hiển thị chi tiết
+  roomDetail,
 }) => {
   const [form] = Form.useForm();
-
-  // 🛠 Reset form mỗi khi mở lại modal
   useEffect(() => {
     if (isFormVisible) {
       form.setFieldsValue(
@@ -40,9 +38,8 @@ const RoomForm = ({
       open={isFormVisible}
       onCancel={handleCancel}
       footer={null}
-      width={roomDetail ? "80%" : "50%"} // 🛠 Mở rộng khi xem chi tiết phòng
+      width={roomDetail ? "80%" : "50%"}
     >
-      {/* Nếu đang xem chi tiết phòng thì hiển thị thông tin và Seat Map */}
       {roomDetail ? (
         <div>
           <p>
@@ -66,8 +63,6 @@ const RoomForm = ({
           <p>
             <strong>Updated At:</strong> {roomDetail.room?.updatedAt}
           </p>
-
-          {/* 🛠 Hiển thị Seat Map nếu có dữ liệu phòng */}
           <h3 style={{ marginTop: 20 }}>Seat Map</h3>
           <SeatMap roomInfo={roomDetail.room} />
 
@@ -77,7 +72,6 @@ const RoomForm = ({
         </div>
       ) : (
         <Form form={form} layout="vertical" onFinish={onFinish}>
-          {/* Chọn Rạp (Cinema) */}
           <Form.Item
             name="cinema"
             label="Cinema"
@@ -95,8 +89,6 @@ const RoomForm = ({
               </Select>
             )}
           </Form.Item>
-
-          {/* Nhập Tên Phòng */}
           <Form.Item
             name="roomname"
             label="Room Name"
@@ -104,8 +96,6 @@ const RoomForm = ({
           >
             <Input placeholder="Enter Room Name" />
           </Form.Item>
-
-          {/* Chọn Loại Phòng */}
           <Form.Item
             name="roomtype"
             label="Room Type"
@@ -119,18 +109,12 @@ const RoomForm = ({
               <Option value="ScreenX">ScreenX</Option>
             </Select>
           </Form.Item>
-
-          {/* Nhập Số Hàng */}
           <Form.Item name="row" label="Number of Rows">
             <Input type="number" min={1} max={300} />
           </Form.Item>
-
-          {/* Nhập Số Cột */}
           <Form.Item name="colum" label="Number of Columns">
             <Input type="number" min={1} max={300} />
           </Form.Item>
-
-          {/* Nút Hành Động */}
           <div className="modalFooter">
             <Button onClick={handleCancel} style={{ marginRight: 8 }}>
               Cancel

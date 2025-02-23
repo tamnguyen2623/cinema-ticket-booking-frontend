@@ -11,7 +11,7 @@ import "../../components/styles/RoomList.css";
 const { Option } = Select;
 
 const RoomList = ({
-  rooms, // ✅ Nhận danh sách phòng từ props
+  rooms,
   handleEdit,
   handleDelete,
   handleDetail,
@@ -20,10 +20,6 @@ const RoomList = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCinema, setSelectedCinema] = useState("");
-
-  console.log("📌 Rendering RoomList with rooms:", rooms);
-
-  // 🔄 **Lọc danh sách rooms ngay trong state, không cần gọi API**
   const filteredRooms = useMemo(() => {
     return rooms.filter(
       (room) =>
@@ -80,8 +76,6 @@ const RoomList = ({
   return (
     <div className="container">
       <div className="title-list">Rooms List</div>
-
-      {/* 🔎 Thanh tìm kiếm & bộ lọc */}
       <div className="search-filter-add-container">
         <div className="search-filter-container">
           <Input
@@ -113,8 +107,6 @@ const RoomList = ({
           Add Room
         </Button>
       </div>
-
-      {/* 📝 Danh sách phòng */}
       <Table
         className="room-table"
         dataSource={filteredRooms}
