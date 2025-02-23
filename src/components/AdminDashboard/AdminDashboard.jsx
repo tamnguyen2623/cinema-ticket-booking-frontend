@@ -74,7 +74,7 @@ const DashBoard = () => {
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/booking")}`}>
-            <Link to="/admin/booking">
+            <Link to="/admin/">
               <FontAwesomeIcon icon={faClipboardList} className="menu-icon" />
               <span>Booking</span>
             </Link>

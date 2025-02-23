@@ -6,7 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import './Header.css'
 
 const Header = () => {
-    const { auth, setAuth } = useContext(AuthContext); // Lấy thông tin từ context
+    const { auth, setAuth } = useContext(AuthContext); 
     const navigate = useNavigate();
 
     const [isLoggingOut, SetLoggingOut] = useState(false);

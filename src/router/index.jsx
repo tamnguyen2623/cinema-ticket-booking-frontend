@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "../layout/AdminLayout";
 import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer"
-import Cinema from "../pages/Cinema";
+import Cinema from "../pages/CinemaCustomer/CinemaCustomer";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Movie from "../pages/Movie";
