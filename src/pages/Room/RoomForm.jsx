@@ -19,13 +19,13 @@ const RoomForm = ({
     if (isFormVisible) {
       form.setFieldsValue(
         roomDetail ||
-          editingRoom || {
-            roomname: "",
-            roomtype: "Standard",
-            row: 1,
-            colum: 1,
-            cinema: undefined,
-          }
+        editingRoom || {
+          roomname: "",
+          roomtype: "Standard",
+          row: 1,
+          colum: 1,
+          cinema: undefined,
+        }
       );
     }
   }, [isFormVisible, editingRoom, roomDetail, form]);
@@ -35,6 +35,7 @@ const RoomForm = ({
       title={
         roomDetail ? "Room Details" : editingRoom ? "Edit Room" : "Create Room"
       }
+
       open={isFormVisible}
       onCancel={handleCancel}
       footer={null}
@@ -124,6 +125,7 @@ const RoomForm = ({
               htmlType="submit"
               loading={isSubmitting}
               disabled={isSubmitting}
+              className="custom-edit-btn"
             >
               {editingRoom ? "Save Changes" : "Create Room"}
             </Button>

@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
-import { Link, useLocation, Navigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useLocation, Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import "./AdminDashboard.css";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRightFromBracket,
@@ -14,10 +15,12 @@ import {
   faCommentDots,
   faGift,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 const DashBoard = () => {
   const location = useLocation();
-  const { auth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext); // Lấy thông tin từ context
+  const navigate = useNavigate();
 
   if (!auth.token || auth.role !== "admin") {
     return <Navigate to="/" replace />;
@@ -25,6 +28,31 @@ const DashBoard = () => {
 
   const isActive = (path) => (location.pathname === path ? "active-link" : "");
 
+  const [isLoggingOut, SetLoggingOut] = useState(false);
+  const onLogout = async () => {
+    try {
+      SetLoggingOut(true);
+      const response = await axios.get("/auth/logout");
+      setAuth({ username: null, email: null, role: null, token: null });
+      sessionStorage.clear();
+      toast.success("Logout successful!", {
+        position: "top-center",
+        autoClose: 2000,
+        pauseOnHover: false,
+      });
+      navigate("/movieshowing");
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Error", {
+        position: "top-center",
+        autoClose: 2000,
+        pauseOnHover: false,
+      });
+    } finally {
+      SetLoggingOut(false);
+    }
+  };
   return (
     <nav className="sidebar">
       <header className="sidebar-header">
@@ -135,13 +163,13 @@ const DashBoard = () => {
             </Link>
           </li>
           <li className="nav-link button-logou">
-            <Link to="/logout">
-              <FontAwesomeIcon
-                icon={faRightFromBracket}
-                className="logout-icon"
-              />
-              <span>Logout</span>
-            </Link>
+            <Link to="/logout"
+              onClick={() => onLogout()}
+              className="logout-button"
+              disabled={isLoggingOut}
+            >
+              {isLoggingOut ? "Processing..." : "Đăng Xuất"}</Link>
+
           </li>
         </ul>
       </div>

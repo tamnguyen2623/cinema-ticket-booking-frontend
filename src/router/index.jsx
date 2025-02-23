@@ -96,6 +96,9 @@ const router = createBrowserRouter([
       { path: "/admin/ticket", element: <Tickets /> },
       { path: "/admin/voucher", element: <VoucherPage /> },
       { path: "/admin/movieshowing", element: <MovieShowing /> },
+      { path: "/admin/showtime", element: <ShowtimePage /> },
+      { path: "/admin/movietype", element: <MovietypePage /> },
+      { path: "/admin/combo", element: <ComboPage /> },
     ],
   },
 
