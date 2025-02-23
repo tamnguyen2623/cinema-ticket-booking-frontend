@@ -85,8 +85,8 @@ const DashBoard = () => {
               <span>Booking</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/admin/users")}`}>
-            <Link to="/admin/users">
+          <li className={`nav-link ${isActive("/admin/user")}`}>
+            <Link to="/admin/user">
               <FontAwesomeIcon icon={faUsers} className="menu-icon" />
               <span>Users</span>
             </Link>

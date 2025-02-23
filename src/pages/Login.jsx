@@ -157,21 +157,21 @@ const Login = () => {
     SetLoggingIn(true);
     try {
       const response = await axios.post("/auth/login", data);
-      console.log("data", response);
+      // console.log("data", response);
       // Lưu thông tin đăng nhập vào AuthContext
       setAuth((prev) => ({
         ...prev,
         token: response.data.token,
         role: response.data.role, // Lưu vai trò của người dùng
       }));
-
+      console.log( response.data.role)
       // Hiển thị thông báo đăng nhập thành công
       toast.success("Login successful!", {
         position: "top-center",
         autoClose: 2000,
         pauseOnHover: false,
       });
-      console.log("admin", response.data.role);
+      console.log("role", response.data.role);
       // Điều hướng dựa trên vai trò của người dùng
       if (response.data.role === "admin") {
         navigate("/admin/ticketmanagement"); // Nếu là Admin, vào trang Admin
