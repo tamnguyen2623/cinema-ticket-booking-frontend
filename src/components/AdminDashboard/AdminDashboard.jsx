@@ -45,7 +45,7 @@ const DashBoard = () => {
         <ul className="menu-links">
           <li className={`nav-link ${isActive("/admin/dashboard")}`}>
             <Link to="/admin/dashboard">
-              <FontAwesomeIcon icon={faFilm} className="menu-icon" />
+              <FontAwesomeIcon icon={faChartBar} className="menu-icon" />
               <span>Dashboard</span>
             </Link>
           </li>
@@ -73,8 +73,14 @@ const DashBoard = () => {
               <span>Room</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/booking")}`}>
-            <Link to="/booking">
+          <li className={`nav-link ${isActive("/admin/seat")}`}>
+            <Link to="/admin/seat">
+              <FontAwesomeIcon icon={faTicketAlt} className="menu-icon" />
+              <span>Seat</span>
+            </Link>
+          </li>
+          <li className={`nav-link ${isActive("/admin/booking")}`}>
+            <Link to="/admin/booking">
               <FontAwesomeIcon icon={faClipboardList} className="menu-icon" />
               <span>Booking</span>
             </Link>
@@ -115,7 +121,7 @@ const DashBoard = () => {
               <span>Voucher</span>
             </Link>
           </li>
-         
+
           <li className={`nav-link ${isActive("/admin/movietype")}`}>
             <Link to="/admin/movietype">
               <FontAwesomeIcon icon={faGift} className="menu-icon" />
