@@ -38,7 +38,7 @@ import MovieShowingCustomer from "../components/MovieList/MovieList";
 import BookingTicketCustomer from "../components/Cinema/CinemaPage";
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
-
+  console.log("Auth role:", auth.role); 
   if (!auth.token || auth.role !== "admin") {
     return <Navigate to="/login" replace />;
   }

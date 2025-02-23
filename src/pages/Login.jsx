@@ -144,7 +144,7 @@ const Login = () => {
         autoClose: 2000,
         pauseOnHover: false,
       });
-      navigate("/"); // Redirect only if token exists
+       navigate("/"); // Redirect only if token exists
     }
     setIsLoading(false); // Loading is complete
   }, [navigate, setAuth]);
@@ -164,7 +164,7 @@ const Login = () => {
         token: response.data.token,
         role: response.data.role, // Lưu vai trò của người dùng
       }));
-      console.log( response.data.role)
+      console.log("Set auth role:", response.data.role); // Check ngay sau login
       // Hiển thị thông báo đăng nhập thành công
       toast.success("Login successful!", {
         position: "top-center",

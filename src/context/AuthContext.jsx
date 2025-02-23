@@ -30,7 +30,8 @@ const AuthContextProvider = ({ children }) => {
 				email: response.data.data.email,
 				role: response.data.data.role
 			}
-
+			setAuth(updatedAuth);
+			console.log("Updated auth:", updatedAuth); // Check role
 			if (
 				updatedAuth.username !== auth.username ||
 				updatedAuth.email !== auth.email ||
