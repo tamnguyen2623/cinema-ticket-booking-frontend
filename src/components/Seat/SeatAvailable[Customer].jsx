@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getSeatAvailablesBymovieShowingId } from "../api/seatAvailable";
 import { useParams } from "react-router-dom";
 import axios from "axios";
