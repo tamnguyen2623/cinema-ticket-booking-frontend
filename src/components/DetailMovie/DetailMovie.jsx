@@ -165,12 +165,12 @@ const MovieDetail = () => {
                         <div className="movie-detail-inf-wrapper">
                             <p><span className="label"> Thời lượng:</span> <span className="value">{movie.length} phút</span></p>
                             <div className="movie-meta-info">
-                                <p><span className="label"> Thể loại: </span><span className="value">{movie.releaseDate || "Hành Động, Khoa Học Viễn Tưởng"}</span></p>
+                                <p><span className="label"> Thể loại: </span><span className="value">{movie.movieType.name || "Hành Động, Khoa Học Viễn Tưởng"}</span></p>
                                 <p><span className="label"> Ngày khởi chiếu:</span> <span className="value">{movie.releaseDate || "Đang cập nhật"}</span></p>
                             </div>
                             <p><span className="label"> Giá vé:</span> <span className="value">{movie.price} $</span></p>
-                            <p><span className="label"> Đạo diễn:</span> <span className="value">{movie.director || "Anthony Russo, Joe Russo"}</span></p>
-                            <p><span className="label"> Diễn viên:</span> <span className="value">{movie.cast || "Robert Downey Jr, Chris Evans, Scarlett Johansson, Chris Hemsworth"}</span></p>
+                            <p><span className="label"> Đạo diễn:</span> <span className="value">{movie.director || "Jack 97"}</span></p>
+                            <p><span className="label"> Diễn viên:</span> <span className="value">{movie.actor || "Robert Downey Jr, Chris Evans, Scarlett Johansson, Chris Hemsworth"}</span></p>
                         </div>
                     </div>
                 </div>
