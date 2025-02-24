@@ -25,7 +25,7 @@ const MovieLists = ({ movies, search, handleDelete, handleUpdate }) => {
             <p className="text-sm text-gray-600">🎭 Type: {movie.movieType.name || "Unknown"}</p>
             <p className="text-sm text-gray-600">🎬 Actor: {movie.actor || "Not Available"}</p>
             <p className="text-sm">⏳ Length: {movie.length || "-"} min.</p>
-            <p className="text-sm">💰 Ticket Price: {movie.price || "-"} VND</p>
+            {/* <p className="text-sm">💰 Ticket Price: {movie.price || "-"} VND</p> */}
             <p className="text-sm">
               📜 Description:{" "}
               {movie.description

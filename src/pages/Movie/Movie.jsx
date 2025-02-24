@@ -393,7 +393,7 @@ const Movie = () => {
               </div>
               <div className="pt-1 text-right">{`${hr}h ${min}m / ${sumMin}m `}</div>
             </div>
-            <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center">
+            {/* <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center">
               <label className="text-lg font-semibold leading-5">Price:</label>
               <input
                 type="number"
@@ -403,7 +403,7 @@ const Movie = () => {
                   required: true,
                 })}
               />
-            </div>
+            </div> */}
             <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center">
               <label className="text-lg font-semibold leading-5">
                 Actor:
