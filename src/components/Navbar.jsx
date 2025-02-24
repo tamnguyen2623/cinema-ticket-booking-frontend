@@ -285,9 +285,9 @@ const Navbar = () => {
             ),
             (
               <Link
-                to={"/ticket"}
+                to={"/"}
                 className={`flex items-center justify-center gap-2 rounded-md px-2 py-1 text-white hover:bg-gray-500 ${
-                  window.location.pathname === "/ticket"
+                  window.location.pathname === "/"
                     ? "bg-gradient-to-br from-indigo-800 to-blue-700"
                     : "bg-gray-600"
                 }`}

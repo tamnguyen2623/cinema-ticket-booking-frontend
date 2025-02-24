@@ -13,6 +13,7 @@ import {
   faChartBar,
   faCommentDots,
   faGift,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 const DashBoard = () => {
@@ -47,6 +48,12 @@ const DashBoard = () => {
             <Link to="/admin/dashboard">
               <FontAwesomeIcon icon={faChartBar} className="menu-icon" />
               <span>Dashboard</span>
+            </Link>
+          </li>
+          <li className={`nav-link ${isActive("/admin/role")}`}>
+            <Link to="/admin/role">
+              <FontAwesomeIcon icon={faUser} className="menu-icon" />
+              <span>Role</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/cinema")}`}>

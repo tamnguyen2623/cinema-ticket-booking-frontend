@@ -29,6 +29,7 @@ const AuthContextProvider = ({ children }) => {
 				fullname: response.data.data.fullname,
 				email: response.data.data.email,
 				role: response.data.data.roleId.name,
+				userId: response.data.data._id
 			}
 			if (
 				updatedAuth.username !== auth.username ||
