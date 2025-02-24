@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
+import logo from '../../assets/logo.png'
 import './Header.css'
+import { Height } from "@mui/icons-material";
 
 const Header = () => {
-    const { auth, setAuth } = useContext(AuthContext); 
+    const { auth, setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [isLoggingOut, SetLoggingOut] = useState(false);
@@ -60,9 +62,11 @@ const Header = () => {
             <div className="header-image">
                 <div className="logo-container">
                     <img
-                        src="https://media.lottecinemavn.com/Media/WebAdmin/ccc95ee5b9274a12ba3e51317250dcbe.png"
+                        src={logo}
                         alt="Header"
+                        style={{ height: "90px" }} 
                     />
+
                 </div>
                 {auth && (
                     <div className="border-text">

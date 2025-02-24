@@ -66,7 +66,7 @@ const MovieList = () => {
           </SwiperSlide>
           <SwiperSlide>
             <img
-              src="https://media.lottecinemavn.com/Media/WebAdmin/9caa4aa057064aadbac62288176507c8.jpg"
+              src="https://media.lottecinemavn.com/Media/WebAdmin/9e27c3018ad54fb39a1cdd27fdd828d6.jpg"
               alt="Slide 3"
             />
           </SwiperSlide>

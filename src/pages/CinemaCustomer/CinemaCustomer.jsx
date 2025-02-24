@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 
 const CinemaCustomer = () => {
@@ -12,6 +13,8 @@ const CinemaCustomer = () => {
   const [modalType, setModalType] = useState(null);
   const [currentCinema, setCurrentCinema] = useState(null);
   const [form] = Form.useForm();
+  const { auth } = useContext(AuthContext)
+
 
   const fetchCinema = async () => {
     try {
@@ -46,7 +49,10 @@ const CinemaCustomer = () => {
       const values = await form.validateFields();
       const formattedValues = { name: values.name, address: values.address };
       await axios.post("http://localhost:8080/cinema", formattedValues, {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.token}`
+        },
       });
       setModalType(null);
       form.resetFields();
@@ -59,7 +65,11 @@ const CinemaCustomer = () => {
   const handleDelete = async (id) => {
     try {
       setLoading(true);
-      await axios.delete(`http://localhost:8080/cinema/${id}`);
+      await axios.delete(`http://localhost:8080/cinema/${id}`, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
       fetchCinema();
     } catch (error) {
       setError(error.message);
@@ -83,7 +93,11 @@ const CinemaCustomer = () => {
     try {
       const values = await form.validateFields();
       const updatedCinema = { name: values.name, address: values.address };
-      await axios.put(`http://localhost:8080/cinema/${currentCinema._id}`, updatedCinema);
+      await axios.put(`http://localhost:8080/cinema/${currentCinema._id}`, updatedCinema, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
       fetchCinema();
       setModalType(null);
       form.resetFields();

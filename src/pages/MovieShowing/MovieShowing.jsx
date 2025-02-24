@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import {
   Table,
@@ -21,6 +21,8 @@ import {
 import moment from "moment";
 import SeatAvailable from "../../components/Seat/SeatAvailable[Admin]";
 import { createSeatAvailable } from "../../components/api/seatAvailable";
+import { AuthContext } from "../../context/AuthContext";
+
 
 const MovieShowingList = () => {
   const [movieShowings, setMovieShowings] = useState([]);
@@ -37,6 +39,8 @@ const MovieShowingList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterDate, setFilterDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { auth } = useContext(AuthContext)
+
 
   const handleDateChange = (date, dateString) => {
     setFilterDate(dateString);
@@ -94,7 +98,11 @@ const MovieShowingList = () => {
       if (modalType === "add") {
         const response = await axios.post(
           "http://localhost:8080/movieshowing/",
-          newMovieShowing
+          newMovieShowing, {
+            headers: {
+              Authorization: `Bearer ${auth.token}`
+            }
+          }
         );
         if (response.data.success) {
           await createSeatAvailable({
@@ -106,7 +114,11 @@ const MovieShowingList = () => {
       } else if (modalType === "edit") {
         const response = await axios.put(
           `http://localhost:8080/movieshowing/${currentMovieShowing._id}`,
-          newMovieShowing
+          newMovieShowing, {
+            headers: {
+              Authorization: `Bearer ${auth.token}`
+            }
+          }
         );
         if (response.data.success) {
           fetchData();
@@ -144,7 +156,11 @@ const MovieShowingList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/movieshowing/${id}`);
+      await axios.delete(`http://localhost:8080/movieshowing/${id}`,{
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
       setMovieShowings((prev) => prev.filter((item) => item._id !== id));
     } catch (error) {
       console.error("Lỗi khi xóa suất chiếu:", error);

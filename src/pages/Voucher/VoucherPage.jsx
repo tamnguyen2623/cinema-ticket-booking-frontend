@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Table, Tag, Button, Popconfirm, Modal, Form, Input, InputNumber, DatePicker } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
+import moment from "moment";
 import "./VoucherPage.css";
 
 const VoucherPage = () => {
@@ -11,6 +13,7 @@ const VoucherPage = () => {
   const [statusFilter, setStatusFilter] = useState(null);
   const [currentVoucher, setCurrentVoucher] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const { auth } = useContext(AuthContext)
 
 
   useEffect(() => {
@@ -43,7 +46,10 @@ const VoucherPage = () => {
       console.log("Dữ liệu gửi đi:", formattedValues);
 
       await axios.post("http://localhost:8080/voucher/add", formattedValues, {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.token}`
+        },
       });
       fetchVouchers();
       setModalType(null);
@@ -64,7 +70,11 @@ const VoucherPage = () => {
         expiredDate: values.expiredDate.format("YYYY-MM-DD"),
       };
 
-      await axios.put(`http://localhost:8080/voucher/update/${currentVoucher._id}`, updatedVoucher);
+      await axios.put(`http://localhost:8080/voucher/update/${currentVoucher._id}`, updatedVoucher, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
       fetchVouchers();
       setModalType(null);
     } catch (error) {
@@ -85,18 +95,23 @@ const VoucherPage = () => {
 
   const handleEditClick = (voucher) => {
     setCurrentVoucher(voucher);
-    setModalType("edit");
     form.setFieldsValue({
       code: voucher.code,
       discount: voucher.discount,
       description: voucher.description,
       expiredDate: voucher.expiredDate ? moment(voucher.expiredDate) : null,
     });
+    setModalType("edit"); 
   };
+
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/voucher/delete/${id}`);
+      await axios.delete(`http://localhost:8080/voucher/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
       fetchVouchers();
     } catch (error) {
       console.error("Lỗi khi xóa voucher:", error);
@@ -165,7 +180,7 @@ const VoucherPage = () => {
 
   return (
     <div className="content">
-      
+
       <Input
         placeholder="Tìm theo mã voucher..."
         prefix={<SearchOutlined />}
@@ -199,13 +214,6 @@ const VoucherPage = () => {
             rules={[{ required: true, message: "Nhập mức giảm giá!" }]}
           >
             <InputNumber min={1} max={100} addonAfter="%" />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Mô Tả"
-            rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
-          >
-            <Input />
           </Form.Item>
           <Form.Item
             name="expiredDate"
