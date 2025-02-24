@@ -200,7 +200,7 @@ const Dashboard = () => {
               Total Revenue
             </span>
             <span className="text-4xl font-bold text-indigo-900">
-              {formatNumber(totalRevenue)} VND
+              {formatNumber(totalRevenue)} $
             </span>
           </div>
         </div>
