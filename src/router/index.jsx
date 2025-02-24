@@ -21,7 +21,6 @@ import User from "../pages/User";
 import MovieDetail from "../pages/MovieDetail";
 import Order from "../pages/Order";
 import Dashboard from "../pages/Dashboard";
-// import Room from "../pages/Room";
 import Room from "../pages/Room/Room";
 import Seat from "../pages/Seat";
 import VoucherPage from "../pages/Voucher/VoucherPage";
@@ -96,6 +95,9 @@ const router = createBrowserRouter([
       { path: "/admin/ticket", element: <Tickets /> },
       { path: "/admin/voucher", element: <VoucherPage /> },
       { path: "/admin/movieshowing", element: <MovieShowing /> },
+      { path: "/admin/showtime", element: <ShowtimePage /> },
+      { path: "/admin/movietype", element: <MovietypePage /> },
+      { path: "/admin/combo", element: <ComboPage /> },
     ],
   },
 

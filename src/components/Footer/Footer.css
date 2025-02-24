@@ -97,11 +97,12 @@
 }
 
 
-.banners {
+.banner {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    margin-bottom: 10px;
 }
 
 .banner img,
