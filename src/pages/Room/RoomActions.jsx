@@ -34,7 +34,6 @@ export const handleDeleteRoom = async (roomId, setRooms, token) => {
       description: "You are not authorized to delete a room.",
     });
   }
-
   try {
     await deleteRoom(token, roomId);
     const updatedRooms = await fetchRooms(token);

@@ -1,0 +1,52 @@
+.ticketListContainer {
+  flex-direction: column;
+  margin: 20px 20px;
+}
+.title-ticket {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 20px 0 10px 0;
+  text-align: center;
+}
+.searchFilterContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.searchInput {
+  width: 250px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.filterSelect {
+  width: 200px;
+  border-radius: 5px;
+}
+
+.actionButton {
+  color: white !important;
+  margin-right: 8px;
+  border: none;
+}
+
+.infoButton {
+  background-color: #1acc3b !important;
+}
+
+.editButton {
+  background-color: #faad14 !important;
+}
+
+.deleteButton {
+  background-color: #ff4d4f !important;
+}
+
+.addTicketButton {
+  background-color: #1890ff !important;
+  color: white !important;
+  font-weight: bold;
+}

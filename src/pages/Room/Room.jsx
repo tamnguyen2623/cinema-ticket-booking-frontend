@@ -23,9 +23,7 @@ const Room = () => {
     loadRoomsAndCinemas(setCinemas, setRooms, setLoadingCinemas, auth.token);
   }, [auth.token]);
 
-  useEffect(() => {
-    console.log("🔄 Rooms updated in Room.js:", rooms);
-  }, [rooms]); 
+  useEffect(() => {}, [rooms]);
 
   const handleEdit = useCallback((room) => {
     setEditingRoom(room);

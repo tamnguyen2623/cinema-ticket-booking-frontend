@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import AdminLayout from "../layout/AdminLayout";
-import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer"
+import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer";
 import Cinema from "../pages/CinemaCustomer/CinemaCustomer";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -17,16 +17,16 @@ import Register from "../pages/Register";
 import Schedule from "../pages/Schedule";
 import Search from "../pages/Search";
 import Tickets from "../pages/Tickets";
+import Ticket from "../pages/TicketPrice/Ticket";
 import User from "../pages/User";
 import MovieDetail from "../pages/MovieDetail";
 import Order from "../pages/Order";
 import Dashboard from "../pages/Dashboard";
-// import Room from "../pages/Room";
 import Room from "../pages/Room/Room";
 import Seat from "../pages/Seat";
 import VoucherPage from "../pages/Voucher/VoucherPage";
 import Booking from "../pages/Booking";
-import Ticket from "../pages/Ticket";
+// import Ticket from "../pages/Ticket";
 import TotalSlide from "../pages/TotalSlide";
 import MovieList from "../components/MovieList/MovieList";
 import DetailMovie from "../components/DetailMovie/DetailMovie";
@@ -96,6 +96,9 @@ const router = createBrowserRouter([
       { path: "/admin/ticket", element: <Tickets /> },
       { path: "/admin/voucher", element: <VoucherPage /> },
       { path: "/admin/movieshowing", element: <MovieShowing /> },
+      { path: "/admin/showtime", element: <ShowtimePage /> },
+      { path: "/admin/movietype", element: <MovietypePage /> },
+      { path: "/admin/combo", element: <ComboPage /> },
     ],
   },
 

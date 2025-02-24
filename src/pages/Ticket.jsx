@@ -64,7 +64,7 @@ const Ticket = () => {
 
   useEffect(() => {
     let filteredData = tickets;
-
+    console.log("object", filteredData);
     if (searchTerm) {
       filteredData = filteredData.filter(
         (ticket) =>
@@ -78,10 +78,11 @@ const Ticket = () => {
         (ticket) => ticket.roomType === filter
       );
     }
-
     setFilteredTickets(filteredData);
   }, [searchTerm, filter, tickets]);
-
+  const uniqueRoomTypes = [
+    ...new Set(tickets.map((ticket) => ticket.roomType)),
+  ];
   const showModal = (ticket) => {
     if (ticket) {
       form.setFieldsValue(ticket);
@@ -230,7 +231,7 @@ const Ticket = () => {
           <div className="searchFilterContainer">
             <Input
               className="searchInput"
-              placeholder="Search by room or seat type"
+              placeholder="Search by room type or seat type"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -240,9 +241,9 @@ const Ticket = () => {
               onChange={(value) => setFilter(value)}
             >
               <Select.Option value="all">All Room Types</Select.Option>
-              {rooms.map((room) => (
-                <Select.Option key={room._id} value={room.roomname}>
-                  {room.roomname}
+              {uniqueRoomTypes.map((roomType, index) => (
+                <Select.Option key={index} value={roomType}>
+                  {roomType}
                 </Select.Option>
               ))}
             </Select>

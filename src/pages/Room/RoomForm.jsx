@@ -124,6 +124,7 @@ const RoomForm = ({
               htmlType="submit"
               loading={isSubmitting}
               disabled={isSubmitting}
+              className="custom-edit-btn"
             >
               {editingRoom ? "Save Changes" : "Create Room"}
             </Button>
