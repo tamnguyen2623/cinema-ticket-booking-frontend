@@ -36,9 +36,21 @@ const RoomList = ({
       key: "cinema",
       render: (cinema) => cinema?.name || "N/A",
     },
-    { title: "Type", dataIndex: "roomtype", key: "roomtype" },
-    { title: "Row", dataIndex: "row", key: "row" },
-    { title: "Column", dataIndex: "colum", key: "colum" },
+    {
+      title: "Type",
+      dataIndex: "roomtype",
+      key: "roomtype",
+    },
+    {
+      title: "Row",
+      dataIndex: "row",
+      key: "row",
+    },
+    {
+      title: "Column",
+      dataIndex: "colum",
+      key: "colum",
+    },
     {
       title: "Actions",
       key: "actions",
