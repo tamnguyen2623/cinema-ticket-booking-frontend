@@ -11,7 +11,7 @@ import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer";
 import Cinema from "../pages/CinemaCustomer/CinemaCustomer";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
-import Movie from "../pages/Movie";
+import Movie from "../pages/Movie/Movie";
 import Purchase from "../pages/Purchase";
 import Register from "../pages/Register";
 import Schedule from "../pages/Schedule";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaTicketAlt, FaMapMarkerAlt, FaHeadset } from "react-icons/fa";
-import './FloatingNavigation.css'; 
+import './FloatingNavigation.css';
 
 const FloatingNavigation = () => {
   const [position, setPosition] = useState(window.innerHeight * 0.7);
@@ -33,7 +33,7 @@ const FloatingNavigation = () => {
         <li>
           <Link to="/booking">
             <FaTicketAlt className="icon" />
-            <p> Đặt vé nhanh</p>
+            <p>Đặt vé nhanh</p>
           </Link>
         </li>
         <li>
@@ -48,11 +48,12 @@ const FloatingNavigation = () => {
             <p>Trung tâm khách hàng</p>
           </Link>
         </li>
-        <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          TOP <span className="arrow-up"></span>
-        </button>
       </ul>
+      <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        TOP <span className="arrow-up"></span>
+      </button>
     </div>
+
   );
 };
 

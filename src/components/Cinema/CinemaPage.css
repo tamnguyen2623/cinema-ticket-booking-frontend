@@ -284,8 +284,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    height: 200px;
+    height: 150px;
 }
 
 .date-picker-container button {
@@ -309,7 +308,7 @@
 
 .date-item:hover {
     background-color: #f0f0f0;
-    /* Màu khi hover */
+ 
 }
 
 .date-item.active {
@@ -327,3 +326,4 @@
     display: block; 
     width: fit-content; 
 }
+

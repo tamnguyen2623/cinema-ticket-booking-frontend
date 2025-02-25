@@ -117,7 +117,7 @@ const CinemaPage = () => {
         <div className="date-picker-container">
           <Button onClick={() => setCurrentWeek(currentWeek - 1)}>{"<"}</Button>
 
-          <Grid container spacing={5} justifyContent="center">
+          <Grid container spacing={2} justifyContent="center">
             {weekDays.map((day, index) => (
               <Grid
                 key={index}
