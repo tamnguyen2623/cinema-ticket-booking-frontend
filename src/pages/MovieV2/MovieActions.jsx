@@ -113,7 +113,6 @@ console.log(values)
       formData.append("img", values.img);
     }
 
-    // Kiểm tra nếu trailer là File, nếu không thì bỏ qua
     if (values.trailer && values.trailer instanceof File) {
       formData.append("trailer", values.trailer);
     }

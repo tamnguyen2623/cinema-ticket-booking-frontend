@@ -136,10 +136,10 @@ const MovieForm = ({
             <Upload
               accept="image/*"
               showUploadList={true}
-              maxCount={1} // Chỉ cho phép chọn 1 file
+              maxCount={1}
               beforeUpload={(file) => {
                 form.setFieldsValue({ img: file });
-                return false; // Ngăn không cho upload ngay lập tức
+                return false;
               }}
             >
               <Button icon={<UploadOutlined />}>Upload Image</Button>

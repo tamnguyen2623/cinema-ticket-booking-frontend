@@ -21,7 +21,7 @@ import Ticket from "../pages/TicketPrice/Ticket";
 import User from "../pages/User";
 import MovieDetail from "../pages/MovieDetail";
 import Order from "../pages/Order";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/DashboardAnalysis/Dashboard";
 import Room from "../pages/Room/Room";
 import Seat from "../pages/Seat";
 import VoucherPage from "../pages/Voucher/VoucherPage";
