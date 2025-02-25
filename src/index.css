@@ -19,3 +19,14 @@ body {
 	width: auto !important; /* Firefox will set width as auto */
 	width: 350px; /* As IE6 ignores !important it will set width as 1000px; */
 }
+.MuiPaper-root {
+    border: none !important;
+    box-shadow: none !important;
+	background-color: inherit !important;
+}
+.MuiCard-root {
+    border: none !important;
+    box-shadow: none !important;
+	background-color: inherit !important;
+}
+
