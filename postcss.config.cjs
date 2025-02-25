@@ -1,6 +1,7 @@
 module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+  plugins: [
+    require('postcss-nested'), // Đặt trước tailwindcss
+    require('tailwindcss'),
+    require('autoprefixer'),
+  ],
 };

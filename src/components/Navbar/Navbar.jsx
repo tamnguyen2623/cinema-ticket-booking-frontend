@@ -36,6 +36,14 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
+              to="/myticket/:userId"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              VÉ CỦA TÔI
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="/promotions"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
