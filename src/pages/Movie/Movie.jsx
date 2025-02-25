@@ -152,9 +152,8 @@ const Movie = () => {
         (parseInt(data.lengthHr) || 0) * 60 + (parseInt(data.lengthMin) || 0);
       const formData = new FormData();
       formData.append("name", data.name);
-      formData.append("price", data.price);
       formData.append("description", data.description);
-      formData.append("img", data.img[0]); // Assuming you're using a file input and registering with react-hook-form
+      formData.append("img", data.img[0]);
       formData.append("trailer", data.trailer[0]);
       formData.append("length", data.length);
       formData.append("movieType", data.movieType);
