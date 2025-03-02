@@ -1,0 +1,44 @@
+.voucher-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.voucher-slide {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.voucher-card {
+  width: 150px;
+}
+.voucher-card .ant-card-body {
+  border-radius: 10px;
+  text-align: left;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.voucher-card.selected {
+  border: 2px solid #ff4d4f;
+  background-color: #fff2f0;
+}
+.voucher-card.default {
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+.voucher-discount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ff4d4f;
+}
+.voucher-code {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ff4d4f;
+}
+.voucher-expiry {
+  font-size: 12px;
+  font-weight: bold;
+  color: #ff4d4f;
+}

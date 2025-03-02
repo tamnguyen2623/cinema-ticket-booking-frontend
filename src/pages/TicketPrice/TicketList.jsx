@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button, Input, Select } from "antd";
+import { Table, Button, Input, Select, Switch } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -7,6 +7,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import "../../components/styles/ticketStyle.css";
+import { handleToggleIsDelete } from "./TicketActions";
 
 const TicketList = ({
   tickets,
@@ -18,6 +19,8 @@ const TicketList = ({
   filter,
   setFilter,
   rooms,
+  auth,
+  fetchTickets,
 }) => {
   const columns = [
     { title: "Room Type", dataIndex: "roomType", key: "roomType" },
@@ -29,21 +32,40 @@ const TicketList = ({
       render: (_, record) => (
         <>
           <Button
-            icon={<InfoCircleOutlined />}
-            onClick={() => showDetailModal(record._id)}
-            className="actionButton infoButton"
-          />
-          <Button
             icon={<EditOutlined />}
             onClick={() => showModal(record)}
             className="actionButton editButton"
-          />
+          >
+            Update
+          </Button>
+
           <Button
+            icon={<InfoCircleOutlined />}
+            onClick={() => showDetailModal(record._id)}
+            className="actionButton infoButton"
+          >
+            Detail
+          </Button>
+
+          {/* <Button
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record._id)}
             className="actionButton deleteButton"
-          />
+          /> */}
         </>
+      ),
+    },
+    {
+      title: "Disabled",
+      key: "disabled",
+      render: (record) => (
+        <Switch
+          checked={record.isDelete}
+          className="custom-switch"
+          onChange={(checked) =>
+            handleToggleIsDelete(auth, record._id, checked, fetchTickets)
+          }
+        />
       ),
     },
   ];

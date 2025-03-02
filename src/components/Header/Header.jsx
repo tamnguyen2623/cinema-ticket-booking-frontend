@@ -10,6 +10,7 @@ import { Height } from "@mui/icons-material";
 const Header = () => {
     const { auth, setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
+    console.log(auth);
 
     const [isLoggingOut, SetLoggingOut] = useState(false);
     const onLogout = async () => {

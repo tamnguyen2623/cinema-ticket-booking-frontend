@@ -1,0 +1,123 @@
+.combo-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+.combo-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.combo-slider {
+  max-width: 900px;
+  margin: auto;
+  position: relative;
+}
+.combo-slide {
+  display: flex !important;
+  justify-content: center;
+  padding: 10px;
+}
+.combo-card {
+  width: 260px !important;
+  border-radius: 12px;
+  text-align: left;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+.combo-card:hover {
+  transform: translateY(-5px);
+}
+.combo-image {
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+.combo-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 40px;
+  white-space: normal;
+  color: #333;
+}
+.combo-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.combo-input {
+  width: 60px;
+  text-align: center;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+.left-arrow {
+  left: -50px;
+  width: 50px !important;
+  height: 50px;
+  color: #18a0e0;
+}
+.right-arrow {
+  right: -50px;
+  width: 50px !important;
+  height: 50px;
+  color: #18a0e0;
+}
+.right-arrow:hover,
+.left-arrow:hover {
+  color: dodgerblue !important;
+}
+.combo-button {
+  width: 100%;
+  font-weight: bold;
+  margin-top: 10px;
+  background: #18a0e0 !important;
+  border: none;
+  border-radius: 8px;
+  height: 40px;
+  margin-left: 20px;
+  transition: all 0.3s ease;
+}
+.combo-button:hover {
+  background: #18a0e0 !important;
+}
+.next-button,
+.confirm-button {
+  width: 100px;
+  margin-top: 20px;
+}
+.next-button:hover,
+.confirm-button:hover {
+  background: dodgerblue !important;
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Table, Button, Input, Select } from "antd";
+import { Table, Button, Input, Select, Switch } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
@@ -7,19 +7,23 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import "../../components/styles/RoomList.css";
+import { handleToggleStatus } from "./RoomActions";
 
 const { Option } = Select;
 
 const RoomList = ({
   rooms,
+  setRooms, // ✅ Thêm setRooms
   handleEdit,
   handleDelete,
   handleDetail,
   cinemas,
   handleAddRoom,
+  auth, // ✅ Thêm auth
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCinema, setSelectedCinema] = useState("");
+
   const filteredRooms = useMemo(() => {
     return rooms.filter(
       (room) =>
@@ -36,51 +40,55 @@ const RoomList = ({
       key: "cinema",
       render: (cinema) => cinema?.name || "N/A",
     },
-    {
-      title: "Type",
-      dataIndex: "roomtype",
-      key: "roomtype",
-    },
-    {
-      title: "Row",
-      dataIndex: "row",
-      key: "row",
-    },
-    {
-      title: "Column",
-      dataIndex: "colum",
-      key: "colum",
-    },
+    { title: "Type", dataIndex: "roomtype", key: "roomtype" },
+    { title: "Row", dataIndex: "row", key: "row" },
+    { title: "Column", dataIndex: "colum", key: "colum" },
     {
       title: "Actions",
       key: "actions",
       render: (record) => (
         <div className="action-buttons">
           <Button
-            type="primary"
-            size="small"
-            onClick={() => handleDetail(record._id)}
-            className="info-btn"
-          >
-            <InfoCircleOutlined />
-          </Button>
-          <Button
+            icon={<EditOutlined />}
             type="primary"
             size="small"
             onClick={() => handleEdit(record)}
             className="edit-btn"
           >
-            <EditOutlined />
+            Update
           </Button>
           <Button
+            icon={<InfoCircleOutlined />}
+            type="primary"
+            size="small"
+            onClick={() => handleDetail(record._id)}
+            className="info-btn"
+          >
+            Detail
+          </Button>
+
+          {/* <Button
             type="danger"
             size="small"
             onClick={() => handleDelete(record._id)}
             className="delete-btn"
           >
             <DeleteOutlined />
-          </Button>
+          </Button> */}
         </div>
+      ),
+    },
+    {
+      title: "Disabled",
+      key: "disabled",
+      render: (record) => (
+        <Switch
+          checked={record.status}
+          className="custom-switch"
+          onChange={(checked) =>
+            handleToggleStatus(auth.token, record._id, checked, setRooms)
+          }
+        />
       ),
     },
   ];

@@ -12,9 +12,9 @@ const Home = () => {
 	const [selectedMovieIndex, setSelectedMovieIndex] = useState(parseInt(sessionStorage.getItem('selectedMovieIndex')))
 	const [movies, setMovies] = useState([])
 	const [isFetchingMoviesDone, setIsFetchingMoviesDone] = useState(false)
-	const {id} = useParams();
+	const { id } = useParams();
 
-	
+
 
 	const fetchMovies = async (data) => {
 		try {
@@ -29,7 +29,7 @@ const Home = () => {
 			} else {
 				response = await axios.get('/movie/showing')
 			}
-			// console.log(response.data.data)
+
 			setMovies(response.data.data)
 		} catch (error) {
 			console.error(error)
@@ -43,7 +43,7 @@ const Home = () => {
 	}, [])
 
 	useEffect(() => {
-		if(id){
+		if (id) {
 			setSelectedMovieIndex(id)
 		}
 	}, [])
@@ -59,7 +59,7 @@ const Home = () => {
 		<div className="flex min-h-screen flex-col gap-4 bg-gradient-to-br from-indigo-900 to-blue-500 pb-8 sm:gap-8">
 			<Navbar />
 			<NowShowing {...props} />
-			{movies.find((movie)=>(movie._id===selectedMovieIndex))?.name && <TheaterListsByMovie {...props} />}
+			{movies.find((movie) => (movie._id === selectedMovieIndex))?.name && <TheaterListsByMovie {...props} />}
 		</div>
 	)
 }

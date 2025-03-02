@@ -1,0 +1,26 @@
+.content {
+  padding: 40px;
+}
+
+.custom-edit-btn {
+  background-color: #1890ff !important;
+  color: rgb(31, 29, 205) !important;
+  border-color: #1890ff;
+}
+
+.custom-edit-btn:hover {
+  opacity: 0.8;
+}
+
+.Tiltle{
+  text-align: center;
+}
+.custom-ok-btn {
+  background-color: #1890ff !important;
+  color: rgb(13, 52, 205) !important;
+  border-color: #1890ff;
+}
+
+.custom-ok-btn:hover {
+  opacity: 0.8;
+}
