@@ -23,7 +23,6 @@ import SeatAvailable from "../../components/Seat/SeatAvailable[Admin]";
 import { createSeatAvailable } from "../../components/api/seatAvailable";
 import { AuthContext } from "../../context/AuthContext";
 
-
 const MovieShowingList = () => {
   const [movieShowings, setMovieShowings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,8 +38,7 @@ const MovieShowingList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterDate, setFilterDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { auth } = useContext(AuthContext)
-
+  const { auth } = useContext(AuthContext);
 
   const handleDateChange = (date, dateString) => {
     setFilterDate(dateString);
@@ -62,12 +60,18 @@ const MovieShowingList = () => {
 
       setMovies(moviesRes.data.data || []);
       setCinemas(cinemasRes.data.data || []);
-      setRooms(roomsRes.data.rooms || []);
+
+      // ✅ Lọc rooms có status === false
+      const filteredRooms = (roomsRes.data.rooms || []).filter(
+        (room) => room.status === false
+      );
+      setRooms(filteredRooms);
+
       setShowtimes(Array.isArray(showtimesRes.data) ? showtimesRes.data : []);
       setMovieShowings(movieShowingsRes.data.data || []);
     } catch (err) {
       setError("Lỗi khi tải dữ liệu");
-      console.error("Error fetching data:", err);
+      console.error("❌ Error fetching data:", err);
     } finally {
       setLoading(false);
     }
@@ -98,10 +102,11 @@ const MovieShowingList = () => {
       if (modalType === "add") {
         const response = await axios.post(
           "http://localhost:8080/movieshowing/",
-          newMovieShowing, {
+          newMovieShowing,
+          {
             headers: {
-              Authorization: `Bearer ${auth.token}`
-            }
+              Authorization: `Bearer ${auth.token}`,
+            },
           }
         );
         if (response.data.success) {
@@ -114,10 +119,11 @@ const MovieShowingList = () => {
       } else if (modalType === "edit") {
         const response = await axios.put(
           `http://localhost:8080/movieshowing/${currentMovieShowing._id}`,
-          newMovieShowing, {
+          newMovieShowing,
+          {
             headers: {
-              Authorization: `Bearer ${auth.token}`
-            }
+              Authorization: `Bearer ${auth.token}`,
+            },
           }
         );
         if (response.data.success) {
@@ -128,8 +134,8 @@ const MovieShowingList = () => {
       setIsModalVisible(false);
       form.resetFields();
     } catch (error) {
-      setError('Lỗi khi xử lý suất chiếu');
-      console.error('Error:', error);
+      setError("Lỗi khi xử lý suất chiếu");
+      console.error("Error:", error);
       setError("Lỗi khi xử lý suất chiếu");
       console.error("Error:", error);
     }
@@ -150,16 +156,16 @@ const MovieShowingList = () => {
       showtimeId: movieShowing.showtimeId?._id || null,
       cinemaId: movieShowing.cinemaId?._id || null,
       roomId: movieShowing.roomId?._id || null,
-      date: movieShowing.date ? moment(movieShowing.date, 'YYYY-MM-DD') : null
+      date: movieShowing.date ? moment(movieShowing.date, "YYYY-MM-DD") : null,
     });
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/movieshowing/${id}`,{
+      await axios.delete(`http://localhost:8080/movieshowing/${id}`, {
         headers: {
-          Authorization: `Bearer ${auth.token}`
-        }
+          Authorization: `Bearer ${auth.token}`,
+        },
       });
       setMovieShowings((prev) => prev.filter((item) => item._id !== id));
     } catch (error) {

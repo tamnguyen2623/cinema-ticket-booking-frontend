@@ -4,10 +4,10 @@ import {
   createOrUpdateRoom,
   deleteRoom,
   DetailRoom,
+  updateRoomStatus,
 } from "../../components/api/roomApi";
 import { createSeat } from "../../components/api/seat";
-import { notification } from "antd";
-
+import { toast } from "react-toastify";
 export const loadRoomsAndCinemas = async (
   setCinemas,
   setRooms,
@@ -29,19 +29,16 @@ export const loadRoomsAndCinemas = async (
 
 export const handleDeleteRoom = async (roomId, setRooms, token) => {
   if (!token) {
-    return notification.error({
-      message: "Unauthorized",
-      description: "You are not authorized to delete a room.",
-    });
+    return toast.error("You are not authorized to delete a room.");
   }
   try {
     await deleteRoom(token, roomId);
     const updatedRooms = await fetchRooms(token);
     setRooms(updatedRooms);
-    notification.success({ message: "Room deleted successfully!" });
+    toast.success("Room deleted successfully!");
   } catch (error) {
     console.error("Error deleting room:", error);
-    notification.error({ message: "Error deleting room!" });
+    toast.error("Error deleting room!");
   }
 };
 
@@ -52,10 +49,7 @@ export const handleDetailRoom = async (
   token
 ) => {
   if (!token) {
-    return notification.error({
-      message: "Unauthorized",
-      description: "You are not authorized to view room details.",
-    });
+    return toast.error("You are not authorized to view room details.");
   }
   try {
     const detail = await DetailRoom(token, roomId);
@@ -63,10 +57,9 @@ export const handleDetailRoom = async (
     setIsFormVisible(true);
   } catch (error) {
     console.error("Error fetching room details:", error);
-    notification.error({
-      message: "Failed to load room details",
-      description: "An error occurred while fetching details.",
-    });
+    toast.error(
+      "Failed to load room details. An error occurred while fetching details."
+    );
   }
 };
 
@@ -95,10 +88,7 @@ export const handleRoomSubmit = async (
   setEditingRoom
 ) => {
   if (!auth.token) {
-    return notification.error({
-      message: "Unauthorized",
-      description: "You are not authorized to create or update a room.",
-    });
+    return toast.error("You are not authorized to create or update a room.");
   }
   try {
     const roomData = await createOrUpdateRoom(auth.token, values, editingRoom);
@@ -109,12 +99,21 @@ export const handleRoomSubmit = async (
     setRooms(updatedRooms);
     setIsFormVisible(false);
     setEditingRoom(null);
-    notification.success({ message: "Room saved successfully!" });
+    toast.success("Room saved successfully!");
   } catch (error) {
     console.error("Error creating/updating room:", error);
-    notification.error({
-      message: "Error",
-      description: "Failed to save the room. Please try again.",
-    });
+    toast.error("Failed to save the room. Please try again.");
+  }
+};
+
+export const handleToggleStatus = async (token, roomId, status, setRooms) => {
+  try {
+    await updateRoomStatus(token, roomId, status);
+    const updatedRooms = await fetchRooms(token);
+    setRooms(updatedRooms);
+    toast.success("Room status updated successfully!");
+  } catch (error) {
+    console.error("Error updating room status:", error);
+    toast.error("Error updating room status!");
   }
 };

@@ -106,6 +106,7 @@ const MovieList = () => {
                 <p className="movie-duration">{movie.length} phút</p>
                 <p className="movie-release-date">
                   {movie.releaseDate} 25/10/2025
+                  {/* {movie.created} 25/10/2025 */}
                 </p>
               </div>
             </div>

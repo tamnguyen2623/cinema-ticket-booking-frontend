@@ -4,7 +4,6 @@
   align-items: center;
   margin-top: 50px;
 }
-
 .ticket {
   background: #ffffff;
   border-radius: 15px;
@@ -12,9 +11,8 @@
   overflow: hidden;
   font-family: "Arial", sans-serif;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 }
-
 .ticket-header {
   background: linear-gradient(135deg, #ff7f50, #ff4500);
   color: white;
@@ -23,11 +21,9 @@
   font-size: 18px;
   font-weight: bold;
 }
-
 .ticket-header h2 {
   margin: 5px 0;
 }
-
 .ticket-header p {
   font-size: 14px;
   margin: 2px 0;
@@ -40,44 +36,37 @@
   display: flex;
   align-items: center;
 }
-
 .ticket-info {
-  width: 80%;
+  width: 100%;
 }
-
 .ticket-info p {
   margin: 5px 0;
   padding-right: 50px;
   font-size: 14px;
-font-weight: bold;
+  font-weight: bold;
   display: flex;
   justify-content: space-between;
 }
-
 .ticket-info strong {
   font-weight: bold;
   color: #333;
 }
-
 .ticket-barcode {
   display: flex;
   margin-top: 10px;
 }
-
 .ticket-barcode img {
   width: 120px;
   height: 120px;
   border: 2px solid #ff4500;
   border-radius: 10px;
 }
-
 .ticket-transaction-id {
   margin-top: 8px;
   font-size: 12px;
   font-weight: bold;
   color: #555;
 }
-
 .ticket-footer {
   background: #ffe0b2;
   padding: 15px;

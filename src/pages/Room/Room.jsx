@@ -23,8 +23,6 @@ const Room = () => {
     loadRoomsAndCinemas(setCinemas, setRooms, setLoadingCinemas, auth.token);
   }, [auth.token]);
 
-  useEffect(() => {}, [rooms]);
-
   const handleEdit = useCallback((room) => {
     setEditingRoom(room);
     setRoomDetail(null);
@@ -45,6 +43,7 @@ const Room = () => {
     <div className="room-container">
       <RoomList
         rooms={rooms}
+        setRooms={setRooms} // ✅ Truyền setRooms
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         handleDetail={handleDetail}
@@ -54,6 +53,7 @@ const Room = () => {
           setRoomDetail(null);
           setIsFormVisible(true);
         }}
+        auth={auth} // ✅ Truyền auth
       />
 
       <RoomForm

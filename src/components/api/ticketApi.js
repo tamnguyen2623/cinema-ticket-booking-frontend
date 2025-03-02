@@ -2,6 +2,7 @@ import axios from "axios";
 
 const apiUrl = "/ticket/tickets";
 
+// Lấy tất cả phòng có status === false
 export const fetchRooms = async (token) => {
   try {
     const response = await axios.get("/room/rooms", {
@@ -9,12 +10,15 @@ export const fetchRooms = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("rooms", response);
-    return response.data.rooms || [];
+    const rooms = response.data.rooms || [];
+    const filteredRooms = rooms.filter((room) => room.status === false);
+    return filteredRooms;
   } catch (error) {
-    throw new Error("Error fetching tickets: " + error.message);
+    throw new Error("Error fetching rooms: " + error.message);
   }
 };
+
+// Lấy tất cả giá vé
 export const fetchTicket = async (token) => {
   try {
     const response = await axios.get(apiUrl, {
@@ -29,6 +33,7 @@ export const fetchTicket = async (token) => {
   }
 };
 
+// Thêm/cập nhật giá vé
 export const createOrUpdateTicket = async (
   token,
   ticketData,
@@ -65,6 +70,7 @@ export const createOrUpdateTicket = async (
   }
 };
 
+// Xóa vé
 export const deleteTicket = async (token, ticketId) => {
   try {
     const response = await axios.delete(`${apiUrl}/${ticketId}`, {
@@ -78,6 +84,7 @@ export const deleteTicket = async (token, ticketId) => {
   }
 };
 
+// Xem chi tiết vé
 export const DetailTicket = async (token, ticketId) => {
   try {
     const response = await axios.get(`${apiUrl}/${ticketId}`, {
@@ -88,5 +95,23 @@ export const DetailTicket = async (token, ticketId) => {
     return response.data.ticketPrice;
   } catch (error) {
     throw new Error("Error deleting ticket: " + error.message);
+  }
+};
+
+// Cập nhật trạng thái vé
+export const toggleTicketStatus = async (token, ticketId, isDelete) => {
+  try {
+    const response = await axios.patch(
+      `/ticket/tickets/${ticketId}/toggle-delete`,
+      { isDelete },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.ticketPrice;
+  } catch (error) {
+    throw new Error("Error updating ticket status: " + error.message);
   }
 };
