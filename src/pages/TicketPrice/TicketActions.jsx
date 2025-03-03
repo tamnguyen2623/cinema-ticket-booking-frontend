@@ -3,9 +3,9 @@ import {
   createOrUpdateTicket,
   deleteTicket,
   DetailTicket,
+  toggleTicketStatus,
 } from "../../components/api/ticketApi";
-import { notification } from "antd";
-
+import { toast } from "react-toastify";
 export const fetchTickets = async (
   auth,
   setTickets,
@@ -23,7 +23,7 @@ export const fetchTickets = async (
     const filteredData = applyFilters(fetchedTickets, searchTerm, filter);
     setFilteredTickets(filteredData);
   } catch (error) {
-    notification.error({ message: "Error", description: error.message });
+    toast.error(`Error: ${error.message}`);
   }
 };
 
@@ -54,26 +54,21 @@ export const handleCreateOrUpdateTicket = async (
     if (!values.roomType || !values.seatType || !values.price)
       throw new Error("Missing required fields");
     await createOrUpdateTicket(auth.token, values, editingTicket);
-    notification.success({
-      message: editingTicket ? "Ticket updated" : "Ticket created",
-    });
+    toast.success(editingTicket ? "Ticket updated!" : "Ticket created!");
     setIsModalVisible(false);
     fetchTickets();
   } catch (error) {
-    notification.error({ message: "Error", description: error.message });
+    toast.error(`Error: ${error.message}`);
   }
 };
 
 export const handleDelete = async (auth, ticketId, fetchTickets) => {
   try {
     await deleteTicket(auth.token, ticketId);
-    notification.success({
-      message: "Ticket deleted",
-      description: "The ticket has been successfully deleted.",
-    });
+    toast.success("Ticket deleted successfully!");
     fetchTickets();
   } catch (error) {
-    notification.error({ message: "Error", description: error.message });
+    toast.error(`Error: ${error.message}`);
   }
 };
 
@@ -84,21 +79,29 @@ export const showDetailModal = async (
   setIsDetailModalVisible
 ) => {
   if (!auth?.token) {
-    notification.error({
-      message: "Unauthorized",
-      description: "You are not authorized to view room details.",
-    });
+    toast.error("You are not authorized to view room details.");
     return;
   }
   try {
     const detail = await DetailTicket(auth.token, roomId);
     setTicketDetail(detail);
     setIsDetailModalVisible(true);
-    notification.success({ message: "Room details loaded successfully!" });
+    toast.success("Room details loaded successfully!");
   } catch (error) {
-    notification.error({
-      message: "Failed to load room details",
-      description: error.message,
-    });
+    toast.error(`Failed to load room details: ${error.message}`);
+  }
+};
+export const handleToggleIsDelete = async (
+  auth,
+  ticketId,
+  isDelete,
+  fetchTickets
+) => {
+  try {
+    await toggleTicketStatus(auth.token, ticketId, isDelete);
+    toast.success("Update disabled successfully!");
+    fetchTickets(); // ✅ Gọi API để cập nhật danh sách vé từ server
+  } catch (error) {
+    toast.error(`Failed update disabled : ${error.message}`);
   }
 };

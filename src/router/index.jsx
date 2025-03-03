@@ -26,7 +26,7 @@ import Room from "../pages/Room/Room";
 import Seat from "../pages/Seat";
 import VoucherPage from "../pages/Voucher/VoucherPage";
 import Booking from "../pages/Booking";
-// import Ticket from "../pages/Ticket";
+import ComboCustomer from "../pages/ComboCustomer/Combo";
 import TotalSlide from "../pages/TotalSlide";
 import MovieList from "../components/MovieList/MovieList";
 import DetailMovie from "../components/DetailMovie/DetailMovie";
@@ -38,8 +38,6 @@ import SeatAvailable from "../components/Seat/SeatAvailable[Customer]";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
 import MovieShowingCustomer from "../components/MovieList/MovieList";
 import BookingTicketCustomer from "../components/Cinema/CinemaPage";
-import RolePage from "../pages/Role/RolePage";
-import MyTicket from "../pages/Ticket/MyTicket";
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
 
@@ -77,7 +75,7 @@ const router = createBrowserRouter([
       { path: "movielist/:id", element: <DetailMovie /> },
       { path: "totalslide", element: <TotalSlide /> },
       { path: "myticket/:userId", element: <MyTicket /> },
-
+      { path: "combocustomer", element: <ComboCustomer /> },
     ],
   },
 

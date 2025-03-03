@@ -11,6 +11,7 @@ import {
   showDetailModal,
 } from "./TicketActions";
 import "../../components/styles/ticketStyle.css";
+
 const Ticket = () => {
   const { auth } = useContext(AuthContext);
   const [tickets, setTickets] = useState([]);
@@ -24,13 +25,17 @@ const Ticket = () => {
   const [editingTicket, setEditingTicket] = useState(null);
   const [form] = Form.useForm();
 
+  const fetchTicketsFromServer = () => {
+    fetchTickets(auth, setTickets, setFilteredTickets, searchTerm, filter);
+  };
+
   useEffect(() => {
-    fetchTickets(auth, setTickets, setFilteredTickets);
+    fetchTicketsFromServer();
     fetchRooms(auth.token).then(setRooms);
   }, [auth?.token]);
 
   useEffect(() => {
-    fetchTickets(auth, setTickets, setFilteredTickets, searchTerm, filter);
+    fetchTicketsFromServer();
   }, [searchTerm, filter, auth?.token]);
 
   const showModal = (ticket) => {
@@ -57,7 +62,7 @@ const Ticket = () => {
             form,
             editingTicket,
             setIsModalVisible,
-            () => fetchTickets(auth, setTickets, setFilteredTickets)
+            fetchTicketsFromServer
           )
         }
         form={form}
@@ -68,15 +73,13 @@ const Ticket = () => {
       />
       <TicketList
         tickets={filteredTickets}
+        auth={auth}
+        fetchTickets={fetchTicketsFromServer} // ✅ Truyền fetchTickets vào TicketList
         showDetailModal={(id) =>
           showDetailModal(auth, id, setTicketDetail, setIsDetailModalVisible)
         }
         showModal={showModal}
-        handleDelete={(id) =>
-          handleDelete(auth, id, () =>
-            fetchTickets(auth, setTickets, setFilteredTickets)
-          )
-        }
+        handleDelete={(id) => handleDelete(auth, id, fetchTicketsFromServer)}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         filter={filter}
