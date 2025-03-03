@@ -17,18 +17,16 @@ const RoomForm = ({
   const [form] = Form.useForm();
   useEffect(() => {
     if (isFormVisible) {
-      form.setFieldsValue(
-        roomDetail ||
-          editingRoom || {
-            roomname: "",
-            roomtype: "Standard",
-            row: 1,
-            colum: 1,
-            cinema: undefined,
-          }
-      );
+      if (editingRoom) {
+        form.setFieldsValue({
+          ...editingRoom,
+          cinema: editingRoom.cinema?._id,
+        });
+      } else {
+        form.resetFields();
+      }
     }
-  }, [isFormVisible, editingRoom, roomDetail, form]);
+  }, [isFormVisible, editingRoom, form]);
 
   return (
     <Modal
@@ -110,11 +108,12 @@ const RoomForm = ({
             </Select>
           </Form.Item>
           <Form.Item name="row" label="Number of Rows">
-            <Input type="number" min={1} max={300} />
+            <Input type="number" min={1} max={300} disabled={!!editingRoom} />
           </Form.Item>
           <Form.Item name="colum" label="Number of Columns">
-            <Input type="number" min={1} max={300} />
+            <Input type="number" min={1} max={300} disabled={!!editingRoom} />
           </Form.Item>
+
           <div className="modalFooter">
             <Button onClick={handleCancel} style={{ marginRight: 8 }}>
               Cancel

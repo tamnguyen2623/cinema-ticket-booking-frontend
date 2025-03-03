@@ -6,7 +6,6 @@ import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from "@ant
 import moment from 'moment';
 import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
 
-
 const MovieTypePage = () => {
     const { auth } = useContext(AuthContext);
     const [movieTypes, setMovieTypes] = useState([]);
