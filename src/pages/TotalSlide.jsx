@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { message, Radio, Button } from "antd";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import "../components/styles/slide.css";
-import { fetchTicket } from "../components/api/ticketApi";
+import { fetchTicket } from "../components/api/bookingApi";
+import Voucher from "../pages/VoucherCustomer/VoucherCustomer";
 export default function PaymentTicket() {
   const { auth } = useContext(AuthContext);
   const { id } = useParams();
   const [paymentMethod, setPaymentMethod] = useState("vnpay");
   const [ticketPrice, setTicketPrice] = useState([]);
+
   const [bookingData, setBookingData] = useState(() => {
     try {
       const savedBooking = localStorage.getItem("bookingData");
@@ -25,33 +28,33 @@ export default function PaymentTicket() {
       try {
         const response = await fetchTicket(auth.token);
         setTicketPrice(response);
+        console.log(" fetchTicket", response);
       } catch (error) {
         console.error("Error fetching ticket:", error);
-        message.error("Failed to load ticket details!");
+        toast.error("Failed to load ticket details!");
       }
     };
 
     loadTicket();
   }, [auth.token]);
 
-  useEffect(() => {}, [id, bookingData]);
+  // useEffect(() => {}, [id, bookingData]);
 
   if (!bookingData) {
     return (
       <div className="payment-container">
         <h2>Ticket Details</h2>
         <p>
-          No ticket data found. Please select a ticket before viewing
-          details.
+          No ticket data found. Please select a ticket before viewing details.
         </p>
       </div>
     );
   }
 
   const selectedSeats = bookingData.selectedSeats || [];
+  const selectedCombos = bookingData.selectedCombos || [];
   const selectedShowing = bookingData.selectedShowtime || [];
-  const seatNames = selectedSeats.map((seat) => seat.seatId.name).join(", ");
-  console.log(bookingData);
+  const [totalTicket, setTotalTicket] = useState(0);
 
   const findMatchingPrice = (roomType, seatType) => {
     const matchingTicket = ticketPrice.find(
@@ -59,14 +62,47 @@ export default function PaymentTicket() {
     );
     return matchingTicket ? matchingTicket.price : 0;
   };
-  const totalPrice = selectedSeats.reduce((sum, seat) => {
-    return (
-      sum + findMatchingPrice(selectedShowing.room.roomtype, seat.seatId.type)
+
+  useEffect(() => {
+    if (!selectedSeats || selectedSeats.length === 0 || !selectedShowing.room)
+      return;
+    const ticketTotal = selectedSeats.reduce((sum, seat) => {
+      return (
+        sum + findMatchingPrice(selectedShowing.room.roomtype, seat.seatId.type)
+      );
+    }, 0);
+    setTotalTicket(ticketTotal);
+    console.log(" Total Ticket Price:", ticketTotal);
+  }, [selectedSeats, selectedShowing, ticketPrice]);
+
+  const [totalPrice, setTotalPrice] = useState(0);
+  useEffect(() => {
+    if (!bookingData) return;
+    const totalCombo = bookingData.selectedCombos
+      ? bookingData.selectedCombos.reduce(
+          (sum, combo) => sum + combo.price * combo.quantity,
+          0
+        )
+      : 0;
+    const voucherDiscount = bookingData.selectedVoucher
+      ? (totalTicket + totalCombo) *
+        (bookingData.selectedVoucher.discount / 100)
+      : 0;
+    setTotalPrice(totalTicket + totalCombo - voucherDiscount);
+    console.log(" Total Ticket:", totalTicket);
+    console.log(" Total Combo:", totalCombo);
+    console.log(" Voucher Discount:", voucherDiscount);
+    console.log(
+      " Final Total Price:",
+      totalTicket + totalCombo - voucherDiscount
     );
-  }, 0);
+  }, [bookingData, totalTicket]);
+
+  console.log(totalPrice);
+
   const handlePayment = async () => {
     if (!auth?.token) {
-      return message.error("Please log in to proceed with the payment!");
+      return toast.error("Please log in to proceed with the payment!");
     }
 
     try {
@@ -77,12 +113,16 @@ export default function PaymentTicket() {
         address: bookingData.selectedCinema?.address || "N/A",
         seats: selectedSeats.map((seat) => seat.seatId.name),
         seatsId: selectedSeats.map((seat) => seat._id),
+        voucherId: bookingData.selectedVoucher?._id || "N/A",
         showtime: new Date(
           bookingData.selectedShowtime?.showtime?.showtime
         ).toISOString(),
         room: selectedShowing.room?.roomname || "N/A",
         date: bookingData.selectedDate || "N/A",
         price: totalPrice,
+        combo: selectedCombos.map(
+          (combo) => `${combo.name} (x${combo.quantity})`
+        ),
         currency,
       };
       const response = await axios.post(
@@ -99,11 +139,11 @@ export default function PaymentTicket() {
       if (response.data.paymentUrl) {
         window.location.href = response.data.paymentUrl;
       } else {
-        message.error("No payment URL returned!");
+        toast.error("No payment URL returned!");
       }
     } catch (error) {
       console.error(" Payment error:", error.response?.data || error.message);
-      message.error(`Payment failed! ${error.response?.data?.message || ""}`);
+      toast.error(`Payment failed! ${error.response?.data?.message || ""}`);
     }
   };
 
@@ -130,8 +170,30 @@ export default function PaymentTicket() {
               <strong>Address:</strong> {bookingData.selectedCinema?.address}
             </p>
             <p>
-              <strong>Seats:</strong> {seatNames || "No seats selected"}
+              <strong>Seats:</strong>
+              {selectedSeats && selectedSeats.length > 0 ? (
+                <ul className="seat-list">
+                  {selectedSeats.map((seat) => {
+                    const seatPrice = findMatchingPrice(
+                      selectedShowing.room.roomtype,
+                      seat.seatId.type
+                    );
+                    return (
+                      <li key={seat._id} className="seat-item">
+                        <span className="seat-name">{seat.seatId.name}</span>
+                        <span className="seat-type">({seat.seatId.type})</span>
+                        <span className="seat-price">
+                          - ${seatPrice.toLocaleString()}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                "No seats selected"
+              )}
             </p>
+
             <p>
               <strong>Screening Room:</strong>
               {selectedShowing.room.roomname} - {selectedShowing.room.roomtype}
@@ -148,10 +210,30 @@ export default function PaymentTicket() {
               )}
             </p>
             <p>
-              <strong>Total Price: </strong>
-              {`$ ${totalPrice.toLocaleString()}`}
+              <strong>Combo:</strong>
+              {bookingData.selectedCombos &&
+              bookingData.selectedCombos.length > 0 ? (
+                <ul className="combo-quantity">
+                  {bookingData.selectedCombos.map((combo) => (
+                    <li key={combo._id} className="combo-item">
+                      <span className="combo-name">{combo.name}</span>
+                      <span className="combo-qty">
+                        Quantity: {combo.quantity}
+                      </span>
+                      <span className="combo-qty">${combo.price} / combo</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                "No combo selected"
+              )}
             </p>
           </div>
+          <Voucher setBookingData={setBookingData} />
+          <p className="total-price">
+            <strong>Total Price: </strong>
+            {`$ ${totalPrice.toLocaleString()}`}
+          </p>
           <div className="payment-method">
             <h3>Select Payment Method</h3>
             <Radio.Group

@@ -14,37 +14,32 @@
   align-items: center;
   margin-bottom: 16px;
 }
-
 .searchInput {
   width: 250px;
   margin-right: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-
 .filterSelect {
   width: 200px;
   border-radius: 5px;
 }
-
 .actionButton {
   color: white !important;
   margin-right: 8px;
   border: none;
 }
-
 .infoButton {
-  background-color: #1acc3b !important;
-}
-
-.editButton {
   background-color: #faad14 !important;
+  padding: 20px 10px 20px 10px;
 }
-
+.editButton {
+  background-color: #1890ff !important;
+  padding: 20px 10px 20px 10px;
+}
 .deleteButton {
   background-color: #ff4d4f !important;
 }
-
 .addTicketButton {
   background-color: #1890ff !important;
   color: white !important;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Modal, Button, Spin, Alert } from "antd";
+import { Modal, Spin } from "antd";
+import { toast } from "react-toastify";
 import axios from "axios";
-import TotalSlide from "./TotalSlide";
 import "../components/styles/payment.css";
 
 const Booking = () => {
@@ -21,23 +21,30 @@ const Booking = () => {
         );
         setBookingInfo(response.data.booking);
       } catch (error) {
-        console.error("error:", error);
+        console.error("Error fetching booking:", error);
+        toast.error("Failed to load booking details!");
       } finally {
         setLoading(false);
       }
     };
     fetchBooking();
   }, [transactionId]);
+  useEffect(() => {
+    if (!bookingInfo && !loading) {
+      toast.error("Ticket not found!");
+    }
+  }, [bookingInfo, loading]);
+  useEffect(() => {
+    if (bookingInfo?.status === "failed") {
+      toast.error("Payment Failed. Please try again!");
+      navigate("/movielist");
+    }
+  }, [bookingInfo?.status]);
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
     navigate("/movielist");
   };
-
-  if (!transactionId) {
-    return <TotalSlide />;
-  }
-
   if (loading) {
     return (
       <div className="loading-container">
@@ -70,77 +77,88 @@ const Booking = () => {
 
   return (
     <div className="ticket-container">
-      <Modal
-        title="Movie ticket"
-        open={isModalVisible}
-        onCancel={handleCloseModal}
-        footer={null}
-      >
-        <div className="ticket">
-          <div className="ticket-header">
-            <h2>{bookingInfo.movieName || "not movie name"}</h2>
-            <p>
-              <span className="ticket-seat">
-                Release date:{" "}
-                {new Date(bookingInfo.paymentTime).toLocaleDateString()}
-              </span>
-            </p>
-            <p>
-              <span className="ticket-seat">
-                Seat number: {bookingInfo.seats.length}
-              </span>
-            </p>
-          </div>
-          <div className="ticket-body">
-            <div className="ticket-info">
+      {isModalVisible && bookingInfo.status !== "failed" && (
+        <Modal
+          title="Movie Ticket"
+          open={isModalVisible}
+          onCancel={handleCloseModal}
+          footer={null}
+          width={700}
+        >
+          <div className="ticket">
+            <div className="ticket-header">
+              <h2>{bookingInfo.movieName || "No movie name"}</h2>
               <p>
-                <strong>Cinema:</strong> {bookingInfo.cinema}
+                <span className="ticket-seat">
+                  Release date:{" "}
+                  {new Date(bookingInfo.paymentTime).toLocaleDateString()}
+                </span>
               </p>
               <p>
-                <strong>Show date:</strong>
-                {new Intl.DateTimeFormat("vi-VN", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                }).format(new Date(bookingInfo.date))}
-              </p>
-              <p>
-                <strong>Show time:</strong>
-                {new Date(bookingInfo.showtime).toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                })}
-              </p>
-              <p>
-                <strong>Theater:</strong>
-                {bookingInfo.room || "unknow"}
-              </p>
-              <p>
-                <strong>Seat:</strong> {bookingInfo.seats.join(", ")}
-              </p>
-              <p>
-                <strong>Total Price:</strong> $
-                {bookingInfo.price.toLocaleString()}
+                <span className="ticket-seat">
+                  Seat number: {bookingInfo.seats.length}
+                </span>
               </p>
             </div>
-            <div className="ticket-barcode">
-              {bookingInfo.qrCode ? (
-                <img src={bookingInfo.qrCode} alt="QR Code" />
-              ) : (
-                <p>Loading QR Code...</p>
-              )}
+            <div className="ticket-body">
+              <div className="ticket-info">
+                <p>
+                  <strong>Cinema:</strong> {bookingInfo.cinema}
+                </p>
+                <p>
+                  <strong>Show date:</strong>{" "}
+                  {new Intl.DateTimeFormat("vi-VN", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  }).format(new Date(bookingInfo.date))}
+                </p>
+                <p>
+                  <strong>Show time:</strong>{" "}
+                  {new Date(bookingInfo.showtime).toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
+                </p>
+                <p>
+                  <strong>Theater:</strong> {bookingInfo.room || "Unknown"}
+                </p>
+                <p>
+                  <strong>Seat:</strong> {bookingInfo.seats.join(", ")}
+                </p>
+                {bookingInfo.combo && bookingInfo.combo.length > 0 ? (
+                  <p className="combo-list">
+                    <strong>Combo:</strong> {bookingInfo.combo.join(", ")}
+                  </p>
+                ) : (
+                  <p>
+                    <strong>Combo:</strong> None
+                  </p>
+                )}
+                <p>
+                  <strong>Total Price:</strong> $
+                  {bookingInfo.price.toLocaleString()}
+                </p>
+              </div>
+              <div className="ticket-barcode">
+                {bookingInfo.qrCode ? (
+                  <img src={bookingInfo.qrCode} alt="QR Code" />
+                ) : (
+                  <p>Loading QR Code...</p>
+                )}
+              </div>
+            </div>
+            <div className="ticket-footer">
+              <p>Show QR code to enter the theater.</p>
+              <p>
+                <strong>Note:</strong> Purchased tickets cannot be cancelled or
+                refunded.
+              </p>
             </div>
           </div>
-          <div className="ticket-footer">
-            <p>Show QR code to enter the theater.</p>
-            <p>
-              <strong>Note:</strong> Purchased tickets cannot be cancelled or
-              refunded.
-            </p>
-          </div>
-        </div>
-      </Modal>
+        </Modal>
+      )}
     </div>
   );
 };
