@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Table, Button, Modal, Form, Input } from "antd";
+import { Table, Button, Modal, Form, Input, Switch } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const CinemaCustomer = () => {
@@ -13,21 +14,20 @@ const CinemaCustomer = () => {
   const [modalType, setModalType] = useState(null);
   const [currentCinema, setCurrentCinema] = useState(null);
   const [form] = Form.useForm();
-  const { auth } = useContext(AuthContext)
-
+  const { auth } = useContext(AuthContext);
 
   const fetchCinema = async () => {
     try {
       setLoading(true);
       const response = await axios.get("http://localhost:8080/cinema");
-      if (response.data && response.data.data) {
+      if (response.data && Array.isArray(response.data.data)) {
         setCinemas(response.data.data);
         setFilteredCinemas(response.data.data);
       } else {
         throw new Error("API không trả về dữ liệu hợp lệ!");
       }
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -39,7 +39,7 @@ const CinemaCustomer = () => {
 
   useEffect(() => {
     const filtered = cinemas.filter(cinema =>
-      cinema.name.toLowerCase().includes(searchTerm.toLowerCase())
+      cinema.name ? cinema.name.toLowerCase().includes(searchTerm.toLowerCase()) : false
     );
     setFilteredCinemas(filtered);
   }, [searchTerm, cinemas]);
@@ -48,45 +48,18 @@ const CinemaCustomer = () => {
     try {
       const values = await form.validateFields();
       const formattedValues = { name: values.name, address: values.address };
-      await axios.post("http://localhost:8080/cinema", formattedValues, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`
-        },
+      const response = await axios.post("http://localhost:8080/cinema", formattedValues, {
+        headers: { Authorization: `Bearer ${auth.token}` }
       });
+
+      setCinemas([...cinemas, response.data]);
+      setFilteredCinemas([...cinemas, response.data]);
       setModalType(null);
       form.resetFields();
-      fetchCinema();
+      toast.success("Thêm rạp phim thành công!");
     } catch (error) {
-      console.error("Lỗi khi thêm cinema:", error);
+      toast.error("Lỗi khi thêm cinema!");
     }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      setLoading(true);
-      await axios.delete(`http://localhost:8080/cinema/${id}`, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`
-        }
-      });
-      fetchCinema();
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDeleteClick = (cinema) => {
-    Modal.confirm({
-      title: "Xác nhận xóa",
-      content: `Bạn có chắc chắn muốn xóa Cinema "${cinema.name}" không?`,
-      okText: "Xác nhận",
-      cancelText: "Hủy",
-      okType: "danger",
-      onOk: () => handleDelete(cinema._id),
-    });
   };
 
   const handleEditCinema = async () => {
@@ -94,15 +67,21 @@ const CinemaCustomer = () => {
       const values = await form.validateFields();
       const updatedCinema = { name: values.name, address: values.address };
       await axios.put(`http://localhost:8080/cinema/${currentCinema._id}`, updatedCinema, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`
-        }
+        headers: { Authorization: `Bearer ${auth.token}` }
       });
-      fetchCinema();
+
+      setCinemas(cinemas.map(cinema =>
+        cinema._id === currentCinema._id ? { ...cinema, ...updatedCinema } : cinema
+      ));
+      setFilteredCinemas(filteredCinemas.map(cinema =>
+        cinema._id === currentCinema._id ? { ...cinema, ...updatedCinema } : cinema
+      ));
+
       setModalType(null);
       form.resetFields();
+      toast.success("Cập nhật thành công!");
     } catch (error) {
-      console.error("Lỗi khi cập nhật rạp phim:", error);
+      toast.error("Lỗi khi cập nhật rạp phim!");
     }
   };
 
@@ -110,6 +89,25 @@ const CinemaCustomer = () => {
     setCurrentCinema(cinema);
     setModalType("edit");
     form.setFieldsValue({ name: cinema.name, address: cinema.address });
+  };
+
+  const handleToggleDelete = async (id, isDelete) => {
+    try {
+      await axios.put(`http://localhost:8080/cinema/${id}`, { isDelete: !isDelete }, {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      });
+
+      setCinemas(cinemas.map(cinema =>
+        cinema._id === id ? { ...cinema, isDelete: !isDelete } : cinema
+      ));
+      setFilteredCinemas(filteredCinemas.map(cinema =>
+        cinema._id === id ? { ...cinema, isDelete: !isDelete } : cinema
+      ));
+
+      toast.success("Cập nhật trạng thái thành công!");
+    } catch (error) {
+      toast.error("Lỗi khi cập nhật trạng thái!");
+    }
   };
 
   if (loading) return <p>Đang tải dữ liệu...</p>;
@@ -136,10 +134,17 @@ const CinemaCustomer = () => {
           <Button className="custom-edit-btn" type="primary" icon={<EditOutlined />} onClick={() => handleEditClick(record)}>
             Sửa
           </Button>
-          <Button type="primary" danger icon={<DeleteOutlined />} onClick={() => handleDeleteClick(record)}>
-            Xóa
-          </Button>
         </div>
+      ),
+    },
+    {
+      title: "Disabled",
+      key: "action",
+      render: (record) => (
+        <Switch
+          checked={record.isDelete}
+          onChange={() => handleToggleDelete(record._id, record.isDelete)}
+        />
       ),
     },
   ];

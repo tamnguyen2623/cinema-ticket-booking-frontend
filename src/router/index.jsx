@@ -11,7 +11,7 @@ import CustomerLayout from "../layout/LayoutCustomer/LayoutCustomer";
 import Cinema from "../pages/CinemaCustomer/CinemaCustomer";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
-import Movie from "../pages/MovieV2/Movie";
+import Movie from "../pages/Movie/Movie";
 import Purchase from "../pages/Purchase";
 import Register from "../pages/Register";
 import Schedule from "../pages/Schedule";
@@ -38,6 +38,8 @@ import SeatAvailable from "../components/Seat/SeatAvailable[Customer]";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
 import MovieShowingCustomer from "../components/MovieList/MovieList";
 import BookingTicketCustomer from "../components/Cinema/CinemaPage";
+import RolePage from "../pages/Role/RolePage";
+import MyTicket from "../pages/Ticket/MyTicket";
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
 
@@ -65,7 +67,6 @@ const router = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "movie-detail/:id", element: <MovieDetail /> },
       { path: "purchase/:id", element: <Purchase /> },
-      { path: "ticket", element: <Tickets /> },
       { path: "schedule", element: <Schedule /> },
       { path: "booking/:transactionId", element: <Booking /> },
       { path: "booking", element: <Booking /> },
@@ -75,6 +76,8 @@ const router = createBrowserRouter([
       { path: "movielist", element: <MovieList /> },
       { path: "movielist/:id", element: <DetailMovie /> },
       { path: "totalslide", element: <TotalSlide /> },
+      { path: "myticket/:userId", element: <MyTicket /> },
+
     ],
   },
 
@@ -93,12 +96,13 @@ const router = createBrowserRouter([
       { path: "/admin/seat", element: <Seat /> },
       { path: "/admin/schedule", element: <Schedule /> },
       { path: "/admin/ticketmanagement", element: <Ticket /> },
-      { path: "/admin/ticket", element: <Tickets /> },
+      { path: "/admin/ticket/", element: <Tickets /> },
       { path: "/admin/voucher", element: <VoucherPage /> },
       { path: "/admin/movieshowing", element: <MovieShowing /> },
       { path: "/admin/showtime", element: <ShowtimePage /> },
       { path: "/admin/movietype", element: <MovietypePage /> },
       { path: "/admin/combo", element: <ComboPage /> },
+      { path: "/admin/role", element: <RolePage /> },
     ],
   },
 

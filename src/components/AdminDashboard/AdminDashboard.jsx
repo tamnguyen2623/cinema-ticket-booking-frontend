@@ -6,14 +6,21 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRightFromBracket,
-  faFilm,
-  faCalendarAlt,
-  faTicketAlt,
-  faClipboardList,
+  faClapperboard,
+  faVideo,
+  faTicket,
+  faDoorOpen,
+  faCouch,
   faUsers,
   faChartBar,
-  faCommentDots,
-  faGift,
+  faComments,
+  faTag,
+  faClock,
+  faMoneyBillWave,
+  faLayerGroup,
+  faBox,
+  faUserShield,
+  faFilm,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
@@ -77,46 +84,40 @@ const DashBoard = () => {
               <span>Dashboard</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/role")}`}>
+            <Link to="/admin/role">
+              <FontAwesomeIcon icon={faUserShield} className="menu-icon" />
+              <span>Role</span>
+            </Link>
+          </li>
           <li className={`nav-link ${isActive("/admin/cinema")}`}>
             <Link to="/admin/cinema">
-              <FontAwesomeIcon icon={faFilm} className="menu-icon" />
+              <FontAwesomeIcon icon={faVideo} className="menu-icon" />
               <span>Cinema</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/movie")}`}>
             <Link to="/admin/movie">
-              <FontAwesomeIcon icon={faFilm} className="menu-icon" />
+              <FontAwesomeIcon icon={faClapperboard} className="menu-icon" />
               <span>Movie</span>
-            </Link>
-          </li>
-          <li className={`nav-link ${isActive("/admin/schedule")}`}>
-            <Link to="/admin/schedule">
-              <FontAwesomeIcon icon={faCalendarAlt} className="menu-icon" />
-              <span>Schedule</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/ticketmanagement")}`}>
             <Link to="/admin/ticketmanagement">
-              <FontAwesomeIcon icon={faTicketAlt} className="menu-icon" />
+              <FontAwesomeIcon icon={faTicket} className="menu-icon" />
               <span>Ticket</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/room")}`}>
             <Link to="/admin/room">
-              <FontAwesomeIcon icon={faTicketAlt} className="menu-icon" />
+              <FontAwesomeIcon icon={faDoorOpen} className="menu-icon" />
               <span>Room</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/seat")}`}>
             <Link to="/admin/seat">
-              <FontAwesomeIcon icon={faTicketAlt} className="menu-icon" />
+              <FontAwesomeIcon icon={faCouch} className="menu-icon" />
               <span>Seat</span>
-            </Link>
-          </li>
-          <li className={`nav-link ${isActive("/admin/booking")}`}>
-            <Link to="/admin/">
-              <FontAwesomeIcon icon={faClipboardList} className="menu-icon" />
-              <span>Booking</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/user")}`}>
@@ -127,55 +128,51 @@ const DashBoard = () => {
           </li>
           <li className={`nav-link ${isActive("/admin/movieshowing")}`}>
             <Link to="/admin/movieshowing">
-              <FontAwesomeIcon icon={faUsers} className="menu-icon" />
+              <FontAwesomeIcon icon={faFilm} className="menu-icon" />
               <span>Movie Showing</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/revenue")}`}>
             <Link to="/admin/revenue">
-              <FontAwesomeIcon icon={faChartBar} className="menu-icon" />
+              <FontAwesomeIcon icon={faMoneyBillWave} className="menu-icon" />
               <span>Revenue</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/feedback")}`}>
             <Link to="/admin/feedback">
-              <FontAwesomeIcon icon={faCommentDots} className="menu-icon" />
+              <FontAwesomeIcon icon={faComments} className="menu-icon" />
               <span>Feedback</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/showtime")}`}>
             <Link to="/admin/showtime">
-              <FontAwesomeIcon icon={faGift} className="menu-icon" />
+              <FontAwesomeIcon icon={faClock} className="menu-icon" />
               <span>Showtime</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/voucher")}`}>
             <Link to="/admin/voucher">
-              <FontAwesomeIcon icon={faGift} className="menu-icon" />
+              <FontAwesomeIcon icon={faTag} className="menu-icon" />
               <span>Voucher</span>
             </Link>
           </li>
-
           <li className={`nav-link ${isActive("/admin/movietype")}`}>
             <Link to="/admin/movietype">
-              <FontAwesomeIcon icon={faGift} className="menu-icon" />
-              <span>MovieType</span>
+              <FontAwesomeIcon icon={faLayerGroup} className="menu-icon" />
+              <span>Movie Type</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/combo")}`}>
             <Link to="/admin/combo">
-              <FontAwesomeIcon icon={faGift} className="menu-icon" />
+              <FontAwesomeIcon icon={faBox} className="menu-icon" />
               <span>Combo</span>
             </Link>
           </li>
-          <li className="nav-link button-logou">
-            <Link to="/logout"
-              onClick={() => onLogout()}
-              className="logout-button"
-              disabled={isLoggingOut}
-            >
-              {isLoggingOut ? "Processing..." : "Đăng Xuất"}</Link>
-
+          <li className="nav-link button-logout">
+            <Link onClick={onLogout} className="logout-button" disabled={isLoggingOut}>
+              <FontAwesomeIcon icon={faRightFromBracket} className="menu-icon" />
+              {isLoggingOut ? "Processing..." : "Logout"}
+            </Link>
           </li>
         </ul>
       </div>
