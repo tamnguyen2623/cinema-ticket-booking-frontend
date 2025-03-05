@@ -38,6 +38,8 @@ import SeatAvailable from "../components/Seat/SeatAvailable[Customer]";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
 import MovieShowingCustomer from "../components/MovieList/MovieList";
 import BookingTicketCustomer from "../components/Cinema/CinemaPage";
+import MyTicket from "../pages/Ticket/MyTicket";
+import RolePage from "../pages/Role/RolePage";
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
 
