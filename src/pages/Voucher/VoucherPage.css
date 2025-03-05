@@ -22,3 +22,19 @@
 .custom-ok-btn:hover {
   opacity: 0.8;
 }
+
+.custom-add-btn {
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+  color: white !important;
+  font-weight: bold;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.search-filter-add-container{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
