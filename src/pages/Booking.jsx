@@ -29,6 +29,7 @@ const Booking = () => {
     };
     fetchBooking();
   }, [transactionId]);
+  console.log("bookingInfo", bookingInfo);
   useEffect(() => {
     if (!bookingInfo && !loading) {
       toast.error("Ticket not found!");
@@ -114,6 +115,9 @@ const Booking = () => {
                     <strong>Combo:</strong> None
                   </p>
                 )}
+                <p>
+                  <strong>Discount:</strong> {bookingInfo.discount}%
+                </p>
                 <p>
                   <strong>Total Price:</strong> $
                   {bookingInfo.price.toLocaleString()}

@@ -50,7 +50,7 @@ export default function PaymentTicket() {
       </div>
     );
   }
-
+  console.log("bookingData", bookingData);
   const selectedSeats = bookingData.selectedSeats || [];
   const selectedCombos = bookingData.selectedCombos || [];
   const selectedShowing = bookingData.selectedShowtime || [];
@@ -107,13 +107,14 @@ export default function PaymentTicket() {
 
     try {
       const currency = "USD";
+
+      // Khởi tạo requestData
       const requestData = {
         movieName: bookingData.selectedMovie?.name || "N/A",
         cinema: bookingData.selectedCinema?.name || "N/A",
         address: bookingData.selectedCinema?.address || "N/A",
         seats: selectedSeats.map((seat) => seat.seatId.name),
         seatsId: selectedSeats.map((seat) => seat._id),
-        voucherId: bookingData.selectedVoucher?._id || "N/A",
         showtime: new Date(
           bookingData.selectedShowtime?.showtime?.showtime
         ).toISOString(),
@@ -124,7 +125,12 @@ export default function PaymentTicket() {
           (combo) => `${combo.name} (x${combo.quantity})`
         ),
         currency,
+        ...(bookingData.selectedVoucher?._id && {
+          voucherId: bookingData.selectedVoucher._id,
+          discount: bookingData.selectedVoucher.discount || 0,
+        }),
       };
+
       const response = await axios.post(
         `http://localhost:8080/booking/booking/${paymentMethod}/order`,
         requestData,
