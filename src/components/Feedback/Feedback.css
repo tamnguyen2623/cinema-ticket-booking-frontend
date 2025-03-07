@@ -1,0 +1,28 @@
+.custom-switch.ant-switch-checked {
+    background-color: #1677ff !important;
+    /* Đổi màu nền khi bật */
+}
+
+.custom-switch {
+    background-color: #d3d3d3 !important;
+    /* Đổi màu nền khi tắt */
+}
+
+.feedback__star-container {
+    display: flex;
+    gap: 5px;
+}
+
+.feedback__star {
+    font-size: 20px;
+    color: white;
+    -webkit-text-stroke: 1px #ffcc00;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.feedback__star.filled {
+    color: #ffcc00;
+    -webkit-text-stroke: 1px #ffcc00;
+
+}
