@@ -64,7 +64,7 @@ const RolePage = () => {
       const [rolesResponse, usersResponse] = await Promise.all([
         axios.get("/role", { headers: { Authorization: `Bearer ${auth.token}` } }),
         axios.get("/role/roles/get", { headers: { Authorization: `Bearer ${auth.token}` } }),
-        
+
       ]);
 
       const rolesData = rolesResponse.data.data;
@@ -83,7 +83,7 @@ const RolePage = () => {
   };
 
   // 🔄 Gọi khi component mount
-  
+
   useEffect(() => {
     fetchUsers();
     fetchRoles(); fetchRolesWithUserCount();
@@ -123,7 +123,7 @@ const RolePage = () => {
     // 🛑 Kiểm tra: Không cho phép "user" hoặc tên role chỉ toàn số
     if (roleName === "user" || /^\d+$/.test(roleName)) {
       message.error('Tên role không hợp lệ! Không được là "user" hoặc chỉ chứa số.');
-      return; 
+      return;
     }
     const isDuplicate = roles.some(
       (role) => role.name.trim().toLowerCase() === values.name.trim().toLowerCase()
@@ -271,7 +271,7 @@ const RolePage = () => {
       )
     }
   ];
- 
+
   const roleColumns = [
     { title: "Role Name", dataIndex: "name", key: "name" },
     { title: "Members", dataIndex: "memberCount", key: "memberCount" }, // 👉 Thêm cột này
@@ -295,7 +295,7 @@ const RolePage = () => {
           className="custom-edit-btn"
           onClick={handleAddUser}>
           Add User
- </Button>
+        </Button>
         <Input
           placeholder="Search information"
           prefix={<SearchOutlined />}
@@ -306,7 +306,7 @@ const RolePage = () => {
         {/* <Button type="primary" icon={<PlusOutlined />} onClick={handleAddUser}>
           Add User
         </Button> */}
-        <Button type="default"  onClick={() => setIsRoleModalVisible(true)}>
+        <Button type="default" onClick={() => setIsRoleModalVisible(true)}>
           View Role
         </Button>
       </Space>
@@ -337,7 +337,7 @@ const RolePage = () => {
           <Form.Item>
             <Button
               className="custom-edit-btn"
-               type="primary" htmlType="submit" block>
+              type="primary" htmlType="submit" block>
               {isRoleEditing ? 'Update Role' : 'Add Role'}
             </Button>
           </Form.Item>
@@ -349,7 +349,7 @@ const RolePage = () => {
           dataSource={roles}
           rowKey="_id"
           pagination={{ pageSize: 5 }}
-          
+
         />
       </Modal>
 

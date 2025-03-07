@@ -84,6 +84,12 @@ const DashBoard = () => {
               <span>Dashboard</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/booking")}`}>
+            <Link to="/admin/booking">
+              <FontAwesomeIcon icon={faChartBar} className="menu-icon" />
+              <span>Booking</span>
+            </Link>
+          </li>
           <li className={`nav-link ${isActive("/admin/role")}`}>
             <Link to="/admin/role">
               <FontAwesomeIcon icon={faUserShield} className="menu-icon" />

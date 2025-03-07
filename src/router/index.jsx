@@ -40,6 +40,8 @@ import MovieShowingCustomer from "../components/MovieList/MovieList";
 import BookingTicketCustomer from "../components/Cinema/CinemaPage";
 import Feedback from "../pages/Feedback";
 import MyTicket from "../pages/Ticket/MyTicket";
+import RolePage from "../pages/Role/RolePage";
+import BookingAdmin from "../pages/BookingAdmin/BookingAdmin";
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
 
@@ -101,8 +103,9 @@ const router = createBrowserRouter([
       { path: "/admin/showtime", element: <ShowtimePage /> },
       { path: "/admin/movietype", element: <MovietypePage /> },
       { path: "/admin/combo", element: <ComboPage /> },
-      // { path: "/admin/role", element: <RolePage /> },
       { path: "/admin/feedback", element: <Feedback /> },
+      { path: "/admin/role", element: <RolePage /> },
+      { path: "/admin/booking", element: <BookingAdmin /> },
     ],
   },
 
