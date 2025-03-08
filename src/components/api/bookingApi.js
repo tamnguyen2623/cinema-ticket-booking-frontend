@@ -21,3 +21,14 @@ export const fetchTicket = async (token) => {
     throw new Error("Error fetching tickets: " + error.message);
   }
 };
+
+// Update booking
+export const updateBooking = async (id, body) => {
+  try {
+    const response = await axios.put(`/booking/booking/${id}`, body);
+    return response.data; // Dữ liệu trả về từ API
+  } catch (error) {
+    console.log("Update booking error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
