@@ -31,11 +31,9 @@ export const getAvailableFeedbacks = async (movieId) => {
 };
 
 // Get feedback by user & movie
-export const getFeedback = async (userId, movieId) => {
+export const getFeedback = async (bookingId) => {
   try {
-    const response = await axios.get(`/feedback/getFeedback`, {
-      params: { userId, movieId },
-    });
+    const response = await axios.get(`/feedback/getFeedback/${bookingId}`);
     console.log("Feedbacks by user & movie:", response.data);
     return response.data; // Trả về dữ liệu để sử dụng
   } catch (error) {

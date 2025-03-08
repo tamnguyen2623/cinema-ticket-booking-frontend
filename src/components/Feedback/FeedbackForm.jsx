@@ -1,21 +1,90 @@
 import React, { useState, useEffect } from "react";
-import { Select } from "antd";
-import { getMovies } from "../api/movieApi";
+import { updateBooking } from "../api/bookingApi";
+import { createFeedback, getFeedback, updateFeedback } from "../api/feedback";
 
-export default function FeedbackForm({ onFilterChange }) {
+export default function FeedbackForm({
+  userId,
+  form,
+  booking,
+  setModal,
+  fetchBookings,
+  handleCancelModal,
+  setRefresh,
+  refresh,
+}) {
+  const [feedbackId, setFeedbackId] = useState("");
+  const [hover, setHover] = useState(0);
+  const [ratting, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetchFeedback();
+  }, [refresh]);
+
+  const fetchFeedback = async () => {
+    try {
+      if (form === "Add") {
+        setRating(0);
+        setComment("");
+        setFeedbackId("");
+        setError("");
+      } else {
+        const data = await getFeedback(booking._id);
+        setRating(data.ratting);
+        setComment(data.comment);
+        setFeedbackId(data._id);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const submit = async () => {
+    // Kiểm tra điều kiện trước khi gửi
+    if (ratting === 0) {
+      setError("Select at least 1 star!");
+      return;
+    }
+
+    if (comment.trim() === "") {
+      setError("Comment cannot be empty!");
+      return;
+    }
+
+    try {
+      const body = {
+        userId: userId,
+        movieId: booking.movieId,
+        bookingId: booking._id,
+        ratting: ratting,
+        comment: comment.trim(),
+      };
+      if (form === "Update") {
+        await updateFeedback(feedbackId, body);
+        setRefresh(!refresh);
+      } else {
+        await createFeedback(body);
+        await updateBooking(booking._id, { userId: userId, isFeedback: true });
+      }
+
+      setModal(false);
+      fetchBookings();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <>
-      <div className="review-header-title">
-        <h3>Xếp hạng và đánh giá phim</h3>
-      </div>
       <div className="review-input">
         <div className="review-rating">
-          <label>Xếp hạng</label>
+          <label>Ratting</label>
           <div className="star-container">
             {[1, 2, 3, 4, 5].map((star) => (
               <span
                 key={star}
-                className={`star ${star <= (hover || rating) ? "filled" : ""}`}
+                className={`star ${star <= (hover || ratting) ? "filled" : ""}`}
                 onClick={() => setRating(star)}
                 onMouseEnter={() => setHover(star)}
                 onMouseLeave={() => setHover(0)}
@@ -27,9 +96,23 @@ export default function FeedbackForm({ onFilterChange }) {
         </div>
         <textarea
           className="review-textarea"
-          placeholder="Nhập bình luận của bạn..."
+          placeholder="Write your feelings about the movie..."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
         ></textarea>
-        <button className="review-submit-btn">Bình luận</button>
+      </div>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+      <div className="flex justify-end gap-2 mt-4">
+        <button onClick={submit} className="feedback__review-submit-btn">
+          {form === "Add" ? "Feedback" : "Save"}
+        </button>
+        <button
+          key="back"
+          onClick={handleCancelModal}
+          className="feedback__review-submit-btn"
+        >
+          Cancel
+        </button>
       </div>
     </>
   );

@@ -15,8 +15,6 @@ const MovieDetail = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [rating, setRating] = useState(0);
-  const [hover, setHover] = useState(0);
   const [openTrailer, setOpenTrailer] = useState(false);
   const [feedbackData, setFeedbackData] = useState([]);
   const navigate = useNavigate();
