@@ -138,12 +138,6 @@ const DashBoard = () => {
               <span>Movie Showing</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/admin/revenue")}`}>
-            <Link to="/admin/revenue">
-              <FontAwesomeIcon icon={faMoneyBillWave} className="menu-icon" />
-              <span>Revenue</span>
-            </Link>
-          </li>
           <li className={`nav-link ${isActive("/admin/feedback")}`}>
             <Link to="/admin/feedback">
               <FontAwesomeIcon icon={faComments} className="menu-icon" />
