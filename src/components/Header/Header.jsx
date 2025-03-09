@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
@@ -71,7 +71,8 @@ const Header = () => {
                 </div>
                 {auth && (
                     <div className="border-text">
-                        Xin chào <b>{auth.fullname}</b>! ▼
+                        <NavLink to="/profile" className="profile-link"> Xin chào <b>{auth.username}</b>! ▼</NavLink>
+                       
                     </div>
                 )}
             </div>
