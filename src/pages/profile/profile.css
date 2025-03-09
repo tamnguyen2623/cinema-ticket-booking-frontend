@@ -1,0 +1,164 @@
+/* Định dạng tiêu đề trang */
+.header-title {
+    text-align: center;
+    background-color: #DAD2B4;
+    padding: 10px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    width: 100vw ; /* Giới hạn độ rộng theo nội dung */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.header-title h2{
+        border-bottom: 2px solid black;
+}
+/* Container chính */
+.profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Căn đều avatar và thông tin */
+    gap: 40px;
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+   
+    border-radius: 12px;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+/* Avatar bên trái */
+.avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 10rem;
+    /* Kích thước cố định */
+    height: 10rem;
+}
+
+/* Ảnh đại diện */
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Giữ hình tròn không bị méo */
+aspect-ratio: 1/1;
+    /* Đảm bảo hình tròn */
+    border-radius: 50%;
+        border: 4px solid #DAD2B4;
+    /* transition: transform 0.3s ease-in-out; */
+}
+
+/* Hiệu ứng hover ảnh */
+.avatar img:hover {
+    transform: scale(1.1);
+}
+/* Thông tin bên phải */
+.profile-info {
+    flex: 1;
+    padding: 10px;
+    background-color: #F9F9F9;
+    padding: 20px;
+    border-radius: 8px;
+}
+.avatar-buttons {
+    display: flex;
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    gap: 10px;
+    /* Tạo khoảng cách giữa các nút */
+    margin-top: 10px;
+    /* Tạo khoảng cách với avatar */
+}
+/* Container chứa nút */
+.avatar-buttons {
+    display: flex;
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    gap: 10px;
+    /* Tạo khoảng cách giữa các nút */
+    margin-top: 10px;
+    /* Tạo khoảng cách với avatar */
+}
+
+/* Nút chọn ảnh */
+.input-avatar {
+    background: #e6d1a9;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    min-width: 100px;
+        /* Đảm bảo nút không quá nhỏ */
+        height: 40px;
+}
+
+/* Nút upload */
+.upload {
+    background: #4953e1;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out, transform 0.2s;
+    /* border: 10px; */
+    text-align: center;
+    min-width: 100px;
+        /* Đảm bảo nút không quá nhỏ */
+        height: 40px;
+}
+
+/* Dòng thông tin */
+.profile-info p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+/* Chữ in đậm */
+.profile-info strong {
+    color: #444;
+    font-weight: bold;
+}
+.detail button{
+position: relative;
+left: 10px;
+margin: auto;
+    justify-content: end;
+    background-color: #4953e1;
+font-size: 16px;
+    border-radius: 5px;
+        color: white;
+    min-width: 100px;
+        /* Đảm bảo nút không quá nhỏ */
+        height: 40px;min-width: 100px;
+            /* Đảm bảo nút không quá nhỏ */
+            height: 35px;
+}
+
+/* Responsive cho màn hình nhỏ hơn */
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .profile-info {
+        padding: 15px;
+    }
+
+    .avatar {
+        width: 100%;
+    }
+}
