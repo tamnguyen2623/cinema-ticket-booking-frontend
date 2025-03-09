@@ -110,6 +110,7 @@ export default function PaymentTicket() {
 
       // Khởi tạo requestData
       const requestData = {
+        movieId: bookingData.selectedMovie?._id,
         movieName: bookingData.selectedMovie?.name || "N/A",
         cinema: bookingData.selectedCinema?.name || "N/A",
         address: bookingData.selectedCinema?.address || "N/A",

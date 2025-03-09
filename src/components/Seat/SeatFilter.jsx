@@ -10,7 +10,7 @@ export default function SeatFilter({ options, onFilterChange }) {
   return (
     <Select
       mode="multiple"
-      style={{ width: "50%" }}
+      style={{ width: "30%" }}
       placeholder="Select seat type"
       onChange={handleChange}
       options={options}

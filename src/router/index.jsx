@@ -38,6 +38,7 @@ import SeatAvailable from "../components/Seat/SeatAvailable[Customer]";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
 import MovieShowingCustomer from "../components/MovieList/MovieList";
 import BookingTicketCustomer from "../components/Cinema/CinemaPage";
+import Feedback from "../pages/Feedback";
 import MyTicket from "../pages/Ticket/MyTicket";
 import RolePage from "../pages/Role/RolePage";
 import BookingAdmin from "../pages/BookingAdmin/BookingAdmin";
@@ -83,6 +84,8 @@ const router = createBrowserRouter([
       { path: "myticketdetail/:id", element: <MyTicketDetail /> },
       { path: "combocustomer", element: <ComboCustomer /> },
       { path: "/profile", element: <Profile /> },
+
+
     ],
   },
 
@@ -107,6 +110,7 @@ const router = createBrowserRouter([
       { path: "/admin/showtime", element: <ShowtimePage /> },
       { path: "/admin/movietype", element: <MovietypePage /> },
       { path: "/admin/combo", element: <ComboPage /> },
+      { path: "/admin/feedback", element: <Feedback /> },
       { path: "/admin/role", element: <RolePage /> },
       { path: "/admin/booking", element: <BookingAdmin /> },
     ],
