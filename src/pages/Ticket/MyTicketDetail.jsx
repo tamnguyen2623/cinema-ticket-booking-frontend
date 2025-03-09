@@ -57,11 +57,12 @@ console.log("ticket",ticket);
             <table className="w-full border-collapse text-left p-4">
                 <thead>
                     <tr className="bg-black text-white text-center">
-                        <th className="p-3 w-1/5">Sản phẩm</th>
-                        <th className="p-3 w-1/5">Suất chiếu</th>
-                        <th className="p-3 w-1/5">Vé</th>
-                        <th className="p-3 w-1/5">QR Code</th>
-                        <th className="p-3 w-1/5">Thành tiền</th>
+                        <th className="p-4 w-1/6">Movie</th>
+                        <th className="p-4 w-1/6">Show Time</th>
+                        <th className="p-4 w-1/6">Seat</th>
+                        <th className="p-4 w-1/6">Note</th>
+                        <th className="p-4 w-1/6">QR Code</th>
+                        <th className="p-4 w-1/6">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,7 +83,12 @@ console.log("ticket",ticket);
                         <td className="p-4 border-r border-gray-400">
                             <strong className="text-black">Standard</strong>
                             <p className="text-gray-600">{ticket.seats.join(", ")}</p>
-                            <p className="text-gray-600">{ticket.price.toLocaleString()} $</p>
+                            {/* <p className="text-gray-600">{ticket.price.toLocaleString()} $</p> */}
+                        </td>
+                        <td className="p-4 border-r border-gray-400">
+                            <strong className="text-black">Voucher: {ticket.voucherId.code}</strong>
+                            {/* <p className="text-gray-600">{ticket.seats.join(", ")}</p> */}
+                            <p className="text-gray-600">{ticket.combo}</p>
                         </td>
                         {/* Cột QR Code */}
                         <td className="p-4 flex flex-col items-center border-r border-gray-400">
