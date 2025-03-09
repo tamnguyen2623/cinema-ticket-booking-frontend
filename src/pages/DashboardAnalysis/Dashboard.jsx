@@ -311,7 +311,7 @@ const Dashboard = () => {
               component: (
                 <AnalyticsCurrentVisits
                   chart={{
-                    series: cinemaAnalysis || [{ label: "ABC", value: 1 }],
+                    series: revenueByNewCustomers || [{ label: "ABC", value: 1 }],
                   }}
                 />
               ),
