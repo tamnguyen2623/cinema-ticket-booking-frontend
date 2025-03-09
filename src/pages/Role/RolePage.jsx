@@ -2,12 +2,14 @@ import {
   EditOutlined,
   DeleteOutlined,
   PlusOutlined,
-  SearchOutlined
+  SearchOutlined,
+  FileOutlined
 } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, Space, Table, Typography, message } from 'antd';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { FaFileExport } from 'react-icons/fa';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -321,16 +323,12 @@ const RolePage = () => {
   return (
     <div className="w-full min-h-screen bg-white p-8 rounded-none shadow-none">
       <Title level={2}>Role Management</Title>
-      <label className="flex flex-col text-gray-900 font-semibold">
-            Export:
-            <button
-              onClick={handleExport}
-              className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-semibold rounded-md shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-blue-700 transition duration-200"
-            >
-              Export File
-            </button>
-          </label>
       <Space className="mb-4">
+        <Button type="primary" icon={<FaFileExport/>}
+          className="custom-edit-btn"
+          onClick={handleExport}>
+          Export File
+        </Button>
         <Button type="primary" icon={<PlusOutlined />}
           className="custom-edit-btn"
           onClick={handleAddUser}>
