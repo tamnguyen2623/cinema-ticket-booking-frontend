@@ -22,7 +22,7 @@ const Dashboard = () => {
   const [cinemaAnalysis, setCinemaAnalysis] = useState([]);
   const [revenueByMonth, setRevenueByMonth] = useState([]);
   const [revenueByMovie, setRevenueByMovie] = useState([]);
-  const [revenueByNewCustomers, setRevenueByNewCustomers] = useState([]);
+  const [revenueByNewCustomers, setRevenueByNewCustomers] = useState(null);
   const [revenueByDay, setRevenueByDay] = useState([]);
   const [yearForByMonth, setYearForByMonth] = useState("2025");
   const [yearForByDay, setYearForByDay] = useState("2025");
@@ -164,6 +164,7 @@ const Dashboard = () => {
           cinemaAnalysis,
           revenueByMovie,
           revenueByNewCustomers,
+          revenueByDay
         ] = await Promise.all([
           fetchTotalUsers(),
           fetchTotalMovies(),
@@ -172,6 +173,7 @@ const Dashboard = () => {
           analyzeCinema(),
           getTotalRevenueByMovie(),
           getTotalRevenueByNewCustomers(),
+          getTotalRevenueByDay(month, yearForByDay),
         ]);
 
         console.log("All data loaded successfully!");
@@ -181,7 +183,8 @@ const Dashboard = () => {
     };
 
     fetchAllData();
-  }, []);
+  }, [yearForByDay, month]);
+
   useEffect(() => {
     const fetchAllData = async () => {
       try {
@@ -197,22 +200,6 @@ const Dashboard = () => {
 
     fetchAllData();
   }, [yearForByMonth]);
-
-  useEffect(() => {
-    const fetchAllData = async () => {
-      try {
-        const [revenueByDay] = await Promise.all([
-          getTotalRevenueByDay(month, yearForByDay),
-        ]);
-
-        console.log("All data loaded successfully!");
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
-    };
-
-    fetchAllData();
-  }, [yearForByDay, month]);
 
   return (
     <div className="flex min-h-screen flex-col gap-8 bg-gray-100 p-6 sm:p-10">
@@ -318,7 +305,7 @@ const Dashboard = () => {
             },
             {
               title: "Revenue By Day",
-              component: revenueByDay && (
+              component: revenueByDay != null && revenueByDay.days?.length>0 && (
                 <ApexLineChart
                   data={revenueByDay.totalRevenueByDay}
                   categories={revenueByDay.days}

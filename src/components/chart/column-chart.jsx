@@ -21,12 +21,12 @@ export const ApexColumnChart = ({ data, categories }) => {
         },
       },
       //   colors: colors,
-      plotOptions: {
-        bar: {
-          columnWidth: "80%",
-          distributed: true,
-        },
-      },
+      // plotOptions: {
+      //   bar: {
+      //     columnWidth: "80%",
+      //     distributed: true,
+      //   },
+      // },
       dataLabels: {
         enabled: false,
       },

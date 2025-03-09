@@ -3,6 +3,7 @@ import ReactApexChart from "react-apexcharts";
 
 export const ApexLineChart = ({ data, categories }) => {
   console.log(data);
+  console.log(categories);
   const [state, setState] = useState({
     series: [
       {
@@ -33,7 +34,7 @@ export const ApexLineChart = ({ data, categories }) => {
         show: true,
       },
       stroke: {
-        curve: 'straight'
+        curve: "straight",
       },
       xaxis: {
         categories: categories,
@@ -73,7 +74,7 @@ export const ApexLineChart = ({ data, categories }) => {
           options={state.options}
           series={state.series}
           type="line"
-          height={500}
+          height={350}
         />
       </div>
       <div id="html-dist"></div>
