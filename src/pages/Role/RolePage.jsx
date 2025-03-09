@@ -287,9 +287,49 @@ const RolePage = () => {
     },
   ];
 
+    const handleExport = async () => {
+      try {
+        const response = await axios.get(
+          `/user/export-customers`,
+          {
+            headers: {
+              "Content-Type":
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              Authorization: `Bearer ${auth.token}`,
+            },
+            responseType: "blob",
+          }
+        );
+  
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "customers.xlsx";
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          window.URL.revokeObjectURL(url);
+        } else {
+          console.error("Failed to download file:", response);
+        }
+      } catch (error) {
+        console.error("Error exporting orders:", error);
+      }
+    };
+
   return (
     <div className="w-full min-h-screen bg-white p-8 rounded-none shadow-none">
       <Title level={2}>Role Management</Title>
+      <label className="flex flex-col text-gray-900 font-semibold">
+            Export:
+            <button
+              onClick={handleExport}
+              className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-semibold rounded-md shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-blue-700 transition duration-200"
+            >
+              Export File
+            </button>
+          </label>
       <Space className="mb-4">
         <Button type="primary" icon={<PlusOutlined />}
           className="custom-edit-btn"
