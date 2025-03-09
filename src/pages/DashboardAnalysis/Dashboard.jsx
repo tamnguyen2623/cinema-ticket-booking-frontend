@@ -140,7 +140,7 @@ const Dashboard = () => {
   const getTotalRevenueByDay = async (month, year) => {
     try {
       const response = await axios.get(
-        "/order/revenue-by-day?month=" + month + "&year=" + year,
+        "/revenue/revenue-by-day?month=" + month + "&year=" + year,
         {
           headers: {
             Authorization: `Bearer ${auth.token}`,
@@ -186,7 +186,7 @@ const Dashboard = () => {
     const fetchAllData = async () => {
       try {
         const [revenueByMonth] = await Promise.all([
-          getTotalRevenueByMonth(year),
+          getTotalRevenueByMonth(yearForByMonth),
         ]);
 
         console.log("All data loaded successfully!");
@@ -202,7 +202,7 @@ const Dashboard = () => {
     const fetchAllData = async () => {
       try {
         const [revenueByDay] = await Promise.all([
-          getTotalRevenueByDay(month, year),
+          getTotalRevenueByDay(month, yearForByDay),
         ]);
 
         console.log("All data loaded successfully!");
@@ -318,7 +318,7 @@ const Dashboard = () => {
             },
             {
               title: "Revenue By Day",
-              component: revenueByDay?.length > 0 && (
+              component: revenueByDay && (
                 <ApexLineChart
                   data={revenueByDay.totalRevenueByDay}
                   categories={revenueByDay.days}
