@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Card, Button, Spin, Alert, message } from "antd";
 import Slider from "react-slick";
 import axios from "axios";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 import "../../components/styles/VoucherCustomer.css"; // 🟢 Import CSS
 import sliderSettings from "./sliderSettings"; // 🟢 Import cấu hình Slider
 
