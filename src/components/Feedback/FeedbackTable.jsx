@@ -3,6 +3,7 @@ import { Table, Switch } from "antd";
 import { getAll, filterFeedback, updateFeedback } from "../api/feedback";
 import { toast } from "react-toastify";
 import "./Feedback.css";
+import moment from "moment";
 
 export default function FeedbackFilter({ selectedTypes }) {
   const [filteredFeedbacks, setFilteredFeedbacks] = useState([]);
@@ -71,6 +72,7 @@ export default function FeedbackFilter({ selectedTypes }) {
         {
           title: "Date",
           dataIndex: "date",
+          render: (date) => moment(date).format("DD/MM/YYYY HH:mm"),
         },
         {
           title: "Movie",
