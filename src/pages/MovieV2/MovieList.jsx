@@ -70,6 +70,13 @@ const MovieList = ({
       dataIndex: "description",
       key: "description",
     },
+// ✅ Thêm cột Release Date
+    {
+      title: "Release Date",
+      dataIndex: "releaseDate",
+      key: "releaseDate",
+      render: (date) => new Date(date).toLocaleDateString("vi-VN"), // ✅ Hiển thị ngày
+    },
     {
       title: "Actions",
       key: "actions",

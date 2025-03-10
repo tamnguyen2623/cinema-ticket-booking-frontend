@@ -30,12 +30,14 @@ const MovieForm = ({
         movieDetail ||
           editingMovie || {
             name: "",
-            movieType: undefined,
+            movieType: "",
             length: 0,
             img: null,
             trailer: null,
             description: "",
             actor: "",
+          releaseDate: "", // ✅ Thêm giá trị mặc định
+
           }
       );
     }
@@ -181,6 +183,16 @@ const MovieForm = ({
           >
             <Input placeholder="Enter desciption" />
           </Form.Item>
+{/* // ✅ Thêm releaseDate */}
+            <Form.Item
+              name="releaseDate"
+              label="Release Date"
+              rules={[{ required: true, message: "Release Date is required" }]}
+            >
+              <Input type="date" />
+            </Form.Item>
+
+
           <div className="modalFooter">
             <Button onClick={handleCancel} style={{ marginRight: 8 }}>
               Cancel
@@ -196,6 +208,7 @@ const MovieForm = ({
             </Button>
           </div>
         </Form>
+        
       )}
     </Modal>
   );

@@ -1,0 +1,16 @@
+.tilte{
+    font-size: 24px;
+        font-weight: bold;
+        margin: 20px 0 10px 0;
+        text-align: center;
+}.custom-edit-btn {
+    background-color: #1890ff !important;
+    border-color: #1890ff !important;
+    color: white !important;
+}
+
+.custom-edit-btn:hover {
+    background-color: #1890ff !important;
+    border-color: #1890ff !important;
+    opacity: 0.9;
+}

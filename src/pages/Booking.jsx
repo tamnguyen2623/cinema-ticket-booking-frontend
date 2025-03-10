@@ -29,6 +29,7 @@ const Booking = () => {
     };
     fetchBooking();
   }, [transactionId]);
+  console.log("bookingInfo", bookingInfo);
   useEffect(() => {
     if (!bookingInfo && !loading) {
       toast.error("Ticket not found!");
@@ -137,24 +138,27 @@ const Booking = () => {
                   </p>
                 )}
                 <p>
+                  <strong>Discount:</strong> {bookingInfo.discount}%
+                </p>
+                <p>
                   <strong>Total Price:</strong> $
                   {bookingInfo.price.toLocaleString()}
                 </p>
               </div>
               <div className="ticket-barcode">
-                {bookingInfo.qrCode ? (
-                  <img src={bookingInfo.qrCode} alt="QR Code" />
-                ) : (
-                  <p>Loading QR Code...</p>
-                )}
-              </div>
+                {bookingInfo.qrCode}
+                <img src={bookingInfo.qrCode} alt="QR Code" />
+</div>
             </div>
             <div className="ticket-footer">
               <p>Show QR code to enter the theater.</p>
+
               <p>
                 <strong>Note:</strong> Purchased tickets cannot be cancelled or
                 refunded.
               </p>
+              <p style={{ color: "green", fontSize: "2ex" }}>The ticket was sent Email, you can check your Email. Thank You!</p>
+
             </div>
           </div>
         </Modal>

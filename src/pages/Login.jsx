@@ -174,7 +174,7 @@ const Login = () => {
       console.log("role", response.data.role);
       // Điều hướng dựa trên vai trò của người dùng
       if (response.data.role == 'admin') {
-        navigate("/admin/ticketmanagement"); // Nếu là Admin, vào trang Admin
+        navigate("/admin/dashboard"); // Nếu là Admin, vào trang Admin
       } else {
         navigate("/movieshowing"); // Nếu là User, vào trang Home
       }
