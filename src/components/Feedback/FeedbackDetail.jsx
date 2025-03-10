@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
 import FeedbackForm from "./FeedbackForm";
 import { getFeedback } from "../api/feedback";
+import moment from "moment";
 
 export default function FeedbackDetail({
   userId,
@@ -14,7 +15,7 @@ export default function FeedbackDetail({
   const [refresh, setRefresh] = useState(false);
 
   const showModal = () => {
-    setUpdateModal(true); 
+    setUpdateModal(true);
   };
 
   const handleCancelUpdateModal = () => {
@@ -44,20 +45,24 @@ export default function FeedbackDetail({
             {[1, 2, 3, 4, 5].map((star) => (
               <span
                 key={star}
-                className={`feedback__star ${star <= feedback?.ratting ? "filled" : ""}`}
+                className={`star ${
+                  star <= feedback?.ratting ? "filled" : ""
+                }`}
               >
                 ★
               </span>
             ))}
           </div>
         </div>
-        <p className="feedback__review-textarea">{feedback?.comment}</p>
+        <div className="feedback__review-textarea">
+          <p>{feedback?.comment}</p>
+          <p className="review-date">
+            {moment(feedback?.date).format("DD/MM/YYYY HH:mm")}
+          </p>
+        </div>
       </div>
       <div className="flex justify-end gap-2 mt-4">
-        <button
-          onClick={showModal}
-          className="feedback__review-submit-btn"
-        >
+        <button onClick={showModal} className="feedback__review-submit-btn">
           Update
         </button>
         <button
