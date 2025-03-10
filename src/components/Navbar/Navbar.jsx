@@ -58,6 +58,14 @@ const Navbar = () => {
               LIÊN HỆ
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/egiftcustomer"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              EGIFT
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>

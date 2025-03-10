@@ -38,11 +38,15 @@ import SeatAvailable from "../components/Seat/SeatAvailable[Customer]";
 import MovieShowing from "../pages/MovieShowing/MovieShowing";
 import MovieShowingCustomer from "../components/MovieList/MovieList";
 import BookingTicketCustomer from "../components/Cinema/CinemaPage";
-import Feedback from "../pages/Feedback";
 import MyTicket from "../pages/Ticket/MyTicket";
 import RolePage from "../pages/Role/RolePage";
+import EgiftCustomer from "../pages/EgiftCustomer/egiftcustomer";
+import EgiftDetailCustomer from "../pages/EgiftDetailCustomer/egiftdetailcustomer";
+import Feedback from "../pages/Feedback";
 import BookingAdmin from "../pages/BookingAdmin/BookingAdmin";
+import EgiftsAdminPage from "../pages/Egiftsadmin/Egiftsadmin";
 import MyTicketDetail from "../pages/Ticket/MyTicketDetail";
+
 import Profile from "../pages/profile/profile";
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
@@ -81,9 +85,13 @@ const router = createBrowserRouter([
       { path: "movielist/:id", element: <DetailMovie /> },
       { path: "totalslide", element: <TotalSlide /> },
       { path: "myticket/:userId", element: <MyTicket /> },
+      { path: "egiftcustomer", element: <EgiftCustomer /> },
+      // { path: "egiftdetailcustomer", element: <EgiftDetailCustomer /> },
       { path: "myticketdetail/:id", element: <MyTicketDetail /> },
       { path: "combocustomer", element: <ComboCustomer /> },
       { path: "/profile", element: <Profile /> },
+      { path: "egiftdetailcustomer/:id", element: <EgiftDetailCustomer /> },
+
 
 
     ],
@@ -113,6 +121,8 @@ const router = createBrowserRouter([
       { path: "/admin/feedback", element: <Feedback /> },
       { path: "/admin/role", element: <RolePage /> },
       { path: "/admin/booking", element: <BookingAdmin /> },
+      { path: "/admin/egiftadmin", element: <EgiftsAdminPage /> },
+
     ],
   },
 

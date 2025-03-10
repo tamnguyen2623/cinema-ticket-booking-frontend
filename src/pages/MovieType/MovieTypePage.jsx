@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
-import { Table, Spin, Alert, Button, Form, Input, DatePicker, Select, Modal } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import moment from 'moment';
-import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
-
+import { Table, Button, Form, Input, Modal, Switch } from "antd";
+import { EditOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { AuthContext } from "../../context/AuthContext";
 
 const MovieTypePage = () => {
     const { auth } = useContext(AuthContext);
@@ -31,24 +29,23 @@ const MovieTypePage = () => {
     const handleAddMovieType = async () => {
         try {
             const values = await form.validateFields();
-            // Lấy danh sách loại phim hiện tại
             const response = await axios.get(`/movietype`, {
                 headers: {
-                    Authorization: `Bearer ${auth.token}`
-                }
+                    Authorization: `Bearer ${auth.token}`,
+                },
             });
             const existingMovieTypes = response.data.data || [];
-            // Kiểm tra xem tên đã tồn tại chưa
-            const isDuplicate = existingMovieTypes.some(movieType => movieType.name.toLowerCase() === values.name.toLowerCase());
+            const isDuplicate = existingMovieTypes.some(
+                (movieType) => movieType.name.toLowerCase() === values.name.toLowerCase()
+            );
             if (isDuplicate) {
-                return toast.error("Error");
+                return toast.error("Movie genre name already exists");
             }
-            // Nếu không trùng, thêm mới
             await axios.post(`/movietype`, { name: values.name }, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${auth.token}`
-                }
+                    Authorization: `Bearer ${auth.token}`,
+                },
             });
             fetchMovieTypes();
             setModalType(null);
@@ -59,34 +56,30 @@ const MovieTypePage = () => {
         }
     };
 
-
     const handleEditMovieType = async () => {
         try {
             const values = await form.validateFields();
-            // Nếu tên không thay đổi, không cần kiểm tra
             if (values.name === currentMovieType.name) {
                 setModalType(null);
                 return;
             }
-            // Lấy danh sách loại phim hiện tại
             const response = await axios.get(`/movietype`, {
-                headers: { Authorization: `Bearer ${auth.token}` }
+                headers: { Authorization: `Bearer ${auth.token}` },
             });
             const existingMovieTypes = response.data.data || [];
-            // Kiểm tra xem tên mới có trùng với loại phim khác không (trừ chính nó)
-            const isDuplicate = existingMovieTypes.some(movieType =>
-                movieType.name.toLowerCase() === values.name.toLowerCase() &&
-                movieType._id !== currentMovieType._id
+            const isDuplicate = existingMovieTypes.some(
+                (movieType) =>
+                    movieType.name.toLowerCase() === values.name.toLowerCase() &&
+                    movieType._id !== currentMovieType._id
             );
             if (isDuplicate) {
                 return toast.error("Movie genre name already exists");
             }
-            // Nếu không trùng, cập nhật
             await axios.put(`/movietype/${currentMovieType._id}`, { name: values.name }, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${auth.token}`
-                }
+                    Authorization: `Bearer ${auth.token}`,
+                },
             });
             fetchMovieTypes();
             setModalType(null);
@@ -96,30 +89,19 @@ const MovieTypePage = () => {
         }
     };
 
-
-    const handleDeleteClick = (movieType) => {
-        Modal.confirm({
-            title: "Confirm deletion",
-            content: `Are you sure you want to delete this movie type?"${movieType.name}"`,
-            okText: "Confirm",
-            cancelText: "Cancel",
-            okType: "danger",
-            onOk: () => handleDelete(movieType._id),
-        });
-    };
-
-    const handleDelete = async (id) => {
+    const handleDisable = async (id, isDelete) => {
         try {
-            await axios.delete(`/movietype/${id}`, {
+            await axios.put(`/movietype/updateIsDelete/${id}`, { isDelete: !isDelete }, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${auth.token}`
+                    Authorization: `Bearer ${auth.token}`,
                 },
             });
             fetchMovieTypes();
-            toast.success("Delete successfully!");
+            toast.success("Movie type status updated successfully!");
         } catch (error) {
-            console.error("Error while deleting movie type:", error);
+            console.error("Error updating movie type status:", error);
+            toast.error("Failed to update movie type status!");
         }
     };
 
@@ -130,6 +112,7 @@ const MovieTypePage = () => {
     const filteredMovieTypes = movieTypes.filter((movieType) =>
         movieType.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
 
     const columns = [
         {
@@ -148,17 +131,26 @@ const MovieTypePage = () => {
                         type="primary"
                         icon={<EditOutlined />}
                         onClick={() => {
-                            form.setFieldsValue({ name: record.name }); // Gán giá trị vào form trước khi mở modal
+                            form.setFieldsValue({ name: record.name });
                             setCurrentMovieType(record);
                             setModalType("edit");
                         }}
                     >
                         Update
                     </Button>
-
-                    <Button type="primary" danger icon={<DeleteOutlined />} onClick={() => handleDeleteClick(record)}>
-                        Delete
-                    </Button>
+                </div>
+            ),
+        },
+        {
+            title: "Disabled",
+            key: "disabled",
+            render: (record) => (
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <Switch
+                        checked={record.isDelete}
+                        className="custom-switch"
+                        onChange={() => handleDisable(record._id, record.isDelete)}
+                    />
                 </div>
             ),
         },
@@ -173,10 +165,7 @@ const MovieTypePage = () => {
                     onChange={handleSearch}
                     style={{ width: 300 }}
                 />
-                <Button
-                    icon={<PlusOutlined />}
-                    onClick={() => setModalType("add")}
-                >
+                <Button icon={<PlusOutlined />} onClick={() => setModalType("add")}>
                     Add Movie Type
                 </Button>
             </div>
@@ -193,7 +182,8 @@ const MovieTypePage = () => {
                 onCancel={() => setModalType(null)}
                 onOk={modalType === "add" ? handleAddMovieType : handleEditMovieType}
                 okText="Save"
-                cancelText="Cancel">
+                cancelText="Cancel"
+            >
                 <Form form={form} layout="vertical">
                     <Form.Item
                         name="name"
@@ -202,7 +192,6 @@ const MovieTypePage = () => {
                     >
                         <Input />
                     </Form.Item>
-
                 </Form>
             </Modal>
         </div>
