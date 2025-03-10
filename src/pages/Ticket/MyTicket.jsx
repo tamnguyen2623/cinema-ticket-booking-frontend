@@ -52,7 +52,7 @@ const MyTicket = () => {
         ) : (
             <Row gutter={[16, 16]} justify="space-between">
               {bookings.map((ticket) => (
-                <Col xs={24} sm={12} md={8} key={ticket._id}>
+                <Col key={ticket._id}>
 
                   <Card
                     bordered={false}

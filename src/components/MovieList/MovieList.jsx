@@ -86,13 +86,13 @@ const MovieList = () => {
           className={filter === "nowShowing" ? "active" : ""}
           onClick={() => setFilter("nowShowing")}
         >
-          Phim Đang Chiếu
+         Showing Movie
         </button>
         <button
           className={filter === "upcoming" ? "active" : ""}
           onClick={() => setFilter("upcoming")}
         >
-          Phim Sắp Chiếu
+          Upcoming Movie
         </button>
       </div>
 

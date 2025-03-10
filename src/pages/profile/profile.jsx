@@ -47,7 +47,7 @@ const navigate = useNavigate()
 
     // Upload avatar
     const handleUpload = async () => {
-        if (!preview) return alert("Vui lòng chọn ảnh!");
+        if (!preview) return alert("Please enter image!");
 
         const formData = new FormData();
         formData.append("avatar", document.getElementById("avatarInput").files[0]);
@@ -58,7 +58,7 @@ const navigate = useNavigate()
                 headers: { Authorization: `Bearer ${auth.token}` },
             });
             setAvatar(res.data.avatar);
-            alert("Upload thành công!");
+            alert("Upload success!");
         } catch (error) {
             console.error("Lỗi upload:", error);
             alert("Có lỗi xảy ra!");
@@ -70,7 +70,7 @@ const navigate = useNavigate()
     return (
         <div className="container">
             <div className="header-title">
-                <h2>Hồ sơ cá nhân</h2>
+                <h2>Profile</h2>
             </div>
             <div className="profile-container">
                 {/* Hiển thị avatar */}
@@ -82,7 +82,7 @@ const navigate = useNavigate()
                     />
                     <div className="avatar-buttons">
                     <label htmlFor="avatarInput" className="input-avatar">
-                        Chọn ảnh
+                        Choose 
                     </label>
 
                     <input
@@ -105,12 +105,12 @@ const navigate = useNavigate()
                     {/* Hiển thị thông tin khách hàng */}
                     {user && (
                         <div className="mt-5">
-                            <p><strong>Tên:</strong> {user.fullname}</p>
-                            <p><strong>Email:</strong> {user.email}</p>
+                            <p><strong>Fullname:</strong> {user.fullname}</p>
+                            <p><strong>Email: </strong>{user.email}</p>
 
-                            <p className="detail" ><strong>Tổng số tiền đã mua vé:</strong> {totalSpent.toLocaleString()} VND
+                            <p className="detail" ><strong>Total:</strong> {totalSpent.toLocaleString()} $
                             
-                            <button  onClick={()=> navigate(`/myticket/:userId`)}>Chi tiết</button>
+                            <button  onClick={()=> navigate(`/myticket/:userId`)}>Detail</button>
                             </p>
                         </div>
                     )}
