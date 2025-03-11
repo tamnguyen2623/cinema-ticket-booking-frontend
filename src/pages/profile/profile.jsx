@@ -9,6 +9,7 @@ const Profile = () => {
     const [avatar, setAvatar] = useState(null);
     const [preview, setPreview] = useState("");
     const [loading, setLoading] = useState(false);
+    const [fullname, setFullname] = useState(""); // State mới để lưu tên mới
     const [totalSpent, setTotalSpent] = useState(0); // ⬅️ Biến lưu tổng tiền vé
     const { auth } = useContext(AuthContext);
 const navigate = useNavigate()
@@ -22,6 +23,7 @@ const navigate = useNavigate()
             .then((res) => {
                 setUser(res.data.data);
                 setAvatar(res.data.data.avatar);
+                setFullname(res.data.data.fullname); // Set fullname vào state
                 fetchTotalSpent(res.data.data._id); // ⬅️ Gọi API tổng tiền ngay sau khi lấy userId
             })
             .catch((err) => console.error("Lỗi khi tải thông tin:", err));
@@ -37,6 +39,7 @@ const navigate = useNavigate()
         }
     };
 
+  
     // Xử lý chọn file ảnh
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -46,26 +49,43 @@ const navigate = useNavigate()
     };
 
     // Upload avatar
-    const handleUpload = async () => {
-        if (!preview) return alert("Vui lòng chọn ảnh!");
-
-        const formData = new FormData();
-        formData.append("avatar", document.getElementById("avatarInput").files[0]);
-
+    const handleUpdateProfile = async () => {
         setLoading(true);
+
         try {
-            const res = await axios.post("http://localhost:8080/auth/upload-avatar", formData, {
-                headers: { Authorization: `Bearer ${auth.token}` },
-            });
-            setAvatar(res.data.avatar);
-            alert("Upload thành công!");
+            let uploadedAvatar = avatar;
+
+            // Nếu có ảnh mới được chọn, thực hiện upload trước
+            if (preview) {
+                const formData = new FormData();
+                formData.append("avatar", document.getElementById("avatarInput").files[0]);
+
+                const resAvatar = await axios.post("http://localhost:8080/auth/upload-avatar", formData, {
+                    headers: { Authorization: `Bearer ${auth.token}` },
+                });
+
+                uploadedAvatar = resAvatar.data.avatar; // Cập nhật avatar mới
+            }
+
+            // Cập nhật fullname và avatar trong hồ sơ
+            const res = await axios.put(
+                `http://localhost:8080/auth/profile/user/${user._id}`,
+                { fullname, avatar: uploadedAvatar },
+                { headers: { Authorization: `Bearer ${auth.token}` } }
+            );
+
+            setUser({ ...user, fullname: res.data.fullname, avatar: uploadedAvatar });
+            setAvatar(uploadedAvatar);
+            setPreview(""); // Xóa preview sau khi upload xong
+            alert("Cập nhật thành công!");
         } catch (error) {
-            console.error("Lỗi upload:", error);
+            console.error("Lỗi khi cập nhật thông tin:", error);
             alert("Có lỗi xảy ra!");
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="container">
@@ -92,29 +112,50 @@ const navigate = useNavigate()
                         className="hidden"
                         onChange={handleFileChange}
                     />
-                    <button
-                        onClick={handleUpload}
-                        className="upload"
-                        disabled={loading}
-                    >
-                        {loading ? "Đang tải..." : "Upload"}
-                    </button>
+                  
                     </div>
                 </div>
                 <div className="profile-info">
                     {/* Hiển thị thông tin khách hàng */}
                     {user && (
-                        <div className="mt-5">
-                            <p><strong>Tên:</strong> {user.fullname}</p>
+                        <div className="mt-5 space-y-4">
+                            {/* Cập nhật họ tên */}
+                            <div className="flex items-center gap-3">
+                                <strong>Tên:</strong>
+                                <input
+                                    type="text"
+                                    value={fullname}
+                                    onChange={(e) => setFullname(e.target.value)}
+                                    className="border border-gray-300 px-2 py-1 rounded w-full max-w-xs"
+                                />
+                              
+                            </div>
+
+                            {/* Hiển thị Email */}
                             <p><strong>Email:</strong> {user.email}</p>
 
-                            <p className="detail" ><strong>Tổng số tiền đã mua vé:</strong> {totalSpent.toLocaleString()} VND
-                            
-                            <button  onClick={()=> navigate(`/myticket/:userId`)}>Chi tiết</button>
-                            </p>
+                            {/* Hiển thị tổng số tiền đã mua vé */}
+                                <div className="flex items-center gap-4 rounded">
+
+                                <p><strong>Total:</strong> {totalSpent.toLocaleString()} $</p>
+                                <button
+                                    onClick={() => navigate(`/myticket/${user.id}`)}
+                                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition">
+                                    Chi tiết
+                                </button>
+                            </div>
+                            <button
+                                onClick={handleUpdateProfile}
+                                className="bg-blue-500 text-white px-5 py-2 rounded hover:bg-blue-600 transition flex items-center justify-center"
+                                disabled={loading}
+                            >
+                                {loading ? "Loading..." : "Update Profile"}
+                            </button>
+
                         </div>
                     )}
                 </div>
+
             </div>
         </div>
     );
