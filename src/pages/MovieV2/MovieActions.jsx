@@ -109,6 +109,9 @@ console.log(values)
     formData.append("actor", values.actor);
     formData.append("description", values.description);
 
+    formData.append("releaseDate", values.releaseDate); // ✅ Thêm releaseDate
+
+
     if (values.img && values.img instanceof File) {
       formData.append("img", values.img);
     }
