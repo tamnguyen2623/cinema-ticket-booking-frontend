@@ -19,7 +19,9 @@ const CinemaCustomer = () => {
   const fetchCinema = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8080/cinema");
+      const response = await axios.get("http://localhost:8080/cinema/listforadmin", {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      });
       if (response.data && Array.isArray(response.data.data)) {
         setCinemas(response.data.data);
         setFilteredCinemas(response.data.data);
@@ -47,11 +49,17 @@ const CinemaCustomer = () => {
   const handleAddCinema = async () => {
     try {
       const values = await form.validateFields();
-      const formattedValues = { name: values.name, address: values.address };
+      const formattedValues = {
+        name: values.name,
+        address: values.address,
+        phoneNumber: values.phoneNumber,
+        map: values.map,
+      };
+  
       const response = await axios.post("http://localhost:8080/cinema", formattedValues, {
         headers: { Authorization: `Bearer ${auth.token}` }
       });
-
+  
       setCinemas([...cinemas, response.data]);
       setFilteredCinemas([...cinemas, response.data]);
       setModalType(null);
@@ -61,22 +69,29 @@ const CinemaCustomer = () => {
       toast.error("Lỗi khi thêm cinema!");
     }
   };
+  
 
   const handleEditCinema = async () => {
     try {
       const values = await form.validateFields();
-      const updatedCinema = { name: values.name, address: values.address };
+      const updatedCinema = {
+        name: values.name,
+        address: values.address,
+        phoneNumber: values.phoneNumber,
+        map: values.map,
+      };
+  
       await axios.put(`http://localhost:8080/cinema/${currentCinema._id}`, updatedCinema, {
         headers: { Authorization: `Bearer ${auth.token}` }
       });
-
+  
       setCinemas(cinemas.map(cinema =>
         cinema._id === currentCinema._id ? { ...cinema, ...updatedCinema } : cinema
       ));
       setFilteredCinemas(filteredCinemas.map(cinema =>
         cinema._id === currentCinema._id ? { ...cinema, ...updatedCinema } : cinema
       ));
-
+  
       setModalType(null);
       form.resetFields();
       toast.success("Cập nhật thành công!");
@@ -84,6 +99,7 @@ const CinemaCustomer = () => {
       toast.error("Lỗi khi cập nhật rạp phim!");
     }
   };
+  
 
   const handleEditClick = (cinema) => {
     setCurrentCinema(cinema);
@@ -118,13 +134,26 @@ const CinemaCustomer = () => {
       title: "Name Cinema",
       dataIndex: "name",
       key: "name",
-      width: 300,
+      width: 200,
     },
     {
       title: "Address",
       dataIndex: "address",
       key: "address",
-      width: 700,
+      width: 300,
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
+      width: 200,
+    },
+    {
+      title: "Map",
+      dataIndex: "map",
+      key: "map",
+      width: 200,
+      render: (text) => (text ? <a href={text} target="_blank" rel="noopener noreferrer">View Map</a> : "N/A"),
     },
     {
       title: "Hành Động",
@@ -143,6 +172,7 @@ const CinemaCustomer = () => {
       render: (record) => (
         <Switch
           checked={record.isDelete}
+          className="custom-switch"
           onChange={() => handleToggleDelete(record._id, record.isDelete)}
         />
       ),
@@ -178,7 +208,14 @@ const CinemaCustomer = () => {
           <Form.Item name="address" label="Address" rules={[{ required: true, message: "Vui lòng nhập địa chỉ Cinema!" }]}>
             <Input />
           </Form.Item>
+          <Form.Item name="phoneNumber" label="Phone Number">
+            <Input />
+          </Form.Item>
+          <Form.Item name="map" label="Map (URL)">
+            <Input />
+          </Form.Item>
         </Form>
+
       </Modal>
     </div>
   );
