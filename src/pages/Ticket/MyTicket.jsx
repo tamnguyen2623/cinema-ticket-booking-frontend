@@ -1,10 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card, Spin, Alert, Tag, Typography, Row, Col } from "antd";
+import {
+  Card,
+  Spin,
+  Alert,
+  Tag,
+  Typography,
+  Row,
+  Col,
+  Modal,
+  Button,
+} from "antd";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import "./MyTicket.css";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import FeedbackForm from "../../components/Feedback/FeedbackForm";
+import FeedbackDetail from "../../components/Feedback/FeedbackDetail";
 
 // import { QRCode, QRCodeSVG } from "qrcode.react";
 const { Title } = Typography;
@@ -139,8 +152,50 @@ const MyTicket = () => {
                     </div>
                   </div>
                 </Card>
+                {ticket.status === "success" && (
+                  <button
+                    onClick={() => showModal(ticket)}
+                    className="text-red-700 italic hover:text-red-500 flex items-center gap-1 underline"
+                  >
+                    {ticket.isFeedback ? <EyeOutlined /> : <EditOutlined />}
+                    {ticket.isFeedback ? "View feedback" : "Review"}
+                  </button>
+                )}
               </Col>
             ))}
+            <Modal
+              title={`Ratting & Feedback "${booking?.movieName}"`}
+              open={addModal}
+              onCancel={handleCancelAddModal}
+              width={1000}
+              footer={null}
+            >
+              <FeedbackForm
+                userId={auth.userId}
+                form={"Add"}
+                booking={booking}
+                setModal={setAddModal}
+                fetchBookings={fetchBookings}
+                handleCancelModal={handleCancelAddModal}
+                refresh={refresh}
+              />
+            </Modal>
+
+            <Modal
+              title={`View feedback "${booking?.movieName}"`}
+              open={viewModal}
+              onCancel={handleCancelViewModal}
+              width={1000}
+              footer={null}
+            >
+              <FeedbackDetail
+                userId={auth.userId}
+                booking={booking}
+                // setModal={setViewModal}
+                fetchBookings={fetchBookings}
+                handleCancelViewModal={handleCancelViewModal}
+              />
+            </Modal>
           </Row>
         )}
       </div>
