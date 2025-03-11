@@ -1,11 +1,11 @@
-.container {
+.head-container {
     max-width: 100%;
     /* Giới hạn độ rộng tối đa */
     margin: 0 auto;
     /* Căn giữa */
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 40px;
     justify-content: center;
     padding: 20px;
 }
@@ -33,12 +33,13 @@
     /* padding: 10px; */
     border-radius: 15px;
     background-color: #efebdb;
-    width: 60vh;
+    width: 65vh;
     height: 50vh;
+    /* height: 0vh; */
     /* background: linear-gradient(to right, #ffffff, #fff3e0); */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease-in-out;
-    cursor: pointer;
+    margin: 10px;
 }
 
 /* Chia layout thành 2 cột */
@@ -49,8 +50,9 @@
 }
 
 .img-movie {
-  width: 200px;
-  height: 300px;
+  width: 30vh;
+  height: 50vh;
+  padding: 10px;
   /* flex-shrink: 0; */
 }
 

@@ -43,6 +43,7 @@ const MyTicket = () => {
   const fetchBookings = async () => {
     if (!auth?.userId) {
       setLoading(false);
+      setBooking([])
       return;
     }
     try {
@@ -52,13 +53,15 @@ const MyTicket = () => {
       const bookingsData = Array.isArray(response.data)
         ? response.data
         : Array.isArray(response.data.bookings)
-        ? response.data.bookings
-        : [];
+          ? response.data.bookings
+          : [];
       console.log(bookingsData);
 
       setBookings(bookingsData);
     } catch (err) {
       setError("Lỗi khi tải danh sách vé.");
+      setBookings([]);  // Đảm bảo rằng bookings là rỗng khi có lỗi
+
     } finally {
       setLoading(false);
     }
@@ -75,55 +78,59 @@ const MyTicket = () => {
         className="w-full flex justify-center"
       />
     );
-  if (error)
-    return <Alert message={error} type="error" showIcon className="my-4" />;
+  console.log("booking", bookings)
+
+  // Nếu API thành công nhưng không có vé -> Hiển thị thông báo "Bạn chưa đặt vé nào."
+  if (!bookings || bookings.length === 0 || error) {
+    return <Alert message="Bạn chưa đặt vé nào." type="info" showIcon />;
+  }
   return (
     <div className="head-container">
-      {/* <h3 className="title-header"> MY TICKET</h3> */}
       <div className="sub-container">
-        {bookings.length === 0 ? (
-          <Alert message="Bạn chưa đặt vé nào." type="info" showIcon />
-        ) : (
+        <Row gutter={[32, 32]} justify="center">
+          {bookings.map((ticket) => (
+            <Col key={ticket._id} >
+              <div className="ticket-card">
 
-          <Row gutter={[16, 16]} justify="space-between">
-            {bookings.map((ticket) => (
-              <Col key={ticket._id}>
-                <Card
-                  bordered={false}
-                  className="ticket-card"
-                  onClick={() => navigate(`/myticketdetail/${ticket._id}`)}
-                >
-                  <div className="ticket-content">
-                    {/* Ảnh phim bên trái */}
-                    <div className="img-movie">
-                      <img src={ticket.movieImage} alt={ticket.movieName} />
-                    </div>
 
-                    {/* Thông tin vé bên phải */}
-                    <div className="information-ticket">
-                      <h3> {ticket.movieName}</h3>
-                      <div><strong>Rạp:</strong> {ticket.cinema}</div>
-                      <div><strong>Ngày chiếu:</strong> {dayjs(ticket.date).format('DD/MM/YYYY')}</div>
-                      <div><strong>Ghế:</strong> {ticket.seats.join(', ')}</div>
-                      <div><strong>Giá:</strong> {ticket.price.toLocaleString()} $</div>
-
-                      <Tag color={{
-                        success: 'green',
-                        pending: 'orange',
-                        failed: 'red',
-                        cancelled: 'volcano'
-                      }[ticket.status]}>
-                        {ticket.status.toUpperCase()}
-                      </Tag>
-
-                    </div>
-
+                <div className="ticket-content">
+                  {/* Ảnh phim bên trái */}
+                  <div className="img-movie">
+                    <img src={ticket.movieImage} alt={ticket.movieName} />
                   </div>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        )}
+
+                  {/* Thông tin vé bên phải */}
+                  <div className="information-ticket">
+                    <h3> {ticket.movieName}</h3>
+                    <div><strong>Rạp:</strong> {ticket.cinema}</div>
+                    <div><strong>Ngày chiếu:</strong> {dayjs(ticket.date).format('DD/MM/YYYY')}</div>
+                    <div><strong>Ghế:</strong> {ticket.seats.join(', ')}</div>
+                    <div><strong>Giá:</strong> {ticket.price.toLocaleString()} $</div>
+
+                    <Tag color={{
+                      success: 'green',
+                      pending: 'orange',
+                      failed: 'red',
+                      cancelled: 'volcano'
+                    }[ticket.status]}>
+                      {ticket.status.toUpperCase()}
+                    </Tag>
+
+                    {ticket.status === "success" && (
+                      <button
+                        onClick={() => navigate(`/myticketdetail/${ticket._id}`)}
+                        className="btn btn-primary"
+                      >
+                        Detail
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Col>
+          ))}
+        </Row>
+
       </div>
     </div>
   );

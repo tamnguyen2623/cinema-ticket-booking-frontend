@@ -1,167 +1,152 @@
 /* Định dạng tiêu đề trang */
 .header-title {
-  text-align: center;
-  background-color: #dad2b4;
-  padding: 10px 10px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  width: 100vw; /* Giới hạn độ rộng theo nội dung */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: #DAD2B4;
+    padding: 10px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    width: 100vw ; /* Giới hạn độ rộng theo nội dung */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.header-title h2 {
-  border-bottom: 2px solid black;
+.header-title h2{
+        border-bottom: 2px solid black;
 }
 /* Container chính */
 .profile-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  /* Căn đều avatar và thông tin */
-  gap: 40px;
-  max-width: 100vh;
-  height: 100%;
-  margin: 30px auto;
-  /* padding-top: 0px;
-    padding-bottom: 100px;   */
-  padding: 10px 100px 80px;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    gap: 40px;
+    max-width: 900px;
+    margin: 50px auto;
+    /* padding: 30px; */
+   
+    border-radius: 12px;
+    transition: transform 0.3s ease-in-out;
 }
 
-/* Avatar bên trái */
-.avatar-profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 10rem;
-  /* Kích thước cố định */
-  height: 10rem;
+
+.avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 10rem;
+    height: 10rem;
+    margin-top: -35px;
 }
 
 /* Ảnh đại diện */
-.avatar-profile img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* Giữ hình tròn không bị méo */
-  aspect-ratio: 1/1;
-  /* Đảm bảo hình tròn */
-  border-radius: 50%;
-  border: 4px solid #dad2b4;
-  /* transition: transform 0.3s ease-in-out; */
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+aspect-ratio: 1/1;
+    border-radius: 50%;
+        border: 4px solid #DAD2B4;
 }
 
-/* Hiệu ứng hover ảnh */
-.avatar-profile img:hover {
-  transform: scale(1.1);
-}
-/* Thông tin bên phải */
+
 .profile-info {
-  flex: 1;
-  padding: 10px;
-  width: 50%;
-  /* background-color: #F9F9F9; */
-  padding: 8px;
-  border-radius: 8px;
+    flex: 1;
+    padding: 10px;
+    background-color: #F9F9F9;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: left;
+    gap: 10px;
 }
 .avatar-buttons {
-  display: flex;
-  justify-content: center;
-  /* Căn giữa theo chiều ngang */
-  gap: 10px;
-  /* Tạo khoảng cách giữa các nút */
-  margin-top: 10px;
-  /* Tạo khoảng cách với avatar */
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 .avatar-buttons {
-  display: flex;
-  justify-content: center;
-  /* Căn giữa theo chiều ngang */
-  gap: 10px;
-  /* Tạo khoảng cách giữa các nút */
-  margin-top: 10px;
-  /* Tạo khoảng cách với avatar */
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 /* Nút chọn ảnh */
 .input-avatar {
-  background: #e6d1a9;
-  color: black;
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  text-align: center;
-  min-width: 100px;
-  /* Đảm bảo nút không quá nhỏ */
-  height: 40px;
+    background: #e6d1a9;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    min-width: 100px;
+        height: 40px;
 }
 
 /* Nút upload */
 .upload {
-  background: #4953e1;
-  color: white;
-  padding: 8px 18px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition:
-    0.3s ease-in-out,
-    transform 0.2s;
-  /* border: 10px; */
-  text-align: center;
-  min-width: 100px;
-  /* Đảm bảo nút không quá nhỏ */
-  height: 40px;
+    background: #4953e1;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out, transform 0.2s;
+    text-align: center;
+    min-width: 100px;
+        height: 40px;
 }
 
 .profile-info p {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 12px;
-  font-weight: 500;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 12px;
+    font-weight: 500;
 }
 
 .profile-info strong {
-  color: #444;
-  font-weight: bold;
+    color: #444;
+    font-weight: bold;
 }
 .detail button {
-  position: relative;
-  left: 10px;
-  margin: auto;
-  justify-content: end;
-  background-color: #4953e1;
-  font-size: 16px;
-  border-radius: 5px;
-  color: white;
-  min-width: 100px;
-  /* Đảm bảo nút không quá nhỏ */
-  height: 40px;
-  min-width: 100px;
-  /* Đảm bảo nút không quá nhỏ */
-  height: 35px;
+    background-color: #4953e1;
+    font-size: 16px;
+    border-radius: 5px;
+    color: white;
+    min-width: 120px;
+    height: 40px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-in-out;
+    border: none;
+    cursor: pointer;
 }
 
+.detail button:hover {
+    background-color: #3748c8;
+    /* Màu khi hover */
+    transform: scale(1.05);
+    /* Hiệu ứng phóng to nhẹ */
+}
 /* Responsive cho màn hình nhỏ hơn */
 @media (max-width: 768px) {
-  .profile-container {
-    flex-direction: column;
-    text-align: center;
-    padding: 20px;
-  }
+    .profile-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
 
-  .profile-info {
-    padding: 15px;
-  }
+    .profile-info {
+        padding: 15px;
+    }
 
-  .avatar {
-    width: 100%;
-  }
+    .avatar {
+        width: 100%;
+    }
 }
