@@ -131,7 +131,7 @@
     font-weight: 700;
     height: 50px;
     width: 200px;
-
+    color: #c0b687;
 }
 
 .btn a {
@@ -141,6 +141,7 @@
 
 .btn:hover {
     background-color: #c0b687;
+    color: white;
 }
 
 .btn:hover a {
@@ -202,6 +203,29 @@
     cursor: pointer;
 }
 
-.btn-add-close:hover{
+.btn-add-close:hover {
     background: #ede9e9;
+}
+
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 20px;
+}
+
+.filter-buttons button {
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter-buttons button.active {
+    background-color: #c0b687;
+    color: white;
 }

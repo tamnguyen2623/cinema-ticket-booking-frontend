@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Table, Spin, Alert, Button, Form, Input, DatePicker, Select, Modal, TimePicker } from 'antd';
+import { Table, Spin, Alert, Button, Form, Input, DatePicker, Select, Modal, TimePicker,Switch } from 'antd';
 import { toast } from "react-toastify";
 import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";
@@ -153,35 +153,19 @@ const ShowtimePage = () => {
             });
         }
     };
-    const handleDeleteClick = (showtime) => {
-        Modal.confirm({
-            title: "Confirm deletion",
-            content: `Are you sure you want to delete the showtime "${showtime.startTime}"?`,
-            okText: "Confirm",
-            cancelText: "Cancel",
-            okType: "danger",
-            onOk: () => handleDelete(showtime._id),
-        });
-    };
-
-    const handleDelete = async (id) => {
+    const handleDisable = async (id, isDelete) => {
         try {
-            await axios.delete(`/showtime/${id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${auth.token}`
-                },
+            await axios.put(`/showtime/updateIsDelete/${id}`, { isDelete: !isDelete }, {
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${auth.token}` }
             });
             fetchShowtimes();
-            toast.success("Delete successfully!", {
-                position: "top-center",
-                autoClose: 2000,
-                pauseOnHover: false,
-            });
+            toast.success("Showtime status updated successfully!");
         } catch (error) {
-            console.error("Error while deleting showtime:", error);
+            console.error("Error updating showtime status:", error);
+            toast.error("Failed to update showtime status!");
         }
     };
+
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
     };
@@ -213,18 +197,26 @@ const ShowtimePage = () => {
                         className="custom-edit-btn"
                         type="primary"
                         icon={<EditOutlined />}
-                        onClick={() => setCurrentShowtime(record) || setModalType("edit")}
+                        onClick={() => {
+                            form.setFieldsValue({ startTime: moment(record.startTime) });
+                            setCurrentShowtime(record);
+                            setModalType("edit");
+                        }}
                     >
                         Update
                     </Button>
-                    <Button
-                        type="primary" danger
-                        icon={<DeleteOutlined />}
-                        onClick={() => handleDeleteClick(record)}
-                    >
-                        Delete
-                    </Button>
                 </div>
+            ),
+        },
+        {
+            title: "Disabled",
+            key: "disabled",
+            render: (record) => (
+                <Switch
+                    checked={record.isDelete}
+                    className="custom-switch"
+                    onChange={() => handleDisable(record._id, record.isDelete)}
+                />
             ),
         },
     ];

@@ -3,7 +3,6 @@ import SeatFilter from "../components/Seat/SeatFilter";
 import SeatTable from "../components/Seat/SeatTable";
 import { Typography } from "antd";
 import { Padding } from "@mui/icons-material";
-
 const { Title } = Typography;
 
 const options = [
@@ -22,7 +21,7 @@ export default function Seat() {
   };
 
   return (
-    <div className="p-11">
+    <div className="p-8">
       <Title>List of seats</Title>
       <div style={{ marginBottom: 16 }}>
         <SeatFilter options={options} onFilterChange={handleFilterChange} />

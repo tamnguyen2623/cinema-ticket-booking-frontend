@@ -89,8 +89,8 @@ export default function SeatAvailableForCustomer() {
 
     // ✅ Dùng `setTimeout()` để đảm bảo `navigate()` hoạt động
     setTimeout(() => {
-      navigate("/combocustomer");
-      // navigate("/totalslide");
+      // navigate("/combocustomer");
+      navigate("/totalslide");
     }, 1);
   };
 

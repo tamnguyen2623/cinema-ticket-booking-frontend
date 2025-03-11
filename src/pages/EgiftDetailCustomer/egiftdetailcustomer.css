@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.movie-detail-header {
+    text-align: center;
+    background-color: #DAD2B4;
+}
+
+.movie-detail-title {
+    display: inline-block;
+    padding: 10px 0;
+    font-weight: 700;
+    font-size: 15px;
+    border-bottom: 2px solid black;
+}
+
+.movie-detail-content {
+    width: 80%;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.movie-detail-main-info {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.detail-images {
+    display: flex;
+    width: 30%;
+    margin-left: 60px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    /* Căn giữa dọc */
+}
+
+.detail-images img {
+    width: 100%;
+    border-radius: 30px;
+    object-fit: cover;
+}
+
+.movie-detail-info {
+    margin-left: 30px;
+}
+
+.btn-book-ticket {
+    background-color: #231f20;
+    color: #cdc197;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 44px;
+    margin-top: 10px;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+    width: 200px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-book-ticket:hover {
+    background-color: #cdc197;
+    color: #231f20;
+}
+
+.movie-detail-name {
+    color: #231f20;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 30px;
+}
+
+.movie-detail-inf-wrapper {
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.movie-detail-inf-wrapper p {
+    font-size: 19px;
+    color: #333;
+    margin: 5px 0;
+    padding-left: 10px;
+    border-left: 4px solid #d4af37;
+}
+
+.movie-detail-inf-wrapper p span.label {
+    font-weight: bold;
+    color: #000;
+}
+
+.movie-detail-inf-wrapper p span.value {
+    font-weight: normal;
+    color: #333;
+}

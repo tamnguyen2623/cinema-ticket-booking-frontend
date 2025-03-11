@@ -13,21 +13,29 @@ const MovieList = () => {
   const [movies, setMovies] = useState([]);
   const [allMovies, setAllMovies] = useState([]);
   const [visibleCount, setVisibleCount] = useState(8);
+  const [filter, setFilter] = useState("nowShowing");
+
+  const fetchMovies = async (type) => {
+    try {
+      let response;
+      if (type === "nowShowing") {
+        response = await axios.get("http://localhost:8080/movie/nowcoming");
+      } else {
+        response = await axios.get("http://localhost:8080/movie/upcoming");
+      }
+
+      const movieList = response.data?.data || [];
+      setAllMovies(movieList);
+      setMovies(movieList.slice(0, visibleCount));
+    } catch (error) {
+      console.error("Lỗi khi tải danh sách phim:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/movie");
-        const movieList = response.data?.data || [];
-        setAllMovies(movieList);
-        setMovies(movieList.slice(0, visibleCount));
-      } catch (error) {
-        console.error("Lỗi khi tải danh sách movie:", error);
-      }
-    };
+    fetchMovies(filter);
+  }, [filter, visibleCount]);
 
-    fetchMovies();
-  }, []);
 
   const handleShowMore = () => {
     if (visibleCount >= allMovies.length) {
@@ -72,6 +80,23 @@ const MovieList = () => {
           </SwiperSlide>
         </Swiper>
       </div>
+
+      <div className="filter-buttons">
+        <button
+          className={filter === "nowShowing" ? "active" : ""}
+          onClick={() => setFilter("nowShowing")}
+        >
+          Phim Đang Chiếu
+        </button>
+        <button
+          className={filter === "upcoming" ? "active" : ""}
+          onClick={() => setFilter("upcoming")}
+        >
+          Phim Sắp Chiếu
+        </button>
+      </div>
+
+
       <div className="screen_cwrap">
         <div className="movie-list">
           {movies.map((movie) => (
@@ -84,14 +109,21 @@ const MovieList = () => {
                 />
                 <div className="overlay"> </div>
                 <div className="movie-actions">
-                  <button className="btn btn-detail">
-                    <Link
-                      to={`/bookingticket`}
-                      state={{ selectedMovie: movie }}
-                    >
-                      <p>Đặt vé</p>
-                    </Link>
-                  </button>
+                  {new Date(movie.releaseDate) <= new Date() ? (
+
+                    <button className="btn btn-detail">
+                      <Link
+                        to={`/bookingticket`}
+                        state={{ selectedMovie: movie }}
+                      >
+                        <p>Đặt vé</p>
+                      </Link>
+                    </button>
+                  ) : (
+                    <button className="btn btn-disabled" disabled>
+                      <p>Chưa Mở Bán</p>
+                    </button>
+                  )}
                   <button className="btn btn-book">
                     <Link to={`/movielist/${movie._id}`}>
                       <p>Chi tiết</p>
@@ -105,7 +137,7 @@ const MovieList = () => {
               <div className="movie-details">
                 <p className="movie-duration">{movie.length} phút</p>
                 <p className="movie-release-date">
-                  {movie.releaseDate} 25/10/2025
+                  {new Date(movie.releaseDate).toLocaleDateString("vi-VN")}
                   {/* {movie.created} 25/10/2025 */}
                 </p>
               </div>

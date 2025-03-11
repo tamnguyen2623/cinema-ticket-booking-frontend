@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../context/AuthContext";
 import GoogleIcon from "@mui/icons-material/Google";
+import FacebookIcon from '@mui/icons-material/Facebook';
 import FormModal from "../components/form-modal";
 
 const getCookie = (name) => {
@@ -174,7 +175,7 @@ const Login = () => {
       console.log("role", response.data.role);
       // Điều hướng dựa trên vai trò của người dùng
       if (response.data.role == 'admin') {
-        navigate("/admin/ticketmanagement"); // Nếu là Admin, vào trang Admin
+        navigate("/admin/dashboard"); // Nếu là Admin, vào trang Admin
       } else {
         navigate("/movieshowing"); // Nếu là User, vào trang Home
       }
@@ -197,6 +198,10 @@ const Login = () => {
 
   const handleLoginGoogle = () => {
     window.location.href = "http://localhost:8080/login/google";
+  };
+
+  const handleLoginFacebook = () => {
+    window.location.href = "http://localhost:8080/auth/facebook";
   };
 
   if (isLoading) {
@@ -257,6 +262,13 @@ const Login = () => {
               onClick={() => handleLoginGoogle()}
             >
               <GoogleIcon /> Login With Google
+            </button>
+            <button
+              type="button"
+              className="mt-4 w-full flex items-center justify-center gap-2 rounded-md bg-white border border-gray-300 py-2 px-4 font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-200"
+              onClick={() => handleLoginFacebook()}
+            >
+              <FacebookIcon /> Login With Facebook
             </button>
           </div>
           <p className="text-right">

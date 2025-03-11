@@ -25,22 +25,44 @@ export default function SeatTable({ options, selectedTypes }) {
     if (selectedTypes.length === 0) {
       setFilteredSeats(seats); // Hiển thị tất cả nếu không có bộ lọc
     } else {
-      setFilteredSeats(seats.filter((seat) => selectedTypes.includes(seat.type)));
+      setFilteredSeats(
+        seats.filter((seat) => selectedTypes.includes(seat.type))
+      );
     }
-  }, [selectedTypes, seats]);
+  }, [selectedTypes]);
 
   const handleChange = (record, value) => {
     updateSeat(record._id, { type: value });
+    setSeats((prevSeats) =>
+      prevSeats.map((seat) =>
+        seat._id === record._id ? { ...seat, type: value } : seat
+      )
+    );
+
+    setFilteredSeats((prevSeats) =>
+      prevSeats.map((seat) =>
+        seat._id === record._id ? { ...seat, type: value } : seat
+      )
+    );
   };
 
   return (
     <Table
       dataSource={filteredSeats} // Hiển thị danh sách đã lọc
       rowKey="_id"
+      pagination={{ pageSize: 7, showSizeChanger: false }}
       columns={[
         { title: "Name", dataIndex: "name" },
-        { title: "Room Name", dataIndex: "roomId", render: (room) => room?.roomname },
-        { title: "Room Type", dataIndex: "roomId", render: (room) => room?.roomtype },
+        {
+          title: "Room Name",
+          dataIndex: "roomId",
+          render: (room) => room?.roomname,
+        },
+        {
+          title: "Room Type",
+          dataIndex: "roomId",
+          render: (room) => room?.roomtype,
+        },
         {
           title: "Type",
           render: (record) => (

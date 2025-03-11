@@ -141,7 +141,7 @@ const ComboPage = () => {
 
   const handleDelete = async (id, isDelete) => {
     try {
-      await axios.put(`/combo/updateIsDelete/${id}`, {isDelete: !isDelete}, {
+      await axios.put(`/combo/updateIsDelete/${id}`, { isDelete: !isDelete }, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.token}`,
@@ -270,6 +270,7 @@ const ComboPage = () => {
             label="Price"
             rules={[
               ({ getFieldValue }) => ({
+                required: true,
                 validator(_, value) {
                   if (value === undefined || value === null || value === "") {
                     // return Promise.reject("Please enter a price!");
@@ -287,7 +288,7 @@ const ComboPage = () => {
           >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="image" label="Image">
+          <Form.Item name="image" label="Image" rules={[{ required: true, message: "Please upload a Image!" }]}>
             <Upload
               listType="picture"
               beforeUpload={(file) => {

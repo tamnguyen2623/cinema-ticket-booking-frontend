@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
@@ -13,6 +13,8 @@ const Header = () => {
     console.log(auth);
 
     const [isLoggingOut, SetLoggingOut] = useState(false);
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
+
     const onLogout = async () => {
         try {
             SetLoggingOut(true);
@@ -65,15 +67,25 @@ const Header = () => {
                     <img
                         src={logo}
                         alt="Header"
-                        style={{ height: "90px" }} 
+                        style={{ height: "90px" }}
                     />
-
                 </div>
-                {auth && (
-                    <div className="border-text">
+                {auth.token ? (
+                    <div className="user-menu" onClick={() => setDropdownOpen(!isDropdownOpen)}>
                         Xin chào <b>{auth.fullname}</b>! ▼
+                        {isDropdownOpen && (
+                            <ul className="dropdown-menu">
+                                <li><Link to="/profile">Trang cá nhân</Link></li>
+                                <li><Link to="/egift">Egift</Link></li>
+                            </ul>
+                        )}
+                    </div>
+                ) : (
+                    <div className="user-menu">
+                        Xin chào!
                     </div>
                 )}
+
             </div>
         </header>
     );
