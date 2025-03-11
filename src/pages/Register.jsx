@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import GoogleIcon from "@mui/icons-material/Google";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
@@ -49,7 +50,9 @@ const Register = () => {
       SetIsRegistering(false);
     }
   };
-
+  const handleLoginGoogle = () => {
+    window.location.href = "http://localhost:8080/login/google";
+  };
   const inputClasses = () => {
     return "appearance-none rounded-md block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:border-blue-500";
   };
@@ -125,6 +128,14 @@ const Register = () => {
               disabled={isRegistering}
             >
               {isRegistering ? "Processing..." : "Register"}
+            </button>
+            <p className="text-center mt-4">Or</p>
+            <button
+              type="button"
+              className="mt-4 w-full flex items-center justify-center gap-2 rounded-md bg-white border border-gray-300 py-2 px-4 font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-200"
+              onClick={() => handleLoginGoogle()}
+            >
+              <GoogleIcon /> Register With Google
             </button>
           </div>
           <p className="text-right">

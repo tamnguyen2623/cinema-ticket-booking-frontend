@@ -15,26 +15,26 @@ const MovieList = () => {
   const [visibleCount, setVisibleCount] = useState(8);
   const [filter, setFilter] = useState("nowShowing");
 
-    const fetchMovies = async (type) => {
-      try {
-        let response;
-        if (type === "nowShowing") {
-          response = await axios.get("http://localhost:8080/movie/nowcoming");
-        } else {
-          response = await axios.get("http://localhost:8080/movie/upcoming");
-        }
-
-        const movieList = response.data?.data || [];
-        setAllMovies(movieList);
-        setMovies(movieList.slice(0, visibleCount));
-      } catch (error) {
-        console.error("Lỗi khi tải danh sách phim:", error);
+  const fetchMovies = async (type) => {
+    try {
+      let response;
+      if (type === "nowShowing") {
+        response = await axios.get("http://localhost:8080/movie/nowcoming");
+      } else {
+        response = await axios.get("http://localhost:8080/movie/upcoming");
       }
-    };
 
- useEffect(() => {
-      fetchMovies(filter);
-    }, [filter, visibleCount]);
+      const movieList = response.data?.data || [];
+      setAllMovies(movieList);
+      setMovies(movieList.slice(0, visibleCount));
+    } catch (error) {
+      console.error("Lỗi khi tải danh sách phim:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMovies(filter);
+  }, [filter, visibleCount]);
 
 
   const handleShowMore = () => {
@@ -110,20 +110,20 @@ const MovieList = () => {
                 <div className="overlay"> </div>
                 <div className="movie-actions">
                   {new Date(movie.releaseDate) <= new Date() ? (
-                    
-                  <button className="btn btn-detail">
-                    <Link
-                      to={`/bookingticket`}
-                      state={{ selectedMovie: movie }}
-                    >
-                      <p>Đặt vé</p>
-                    </Link>
-                  </button>
+
+                    <button className="btn btn-detail">
+                      <Link
+                        to={`/bookingticket`}
+                        state={{ selectedMovie: movie }}
+                      >
+                        <p>Đặt vé</p>
+                      </Link>
+                    </button>
                   ) : (
-                      <button className="btn btn-disabled" disabled>
-                        <p>Chưa Mở Bán</p>
-                      </button>
-                    )}
+                    <button className="btn btn-disabled" disabled>
+                      <p>Chưa Mở Bán</p>
+                    </button>
+                  )}
                   <button className="btn btn-book">
                     <Link to={`/movielist/${movie._id}`}>
                       <p>Chi tiết</p>
@@ -137,7 +137,7 @@ const MovieList = () => {
               <div className="movie-details">
                 <p className="movie-duration">{movie.length} phút</p>
                 <p className="movie-release-date">
-{new Date(movie.releaseDate).toLocaleDateString("vi-VN")}
+                  {new Date(movie.releaseDate).toLocaleDateString("vi-VN")}
                   {/* {movie.created} 25/10/2025 */}
                 </p>
               </div>

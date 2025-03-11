@@ -80,13 +80,13 @@ export default function PaymentTicket() {
     if (!bookingData) return;
     const totalCombo = bookingData.selectedCombos
       ? bookingData.selectedCombos.reduce(
-        (sum, combo) => sum + combo.price * combo.quantity,
-        0
-      )
+          (sum, combo) => sum + combo.price * combo.quantity,
+          0
+        )
       : 0;
     const voucherDiscount = bookingData.selectedVoucher
       ? (totalTicket + totalCombo) *
-      (bookingData.selectedVoucher.discount / 100)
+        (bookingData.selectedVoucher.discount / 100)
       : 0;
     setTotalPrice(totalTicket + totalCombo - voucherDiscount);
     console.log(" Total Ticket:", totalTicket);
@@ -112,6 +112,7 @@ export default function PaymentTicket() {
       const requestData = {
         movieName: bookingData.selectedMovie?.name || "N/A",
         cinema: bookingData.selectedCinema?.name || "N/A",
+        movieId: bookingData.selectedMovie?._id || "N/A",
         address: bookingData.selectedCinema?.address || "N/A",
         seats: selectedSeats.map((seat) => seat.seatId.name),
         seatsId: selectedSeats.map((seat) => seat._id),
@@ -218,7 +219,7 @@ export default function PaymentTicket() {
             <p>
               <strong>Combo:</strong>
               {bookingData.selectedCombos &&
-                bookingData.selectedCombos.length > 0 ? (
+              bookingData.selectedCombos.length > 0 ? (
                 <ul className="combo-quantity">
                   {bookingData.selectedCombos.map((combo) => (
                     <li key={combo._id} className="combo-item">

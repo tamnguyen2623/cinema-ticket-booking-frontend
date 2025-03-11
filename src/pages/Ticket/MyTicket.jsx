@@ -1,19 +1,44 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Card, Spin, Alert, Tag, Typography, Row, Col } from 'antd';
-import axios from 'axios';
-import { AuthContext } from '../../context/AuthContext';
-import dayjs from 'dayjs';
-import { useNavigate } from 'react-router-dom';
-import './MyTicket.css'
+import React, { useContext, useEffect, useState } from "react";
+import { Card, Spin, Alert, Tag, Typography, Row, Col } from "antd";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
+import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
+import "./MyTicket.css";
+
 // import { QRCode, QRCodeSVG } from "qrcode.react";
 const { Title } = Typography;
+import "./MyTicket.css";
 
 const MyTicket = () => {
   const { auth } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
+  const [addModal, setAddModal] = useState(false);
+  const [viewModal, setViewModal] = useState(false);
+  const [booking, setBooking] = useState();
+  const [refresh, setRefresh] = useState(false);
+
+  const showModal = (booking) => {
+    setBooking(booking); // Lưu suất chiếu vào state
+    if (booking.isFeedback) {
+      setViewModal(true);
+      return;
+    }
+    setAddModal(true); // Mở modal
+  };
+
+  const handleCancelAddModal = () => {
+    setAddModal(false);
+    setRefresh(!refresh);
+  };
+
+  const handleCancelViewModal = () => {
+    setViewModal(false);
+  };
 
   const fetchBookings = async () => {
     if (!auth?.userId) {
@@ -27,11 +52,13 @@ const MyTicket = () => {
       const bookingsData = Array.isArray(response.data)
         ? response.data
         : Array.isArray(response.data.bookings)
-          ? response.data.bookings
-          : [];
+        ? response.data.bookings
+        : [];
+      console.log(bookingsData);
+
       setBookings(bookingsData);
     } catch (err) {
-      setError('Lỗi khi tải danh sách vé.');
+      setError("Lỗi khi tải danh sách vé.");
     } finally {
       setLoading(false);
     }
@@ -41,16 +68,24 @@ const MyTicket = () => {
     fetchBookings();
   }, [auth.userId]);
 
-  if (loading) return <Spin tip="Đang tải danh sách vé..." className="w-full flex justify-center" />;
-  if (error) return <Alert message={error} type="error" showIcon className="my-4" />;
+  if (loading)
+    return (
+      <Spin
+        tip="Đang tải danh sách vé..."
+        className="w-full flex justify-center"
+      />
+    );
+  if (error)
+    return <Alert message={error} type="error" showIcon className="my-4" />;
   return (
-    <div className="container">
+    <div className="head-container">
       {/* <h3 className="title-header"> MY TICKET</h3> */}
       <div className="sub-container">
         {bookings.length === 0 ? (
           <Alert message="Bạn chưa đặt vé nào." type="info" showIcon />
         ) : (
-          <Row gutter={[12, 12]} justify="space-around">
+
+          <Row gutter={[16, 16]} justify="space-between">
             {bookings.map((ticket) => (
               <Col key={ticket._id}>
                 <Card
@@ -82,12 +117,12 @@ const MyTicket = () => {
                       </Tag>
 
                     </div>
+
                   </div>
                 </Card>
               </Col>
             ))}
           </Row>
-
         )}
       </div>
     </div>

@@ -54,6 +54,28 @@ const Booking = () => {
       </div>
     );
   }
+
+  if (!bookingInfo) {
+    return <Alert message="Not find ticket." type="error" />;
+  }
+
+  if (bookingInfo.status === "failed") {
+    return (
+      <Modal
+        title="Booking Failed"
+        open={isModalVisible}
+        onCancel={handleCloseModal}
+        footer={[
+          <Button key="close" type="primary" onClick={handleCloseModal}>
+            OK
+          </Button>,
+        ]}
+      >
+        <Alert message="Payment Failed. Please try again!" type="error" />
+      </Modal>
+    );
+  }
+
   return (
     <div className="ticket-container">
       {isModalVisible && bookingInfo.status !== "failed" && (
@@ -138,8 +160,9 @@ const Booking = () => {
                 <strong>Note:</strong> Purchased tickets cannot be cancelled or
                 refunded.
               </p>
-              <p style={{ color: "green", fontSize: "2ex" }}>The ticket was sent Email, you can check your Email. Thank You!</p>
-
+              <p style={{ color: "green", fontSize: "2ex" }}>
+                The ticket was sent Email, you can check your Email. Thank You!
+              </p>
             </div>
           </div>
         </Modal>
