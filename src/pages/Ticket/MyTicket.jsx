@@ -19,7 +19,7 @@ const MyTicket = () => {
   const navigate = useNavigate();
   const [addModal, setAddModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
-  const [booking, setBooking] = useState(null);
+  const [booking, setBooking] = useState();
   const [refresh, setRefresh] = useState(false);
 
   const showModal = (booking) => {

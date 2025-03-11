@@ -61,17 +61,16 @@ const VoucherCustomer = ({ setBookingData }) => {
   //   };
   const handleSelectVoucher = (voucher) => {
     setSelectedVoucher(voucher);
-  
+
     setBookingData((prevData) => {
       const updatedData = { ...prevData, selectedVoucher: voucher };
       localStorage.setItem("bookingData", JSON.stringify(updatedData));
       console.log("🔹 Updated bookingData:", updatedData);
       return updatedData;
     });
-  
+
     message.success(`Selected voucher: ${voucher.code}`);
   };
-  
 
   // ✅ Định dạng ngày hết hạn
   const formatDate = (dateString) => {

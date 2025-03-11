@@ -1,0 +1,9 @@
+.custom-switch.ant-switch-checked {
+    background-color: #1677ff !important;
+    /* Đổi màu nền khi bật */
+  }
+  
+  .custom-switch {
+    background-color: #d3d3d3 !important;
+    /* Đổi màu nền khi tắt */
+  }

@@ -1,0 +1,64 @@
+.egift {
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 95%;
+    margin: auto;
+}
+
+.egift-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.title-egift {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.view-all {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.view-all:hover {
+    background-color: #b71c1c;
+}
+
+.egift-swiper {
+    height: auto;
+}
+
+.egift-slide {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 10%;
+}
+
+.egift-slide img {
+    width: 60%;
+    border-radius: 30px;
+}
+
+.space {
+    height: 2px;
+    background-color: #DAD2B4;
+}

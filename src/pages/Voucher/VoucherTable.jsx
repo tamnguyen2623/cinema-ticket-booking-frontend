@@ -52,6 +52,7 @@ const VoucherTable = ({ vouchers, handleEditClick, handleToggleDelete }) => {
       render: (record) => (
         <Switch
           checked={record.isDelete}
+          className="custom-switch"
           onChange={() => handleToggleDelete(record._id, record.isDelete)}
         />
       ),

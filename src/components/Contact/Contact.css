@@ -1,0 +1,19 @@
+.contact__container {
+    display: flex;
+    gap: 50px;
+    /* Khoảng cách giữa list và detail */
+    padding: 20px 200px 100px;
+}
+
+.contact__cinema-list {
+    flex: 1;
+    /* Chiếm 1 phần của màn hình */
+    max-width: 30%;
+    padding: 50px 0px;
+    /* Giới hạn chiều rộng */
+}
+
+.contact__cinema-detail {
+    flex: 2;
+    /* Chiếm phần lớn diện tích */
+}

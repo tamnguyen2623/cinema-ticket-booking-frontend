@@ -168,6 +168,12 @@ const DashBoard = () => {
               <span>Combo</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/egiftadmin")}`}>
+            <Link to="/admin/egiftadmin">
+              <FontAwesomeIcon icon={faBox} className="menu-icon" />
+              <span>Egift</span>
+            </Link>
+          </li>
           <li className="nav-link button-logout">
             <Link onClick={onLogout} className="logout-button" disabled={isLoggingOut}>
               <FontAwesomeIcon icon={faRightFromBracket} className="menu-icon" />
