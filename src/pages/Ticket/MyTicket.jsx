@@ -13,7 +13,7 @@ const MyTicket = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const fetchBookings = async () => {
     if (!auth?.userId) {
@@ -50,52 +50,43 @@ const MyTicket = () => {
         {bookings.length === 0 ? (
           <Alert message="Bạn chưa đặt vé nào." type="info" showIcon />
         ) : (
-            <Row gutter={[16, 16]} justify="space-between">
-              {bookings.map((ticket) => (
-                <Col key={ticket._id}>
-
-                  <Card
-                    bordered={false}
-                    className="ticket-card"
-                    onClick={() => navigate(`/myticketdetail/${ticket._id}`)}
-                  >
-                    <div className="ticket-content">
-                      {/* Ảnh phim bên trái */}
-                      <div className="img-movie">
-                        <img src={ticket.movieImage} alt={ticket.movieName} />
-                      </div>
-
-                      {/* Thông tin vé bên phải */}
-                      <div className="information-ticket">
-                        <h3>🎬 {ticket.movieName}</h3>
-                        <div><strong>Rạp:</strong> {ticket.cinema}</div>
-                        <div><strong>Ngày chiếu:</strong> {dayjs(ticket.date).format('DD/MM/YYYY')}</div>
-                        <div><strong>Ghế:</strong> {ticket.seats.join(', ')}</div>
-                        <div><strong>Giá:</strong> {ticket.price.toLocaleString()} $</div>
-
-                        <Tag color={{
-                          success: 'green',
-                          pending: 'orange',
-                          failed: 'red',
-                          cancelled: 'volcano'
-                        }[ticket.status]}>
-                          {ticket.status.toUpperCase()}
-                        </Tag>
-
-                        {/* QR Code */}
-                        <div className="qr-container">
-                          {ticket.qrCode ? (
-                            <img src={ticket.qrCode} alt="QR Code" />
-                          ) : (
-                            <p className="text-gray-400">Đang tải QR...</p>
-                          )}
-                        </div>
-                      </div>
+          <Row gutter={[12, 12]} justify="space-around">
+            {bookings.map((ticket) => (
+              <Col key={ticket._id}>
+                <Card
+                  bordered={false}
+                  className="ticket-card"
+                  onClick={() => navigate(`/myticketdetail/${ticket._id}`)}
+                >
+                  <div className="ticket-content">
+                    {/* Ảnh phim bên trái */}
+                    <div className="img-movie">
+                      <img src={ticket.movieImage} alt={ticket.movieName} />
                     </div>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
+
+                    {/* Thông tin vé bên phải */}
+                    <div className="information-ticket">
+                      <h3> {ticket.movieName}</h3>
+                      <div><strong>Rạp:</strong> {ticket.cinema}</div>
+                      <div><strong>Ngày chiếu:</strong> {dayjs(ticket.date).format('DD/MM/YYYY')}</div>
+                      <div><strong>Ghế:</strong> {ticket.seats.join(', ')}</div>
+                      <div><strong>Giá:</strong> {ticket.price.toLocaleString()} $</div>
+
+                      <Tag color={{
+                        success: 'green',
+                        pending: 'orange',
+                        failed: 'red',
+                        cancelled: 'volcano'
+                      }[ticket.status]}>
+                        {ticket.status.toUpperCase()}
+                      </Tag>
+
+                    </div>
+                  </div>
+                </Card>
+              </Col>
+            ))}
+          </Row>
 
         )}
       </div>

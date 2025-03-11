@@ -124,9 +124,12 @@ const Booking = () => {
                 </p>
               </div>
               <div className="ticket-barcode">
-                {bookingInfo.qrCode}
-                <img src={bookingInfo.qrCode} alt="QR Code" />
-</div>
+                {bookingInfo.qrCode ? (
+                  <img src={bookingInfo.qrCode} alt="QR Code" />
+                ) : (
+                  <p>Loading QR Code...</p>
+                )}
+              </div>
             </div>
             <div className="ticket-footer">
               <p>Show QR code to enter the theater.</p>

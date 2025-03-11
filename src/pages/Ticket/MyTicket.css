@@ -1,5 +1,5 @@
 .container {
-    max-width: 1200px;
+    max-width: 100%;
     /* Giới hạn độ rộng tối đa */
     margin: 0 auto;
     /* Căn giữa */
@@ -9,36 +9,37 @@
     justify-content: center;
     padding: 20px;
 }
-.title-header{
+.title-header {
     text-align: center;
-        background-color: #DAD2B4;
-        padding: 6px 10px;
-        font-size: 20px;
-        font-weight: bold;
-        color: #333;
-        /* Giới hạn độ rộng theo nội dung */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #dad2b4;
+    padding: 6px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    /* Giới hạn độ rộng theo nội dung */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.title-header h3{
+.title-header h3 {
     display: inline-block;
-       
-        border-bottom: 2px solid black;
+
+    border-bottom: 2px solid black;
 }
 .ticket-card {
-    width: 300px;
-        height: 450px;
-    padding: 15px;
+    /* width: 300px;
+    height: 450px; */
+    /* padding: 10px; */
     border-radius: 15px;
     background-color: #efebdb;
-    width: 100%;
+    width: 60vh;
+    height: 50vh;
     /* background: linear-gradient(to right, #ffffff, #fff3e0); */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
-
 
 /* Chia layout thành 2 cột */
 .ticket-content {

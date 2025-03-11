@@ -100,6 +100,7 @@ export const handleMovieSubmit = async (
       description: "You are not authorized to create or update a movie.",
     });
   }
+
 console.log(values)
   try {
     const formData = new FormData();
