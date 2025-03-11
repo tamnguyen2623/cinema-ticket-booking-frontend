@@ -1,10 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card, Spin, Alert, Tag, Typography, Row, Col } from "antd";
+import {
+  Card,
+  Spin,
+  Alert,
+  Tag,
+  Typography,
+  Row,
+  Col,
+  Modal,
+  Button,
+} from "antd";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import "./MyTicket.css";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import FeedbackForm from "../../components/Feedback/FeedbackForm";
+import FeedbackDetail from "../../components/Feedback/FeedbackDetail";
 
 // import { QRCode, QRCodeSVG } from "qrcode.react";
 const { Title } = Typography;
@@ -107,14 +120,28 @@ const MyTicket = () => {
                     <div><strong>Ghế:</strong> {ticket.seats.join(', ')}</div>
                     <div><strong>Giá:</strong> {ticket.price.toLocaleString()} $</div>
 
-                    <Tag color={{
-                      success: 'green',
-                      pending: 'orange',
-                      failed: 'red',
-                      cancelled: 'volcano'
-                    }[ticket.status]}>
-                      {ticket.status.toUpperCase()}
-                    </Tag>
+                    <div className="flex items-center gap-12">
+                      <Tag
+                        color={{
+                          success: "green",
+                          pending: "orange",
+                          failed: "red",
+                          cancelled: "volcano",
+                        }[ticket.status]}
+                      >
+                        {ticket.status.toUpperCase()}
+                      </Tag>
+
+                      {ticket.status === "success" && (
+                        <button
+                          onClick={() => showModal(ticket)}
+                          className="text-red-700 italic hover:text-red-500 flex items-center gap-1 underline"
+                        >
+                          {ticket.isFeedback ? <EyeOutlined /> : <EditOutlined />}
+                          {ticket.isFeedback ? "View feedback" : "Review"}
+                        </button>
+                      )}
+                    </div>
 
                     {ticket.status === "success" && (
                       <button
@@ -125,14 +152,46 @@ const MyTicket = () => {
                       </button>
                     )}
                   </div>
-                </div>
-              </div>
+             </div>
+            </div>
             </Col>
           ))}
-        </Row>
-
-      </div>
+      </Row>
     </div>
+    <Modal
+                  title={`Ratting & Feedback "${booking?.movieName}"`}
+                  open={addModal}
+                  onCancel={handleCancelAddModal}
+                  width={1000}
+                  footer={null}
+                >
+                  <FeedbackForm
+                    userId={auth.userId}
+                    form={"Add"}
+                    booking={booking}
+                    setModal={setAddModal}
+                    fetchBookings={fetchBookings}
+                    handleCancelModal={handleCancelAddModal}
+                    refresh={refresh}
+                  />
+                </Modal>
+
+                <Modal
+                  title={`View feedback "${booking?.movieName}"`}
+                  open={viewModal}
+                  onCancel={handleCancelViewModal}
+                  width={1000}
+                  footer={null}
+                >
+                  <FeedbackDetail
+                    userId={auth.userId}
+                    booking={booking}
+                    // setModal={setViewModal}
+                    fetchBookings={fetchBookings}
+                    handleCancelViewModal={handleCancelViewModal}
+                  />
+      </Modal>
+    </div >
   );
 };
 export default MyTicket;

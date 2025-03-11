@@ -193,7 +193,7 @@ const CinemaCustomer = () => {
             className="custom-edit-btn"
             type="primary"
             icon={<InsertRowAboveOutlined />}
-            // onClick={() => handleEditClick(record)}
+          // onClick={() => handleEditClick(record)}
           >
             View Map
           </Button>
@@ -230,19 +230,26 @@ const CinemaCustomer = () => {
 
   return (
     <div className="content">
-      <Input
-        placeholder="Search by cinema name..."
-        prefix={<SearchOutlined />}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ width: 300, marginBottom: 16 }}
-      />
-      <Button
-        icon={<PlusOutlined />}
-        onClick={() => setModalType("add")}
-        style={{ marginLeft: "10px" }}
-      >
-        Add Cinema
-      </Button>
+      <div className="searchFilterContainer">
+        <div>
+          <Input
+            placeholder="Search by cinema name..."
+            prefix={<SearchOutlined />}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ width: 300, marginBottom: 16 }}
+          />
+        </div>
+        <div className="buttonAddContainer">
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setModalType("add")}
+            className="addTicketButton"
+          >
+            Add Cinema
+          </Button>
+        </div>
+      </div>
       <Table dataSource={filteredCinemas} columns={columns} rowKey="_id" />
 
       <Modal

@@ -47,7 +47,7 @@ import BookingAdmin from "../pages/BookingAdmin/BookingAdmin";
 import Contact from "../pages/Contact";
 import EgiftsAdminPage from "../pages/Egiftsadmin/Egiftsadmin";
 import MyTicketDetail from "../pages/Ticket/MyTicketDetail";
-
+import VerifyOtpRegisterGoogle from "../pages/VerifyOtpRegisterGoogle";
 import Profile from "../pages/profile/profile";
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
@@ -64,6 +64,7 @@ const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
   { path: "/VerifyOtpRegister", element: <VerifyOtpRegister /> },
+  { path: "/VerifyOtpRegisterGoogle", element: <VerifyOtpRegisterGoogle /> },
   { path: "/movie-detail/:id", element: <MovieDetail /> },
   { path: "/purchase/:id", element: <Purchase /> },
 
