@@ -128,7 +128,7 @@ const MovieDetail = () => {
                     <IconButton
                         className="close-button"
                         onClick={() => setOpenTrailer(false)}
-                        sx={{ color: "white" }}
+                        sx={{ color: "white"}}
                     >
                         <CloseIcon />
                     </IconButton>
@@ -168,7 +168,6 @@ const MovieDetail = () => {
                                 <p><span className="label"> Thể loại: </span><span className="value">{movie.movieType.name || "Hành Động, Khoa Học Viễn Tưởng"}</span></p>
                                 <p><span className="label"> Ngày khởi chiếu:</span> <span className="value">{movie.releaseDate || "Đang cập nhật"}</span></p>
                             </div>
-                            <p><span className="label"> Giá vé:</span> <span className="value">{movie.price} $</span></p>
                             <p><span className="label"> Đạo diễn:</span> <span className="value">{movie.director || "Jack 97"}</span></p>
                             <p><span className="label"> Diễn viên:</span> <span className="value">{movie.actor || "Robert Downey Jr, Chris Evans, Scarlett Johansson, Chris Hemsworth"}</span></p>
                         </div>

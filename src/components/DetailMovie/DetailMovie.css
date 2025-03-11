@@ -342,12 +342,9 @@ body {
 }
 
 .custom-modal .MuiPaper-root {
-    background-color: #1a1a1a;
-    /* Màu nền */
+    background-color: #1a1a1a !important;
     color: #fff;
-    /* Màu chữ */
     border-radius: 10px;
-    /* Bo tròn góc */
     padding: 20px;
 }
 
