@@ -44,6 +44,7 @@ import EgiftCustomer from "../pages/EgiftCustomer/egiftcustomer";
 import EgiftDetailCustomer from "../pages/EgiftDetailCustomer/egiftdetailcustomer";
 import Feedback from "../pages/Feedback";
 import BookingAdmin from "../pages/BookingAdmin/BookingAdmin";
+import Contact from "../pages/Contact";
 import EgiftsAdminPage from "../pages/Egiftsadmin/Egiftsadmin";
 import MyTicketDetail from "../pages/Ticket/MyTicketDetail";
 
@@ -85,6 +86,7 @@ const router = createBrowserRouter([
       { path: "movielist/:id", element: <DetailMovie /> },
       { path: "totalslide", element: <TotalSlide /> },
       { path: "myticket/:userId", element: <MyTicket /> },
+      { path: "contact", element: <Contact /> },
       { path: "egiftcustomer", element: <EgiftCustomer /> },
       // { path: "egiftdetailcustomer", element: <EgiftDetailCustomer /> },
       { path: "myticketdetail/:id", element: <MyTicketDetail /> },
