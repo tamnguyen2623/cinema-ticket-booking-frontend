@@ -124,9 +124,12 @@ const Booking = () => {
                 </p>
               </div>
               <div className="ticket-barcode">
-                {bookingInfo.qrCode}
-                <img src={bookingInfo.qrCode} alt="QR Code" />
-</div>
+                {bookingInfo.qrCode ? (
+                  <img src={bookingInfo.qrCode} alt="QR Code" />
+                ) : (
+                  <p>Loading QR Code...</p>
+                )}
+              </div>
             </div>
             <div className="ticket-footer">
               <p>Show QR code to enter the theater.</p>
@@ -135,8 +138,9 @@ const Booking = () => {
                 <strong>Note:</strong> Purchased tickets cannot be cancelled or
                 refunded.
               </p>
-              <p style={{ color: "green", fontSize: "2ex" }}>The ticket was sent Email, you can check your Email. Thank You!</p>
-
+              <p style={{ color: "green", fontSize: "2ex" }}>
+                The ticket was sent Email, you can check your Email. Thank You!
+              </p>
             </div>
           </div>
         </Modal>
