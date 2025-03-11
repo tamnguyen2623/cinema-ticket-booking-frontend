@@ -86,9 +86,16 @@ console.log("ticket",ticket);
                             {/* <p className="text-gray-600">{ticket.price.toLocaleString()} $</p> */}
                         </td>
                         <td className="p-4 border-r border-gray-400">
-                            <strong className="text-black">Voucher: {ticket.voucherId.code}</strong>
-                            {/* <p className="text-gray-600">{ticket.seats.join(", ")}</p> */}
-                            <p className="text-gray-600">{ticket.combo}</p>
+                            <strong className="text-black">Voucher: </strong>
+                            <p className="text-gray-600">
+                                {ticket.voucherId && ticket.voucherId.code ? ticket.voucherId.code : "No voucher"}
+                            </p>
+                            {/* <p className="text-gray-600"></p> */}
+                            <strong className="text-black">Combo: </strong>
+
+                            <p className="text-gray-600">
+                                {Array.isArray(ticket.combo) && ticket.combo.length > 0 ? `${ticket.combo.join(", ")} $` : "No combo"}
+                            </p>
                         </td>
                         {/* Cột QR Code */}
                         <td className="p-4 flex flex-col items-center border-r border-gray-400">
@@ -105,10 +112,10 @@ console.log("ticket",ticket);
                         <td className="p-4 font-semibold text-black  ">{ticket.price.toLocaleString()} $</td>
                     </tr>
 
-                    <tr className="border border-gray-300">
+                    {/* <tr className="border border-gray-300">
                         <td colSpan="4" className=" p-4 font-semibold text-right">Tổng Cộng</td>
                         <td className="p-4 font-semibold text-black">{ticket.price.toLocaleString()}$</td>
-                    </tr>
+                    </tr> */}
                 </tbody>
             </table>
         </div>
