@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Table, Spin, Alert, Button, Form, Input, DatePicker, Select, Modal, TimePicker,Switch } from 'antd';
+import { Table, Spin, Alert, Button, Form, Input, DatePicker, Select, Modal, TimePicker, Switch } from 'antd';
 import { toast } from "react-toastify";
 import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";
@@ -223,18 +223,24 @@ const ShowtimePage = () => {
 
     return (
         <div className='content'>
-            <div style={{ display: "flex", gap: "10px", marginBottom: 16 }}>
-                <Input placeholder="Search by showtime..."
-                    prefix={<SearchOutlined />}
-                    onChange={handleSearch}
-                    style={{ width: 300 }}
-                />
-                <Button
-                    icon={<PlusOutlined />}
-                    onClick={() => setModalType("add")}
-                >
-                    Add Showtime
-                </Button>
+            <div className="searchFilterContainer">
+                <div>
+                    <Input placeholder="Search by showtime..."
+                        prefix={<SearchOutlined />}
+                        onChange={handleSearch}
+                        style={{ width: 300 }}
+                    />
+                </div>
+                <div className="buttonAddContainer">
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => setModalType("add")}
+                        className="addTicketButton"
+                    >
+                        Add Showtime
+                    </Button>
+                </div>
             </div>
             <Table
                 dataSource={filteredShowtimes}

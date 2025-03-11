@@ -104,11 +104,20 @@ const EgiftAdmin = () => {
 
   return (
     <div className="content">
-      <div className="header">
-        <Input placeholder="Search eGift..." prefix={<SearchOutlined />} onChange={handleSearch} style={{ width: 300 }} />
-        <Button icon={<PlusOutlined />} onClick={() => setModalType("add")}>
-          Add eGift
-        </Button>
+      <div className="searchFilterContainer">
+        <div>
+          <Input placeholder="Search eGift..." prefix={<SearchOutlined />} onChange={handleSearch} style={{ width: 300 }} />
+        </div>
+        <div className="buttonAddContainer">
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setModalType("add")}
+            className="addTicketButton"
+          >
+            Add eGift
+          </Button>
+        </div>
       </div>
       <Table
         dataSource={filteredEgifts}

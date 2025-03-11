@@ -158,16 +158,25 @@ const MovieTypePage = () => {
 
     return (
         <div className="content">
-            <div className="header">
-                <Input
-                    placeholder="Search by movie type..."
-                    prefix={<SearchOutlined />}
-                    onChange={handleSearch}
-                    style={{ width: 300 }}
-                />
-                <Button icon={<PlusOutlined />} onClick={() => setModalType("add")}>
-                    Add Movie Type
-                </Button>
+            <div className="searchFilterContainer">
+                <div>
+                    <Input
+                        placeholder="Search by movie type..."
+                        prefix={<SearchOutlined />}
+                        onChange={handleSearch}
+                        style={{ width: 300 }}
+                    />
+                </div>
+                <div className="buttonAddContainer">
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => setModalType("add")}
+                        className="addTicketButton"
+                    >
+                        Add Movie Type
+                    </Button>
+                </div>
             </div>
             <Table
                 dataSource={filteredMovieTypes}

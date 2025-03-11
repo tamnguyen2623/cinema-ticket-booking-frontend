@@ -10,6 +10,7 @@ import {
   DatePicker,
   Select,
   Modal,
+  Switch,
 } from "antd";
 import {
   EditOutlined,
@@ -22,6 +23,7 @@ import moment from "moment";
 import SeatAvailable from "../../components/Seat/SeatAvailable[Admin]";
 import { createSeatAvailable } from "../../components/api/seatAvailable";
 import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 const MovieShowingList = () => {
   const [movieShowings, setMovieShowings] = useState([]);
@@ -61,7 +63,6 @@ const MovieShowingList = () => {
       setMovies(moviesRes.data.data || []);
       setCinemas(cinemasRes.data.data || []);
 
-      // ✅ Lọc rooms có status === false
       const filteredRooms = (roomsRes.data.rooms || []).filter(
         (room) => room.status === false
       );
@@ -71,7 +72,7 @@ const MovieShowingList = () => {
       setMovieShowings(movieShowingsRes.data.data || []);
     } catch (err) {
       setError("Lỗi khi tải dữ liệu");
-      console.error("❌ Error fetching data:", err);
+      console.error("Error fetching data:", err);
     } finally {
       setLoading(false);
     }
@@ -160,29 +161,28 @@ const MovieShowingList = () => {
     });
   };
 
-  const handleDelete = async (id) => {
+
+  const handleToggleDelete = async (id, isDelete) => {
+    console.log("phiec", id);
+    console.log("phiec", isDelete);
     try {
-      await axios.delete(`http://localhost:8080/movieshowing/${id}`, {
+      await axios.put(`http://localhost:8080/movieshowing/${id}`, { isDelete: !isDelete }, {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${auth.token}`,
         },
       });
-      setMovieShowings((prev) => prev.filter((item) => item._id !== id));
+      fetchData();
+      console.log("phiec", id);
+      console.log("phiec", isDelete);
+
+      toast.success("Cập nhật trạng thái thành công!");
     } catch (error) {
-      console.error("Lỗi khi xóa suất chiếu:", error);
+      toast.error("Lỗi khi cập nhật trạng thái!");
     }
   };
 
-  const handleDeleteClick = (movieshowing) => {
-    Modal.confirm({
-      title: "Xác nhận xóa",
-      content: `Bạn có chắc chắn muốn xóa suất chiếu "${movieshowing._id}" không?`,
-      okText: "Xác nhận",
-      cancelText: "Hủy",
-      okType: "danger",
-      onOk: () => handleDelete(movieshowing._id),
-    });
-  };
+
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -368,15 +368,19 @@ const MovieShowingList = () => {
                 >
                   Sửa
                 </Button>
-                <Button
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={() => handleDeleteClick(record)}
-                  className="custom-delete-btn"
-                  style={{ backgroundColor: "red", color: "white" }}
-                >
-                  Xóa
-                </Button>
+              </div>
+            ),
+          },
+          {
+            title: "Disabled",
+            key: "disabled",
+            render: (record) => (
+              <div style={{ display: "flex", gap: "10px" }}>
+                <Switch
+                  checked={record.isDelete}
+                  className="custom-switch"
+                  onChange={() => handleToggleDelete(record._id, record.isDelete)}
+                />
               </div>
             ),
           },
