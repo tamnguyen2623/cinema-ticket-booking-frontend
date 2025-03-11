@@ -141,13 +141,13 @@ const MyTicket = () => {
                       </Tag>
 
                       {/* QR Code */}
-                      <div className="qr-container">
+                      {/* <div className="qr-container">
                         {ticket.qrCode ? (
                           <img src={ticket.qrCode} alt="QR Code" />
                         ) : (
                           <p className="text-gray-400">Đang tải QR...</p>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </Card>

@@ -1,6 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Table, Button, Modal, Form, Input, Switch } from "antd";
-import { EditOutlined, DeleteOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  SearchOutlined,
+  InsertRowAboveOutlined,
+} from "@ant-design/icons";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -19,9 +25,12 @@ const CinemaCustomer = () => {
   const fetchCinema = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8080/cinema/listforadmin", {
-        headers: { Authorization: `Bearer ${auth.token}` }
-      });
+      const response = await axios.get(
+        "http://localhost:8080/cinema/listforadmin",
+        {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        }
+      );
       if (response.data && Array.isArray(response.data.data)) {
         setCinemas(response.data.data);
         setFilteredCinemas(response.data.data);
@@ -40,8 +49,10 @@ const CinemaCustomer = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = cinemas.filter(cinema =>
-      cinema.name ? cinema.name.toLowerCase().includes(searchTerm.toLowerCase()) : false
+    const filtered = cinemas.filter((cinema) =>
+      cinema.name
+        ? cinema.name.toLowerCase().includes(searchTerm.toLowerCase())
+        : false
     );
     setFilteredCinemas(filtered);
   }, [searchTerm, cinemas]);
@@ -55,21 +66,25 @@ const CinemaCustomer = () => {
         phoneNumber: values.phoneNumber,
         map: values.map,
       };
-  
-      const response = await axios.post("http://localhost:8080/cinema", formattedValues, {
-        headers: { Authorization: `Bearer ${auth.token}` }
-      });
-  
+
+      const response = await axios.post(
+        "http://localhost:8080/cinema",
+        formattedValues,
+        {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        }
+      );
+
       setCinemas([...cinemas, response.data]);
       setFilteredCinemas([...cinemas, response.data]);
       setModalType(null);
       form.resetFields();
       toast.success("Thêm rạp phim thành công!");
+      fetchCinema();
     } catch (error) {
       toast.error("Lỗi khi thêm cinema!");
     }
   };
-  
 
   const handleEditCinema = async () => {
     try {
@@ -80,18 +95,30 @@ const CinemaCustomer = () => {
         phoneNumber: values.phoneNumber,
         map: values.map,
       };
-  
-      await axios.put(`http://localhost:8080/cinema/${currentCinema._id}`, updatedCinema, {
-        headers: { Authorization: `Bearer ${auth.token}` }
-      });
-  
-      setCinemas(cinemas.map(cinema =>
-        cinema._id === currentCinema._id ? { ...cinema, ...updatedCinema } : cinema
-      ));
-      setFilteredCinemas(filteredCinemas.map(cinema =>
-        cinema._id === currentCinema._id ? { ...cinema, ...updatedCinema } : cinema
-      ));
-  
+
+      await axios.put(
+        `http://localhost:8080/cinema/${currentCinema._id}`,
+        updatedCinema,
+        {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        }
+      );
+
+      setCinemas(
+        cinemas.map((cinema) =>
+          cinema._id === currentCinema._id
+            ? { ...cinema, ...updatedCinema }
+            : cinema
+        )
+      );
+      setFilteredCinemas(
+        filteredCinemas.map((cinema) =>
+          cinema._id === currentCinema._id
+            ? { ...cinema, ...updatedCinema }
+            : cinema
+        )
+      );
+
       setModalType(null);
       form.resetFields();
       toast.success("Cập nhật thành công!");
@@ -99,7 +126,6 @@ const CinemaCustomer = () => {
       toast.error("Lỗi khi cập nhật rạp phim!");
     }
   };
-  
 
   const handleEditClick = (cinema) => {
     setCurrentCinema(cinema);
@@ -109,16 +135,24 @@ const CinemaCustomer = () => {
 
   const handleToggleDelete = async (id, isDelete) => {
     try {
-      await axios.put(`http://localhost:8080/cinema/${id}`, { isDelete: !isDelete }, {
-        headers: { Authorization: `Bearer ${auth.token}` }
-      });
+      await axios.put(
+        `http://localhost:8080/cinema/${id}`,
+        { isDelete: !isDelete },
+        {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        }
+      );
 
-      setCinemas(cinemas.map(cinema =>
-        cinema._id === id ? { ...cinema, isDelete: !isDelete } : cinema
-      ));
-      setFilteredCinemas(filteredCinemas.map(cinema =>
-        cinema._id === id ? { ...cinema, isDelete: !isDelete } : cinema
-      ));
+      setCinemas(
+        cinemas.map((cinema) =>
+          cinema._id === id ? { ...cinema, isDelete: !isDelete } : cinema
+        )
+      );
+      setFilteredCinemas(
+        filteredCinemas.map((cinema) =>
+          cinema._id === id ? { ...cinema, isDelete: !isDelete } : cinema
+        )
+      );
 
       toast.success("Cập nhật trạng thái thành công!");
     } catch (error) {
@@ -153,14 +187,29 @@ const CinemaCustomer = () => {
       dataIndex: "map",
       key: "map",
       width: 200,
-      render: (text) => (text ? <a href={text} target="_blank" rel="noopener noreferrer">View Map</a> : "N/A"),
+      render: (text) =>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <Button
+            className="custom-edit-btn"
+            type="primary"
+            icon={<InsertRowAboveOutlined />}
+            // onClick={() => handleEditClick(record)}
+          >
+            View Map
+          </Button>
+        </div>
     },
     {
       title: "Hành Động",
       key: "action",
       render: (record) => (
         <div style={{ display: "flex", gap: "10px" }}>
-          <Button className="custom-edit-btn" type="primary" icon={<EditOutlined />} onClick={() => handleEditClick(record)}>
+          <Button
+            className="custom-edit-btn"
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => handleEditClick(record)}
+          >
             Sửa
           </Button>
         </div>
@@ -187,7 +236,11 @@ const CinemaCustomer = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         style={{ width: 300, marginBottom: 16 }}
       />
-      <Button icon={<PlusOutlined />} onClick={() => setModalType("add")} style={{ marginLeft: "10px" }}>
+      <Button
+        icon={<PlusOutlined />}
+        onClick={() => setModalType("add")}
+        style={{ marginLeft: "10px" }}
+      >
         Add Cinema
       </Button>
       <Table dataSource={filteredCinemas} columns={columns} rowKey="_id" />
@@ -202,20 +255,56 @@ const CinemaCustomer = () => {
         okButtonProps={{ className: "custom-ok-btn" }}
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="name" label="Name" rules={[{ required: true, message: "Vui lòng nhập tên Cinema!" }]}>
+          <Form.Item
+            name="name"
+            label="Name"
+            rules={[{ required: true, message: "Please enter a name!" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="address" label="Address" rules={[{ required: true, message: "Vui lòng nhập địa chỉ Cinema!" }]}>
+          <Form.Item
+            name="address"
+            label="Address"
+            rules={[
+              { required: true, message: "Please enter an address!" },
+            ]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="phoneNumber" label="Phone Number">
+          <Form.Item
+            name="phoneNumber"
+            label="Phone Number"
+            rules={[
+              { required: true, message: "Please enter a phone number!" },
+              {
+                pattern: /^0\d{9}$/,
+                message:
+                  "Invalid phone number!",
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="map" label="Map (URL)">
-            <Input />
+          <Form.Item
+            name="map"
+            label="Map URL"
+            rules={[
+              { required: true, message: "Please enter your a map URL!" },
+            ]}
+          >
+            <Input
+              addonAfter={
+                <a
+                  href="https://www.google.com/maps"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Google Map
+                </a>
+              }
+            />
           </Form.Item>
         </Form>
-
       </Modal>
     </div>
   );

@@ -9,28 +9,30 @@
     justify-content: center;
     padding: 20px;
 }
-.title-header{
+
+.title-header {
     text-align: center;
-        background-color: #DAD2B4;
-        padding: 6px 10px;
-        font-size: 20px;
-        font-weight: bold;
-        color: #333;
-        width: 100vw;
-        /* Giới hạn độ rộng theo nội dung */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #DAD2B4;
+    padding: 6px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    width: 100vw;
+    /* Giới hạn độ rộng theo nội dung */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.title-header h3{
+
+.title-header h3 {
     display: inline-block;
-       
-        border-bottom: 2px solid black;
+
+    border-bottom: 2px solid black;
 }
+
 .ticket-card {
     width: 300px;
-        height: 450px;
     padding: 15px;
     border-radius: 15px;
     background-color: #efebdb;
