@@ -42,6 +42,7 @@ import Feedback from "../pages/Feedback";
 import MyTicket from "../pages/Ticket/MyTicket";
 import RolePage from "../pages/Role/RolePage";
 import BookingAdmin from "../pages/BookingAdmin/BookingAdmin";
+import Contact from "../pages/Contact";
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
 
@@ -79,6 +80,7 @@ const router = createBrowserRouter([
       { path: "movielist/:id", element: <DetailMovie /> },
       { path: "totalslide", element: <TotalSlide /> },
       { path: "myticket/:userId", element: <MyTicket /> },
+      { path: "contact", element: <Contact /> },
     ],
   },
 
