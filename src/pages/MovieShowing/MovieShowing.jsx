@@ -174,7 +174,7 @@ const MovieShowingList = () => {
       });
       fetchData();
       console.log("phiec", id);
-      console.log("phiec", isDelete);
+      console.log("Delete", isDelete);
 
       toast.success("Cập nhật trạng thái thành công!");
     } catch (error) {
@@ -239,10 +239,13 @@ const MovieShowingList = () => {
         <Form form={form} onFinish={handleAddMovieShowing} layout="vertical">
           <Form.Item name="movieId" label="Phim" rules={[{ required: true }]}>
             <Select
-              options={movies.map((movie) => ({
-                value: movie._id,
-                label: movie.name,
-              }))}
+              options={movies
+                .filter((movie) => new Date(movie.releaseDate) <= new Date()) // Lọc phim
+                .map((movie) => ({
+                  value: movie._id,
+                  label: movie.name,
+                }))
+              }
             />
           </Form.Item>
 

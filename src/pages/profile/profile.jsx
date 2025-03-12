@@ -94,7 +94,7 @@ const Profile = () => {
       </div>
       <div className="profile-container">
         {/* Hiển thị avatar */}
-        <div className="avatar">
+        <div className="avatar-profile">
           <img
             src={preview || avatar || "https://i.pinimg.com/474x/7e/7f/d0/7e7fd01f87a51b390e051e83340b7d78.jpg"}
             alt="Avatar"
