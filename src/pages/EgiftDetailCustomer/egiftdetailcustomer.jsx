@@ -32,6 +32,18 @@ const EgiftDetailCustomer = () => {
     if (loading) return <p>Đang tải...</p>;
     if (error) return <p>{error}</p>;
 
+    // const sendEgiftToUser = async () => {
+    //     try {
+    //         const response = await axios.post(`/egift/egift-cards/send`, {
+    //             egiftId: id,
+    //             email: "",
+    //             message: "",
+    //         });
+    //         console.log(response.data);
+    //     } catch (error) {
+    //         console.error("Lỗi khi gửi eGift:", error);
+    // }
+
     return (
         <div className="movie-detail-container">
             <div className="movie-detail-header">
