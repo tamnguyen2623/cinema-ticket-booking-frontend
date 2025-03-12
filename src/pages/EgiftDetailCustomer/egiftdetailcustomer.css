@@ -107,3 +107,25 @@ body {
     font-weight: normal;
     color: #333;
 }
+
+.loading-message,
+.error-message,
+.no-data-message {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.no-data-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.no-data-message {
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+}

@@ -18,7 +18,11 @@ const EgiftDetailCustomer = () => {
         const fetchEgift = async () => {
             try {
                 const response = await axios.get(`/egift/egifts/${id}`);
-                setEgift(response.data.data);
+                if (response.data && response.data.data) {
+                    setEgift(response.data.data);
+                } else {
+                    setEgift(null);
+                }
             } catch (error) {
                 setError("Lỗi khi lấy dữ liệu!");
             } finally {
@@ -29,9 +33,15 @@ const EgiftDetailCustomer = () => {
         fetchEgift();
     }, [id]);
 
-    if (loading) return <p>Đang tải...</p>;
-    if (error) return <p>{error}</p>;
-
+    if (loading) return <p className="loading-message">Đang tải...</p>;
+    if (error) return <p className="error-message">{error}</p>;
+    if (!egift) {
+        return (
+            <div className="no-data-container">
+                <p className="no-data-message">Không có dữ liệu!</p>
+            </div>
+        );
+    }
     return (
         <div className="movie-detail-container">
             <div className="movie-detail-header">
