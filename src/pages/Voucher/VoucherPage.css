@@ -11,7 +11,13 @@
 .custom-edit-btn:hover {
   opacity: 0.8;
 }
+.btn-mapview{
+  background-color: red !important;
+}
 
+.btn-mapview:hover {
+  opacity: 0.7;
+}
 
 .custom-ok-btn {
   background-color: #1890ff !important;

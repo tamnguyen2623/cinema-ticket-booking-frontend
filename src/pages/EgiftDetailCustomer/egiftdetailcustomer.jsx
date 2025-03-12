@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
@@ -7,18 +7,29 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import './egiftdetailcustomer.css';
 import FloatingNavigation from "../../components/UtilityBar/FloatingNavigation";
+import { Form, notification } from "antd/lib";
+import { AuthContext } from "../../context/AuthContext";
+import EgiftForm from "./EgiftForm";
+import { set } from "react-hook-form";
 
 const EgiftDetailCustomer = () => {
-    const { id } = useParams();
-    const [egift, setEgift] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const { id } = useParams();
+  const { auth } = useContext(AuthContext);
+  const [egift, setEgift] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [form] = Form.useForm();
 
     useEffect(() => {
         const fetchEgift = async () => {
             try {
                 const response = await axios.get(`/egift/egifts/${id}`);
-                setEgift(response.data.data);
+                if (response.data && response.data.data) {
+                    setEgift(response.data.data);
+                } else {
+                    setEgift(null);
+                }
             } catch (error) {
                 setError("Lỗi khi lấy dữ liệu!");
             } finally {
@@ -26,12 +37,41 @@ const EgiftDetailCustomer = () => {
             }
         };
 
-        fetchEgift();
-    }, [id]);
+    fetchEgift();
+  }, [id]);
 
-    if (loading) return <p>Đang tải...</p>;
-    if (error) return <p>{error}</p>;
-
+ if (loading) return <p className="loading-message">Đang tải...</p>;
+    if (error) return <p className="error-message">{error}</p>;
+    if (!egift) {
+        return (
+            <div className="no-data-container">
+                <p className="no-data-message">Không có dữ liệu!</p>
+            </div>
+        );
+    }
+    const sendEgiftToUser = async (values, auth, setIsFormVisible) => {
+        if (!auth.token) {
+          return notification.error({
+            message: "Unauthorized",
+            description: "You are not authorized to create or update a movie.",
+          });
+        }
+      try {
+        const response = await axios.post(`/egift/egift-cards/send/${id}`, values, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        });
+        setIsFormVisible(false);
+        notification.success({ message: "Gift card to user successfully!" });
+      } catch (error) {
+        console.error("Lỗi khi gửi eGift:", error);
+      }
+    };
+  
+    const showGiftForm = () => {
+      setIsFormVisible(true);
+    }
     return (
         <div className="movie-detail-container">
             <div className="movie-detail-header">
@@ -54,6 +94,17 @@ const EgiftDetailCustomer = () => {
                 </div>
             </div>
             <FloatingNavigation />
+            <EgiftForm
+        isFormVisible={isFormVisible}
+        handleCancel={() => setIsFormVisible(false)}
+        onFinish={(values) =>
+          sendEgiftToUser(
+            values,
+            auth,
+            setIsFormVisible,
+          )
+        }
+      />
         </div>
     );
 };

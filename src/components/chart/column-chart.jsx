@@ -21,12 +21,12 @@ export const ApexColumnChart = ({ data, categories }) => {
         },
       },
       //   colors: colors,
-      plotOptions: {
-        bar: {
-          columnWidth: "80%",
-          distributed: true,
-        },
-      },
+      // plotOptions: {
+      //   bar: {
+      //     columnWidth: "80%",
+      //     distributed: true,
+      //   },
+      // },
       dataLabels: {
         enabled: false,
       },
@@ -42,7 +42,25 @@ export const ApexColumnChart = ({ data, categories }) => {
           },
           rotate: 0,
         },
+        title: {
+          text: 'Month',
+          style: {
+            fontSize: '14px',
+            fontWeight: 600,
+            cssClass: 'apexcharts-xaxis-title'
+          }
+        }
       },
+      yaxis: {
+        title: {
+          text: 'Revenue ($)',
+          style: {
+            fontSize: '14px',
+            fontWeight: 600,
+            cssClass: 'apexcharts-yaxis-title'
+          }
+        }
+      }
     },
   });
 
