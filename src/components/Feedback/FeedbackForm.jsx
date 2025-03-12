@@ -69,6 +69,7 @@ export default function FeedbackForm({
       }
 
       setModal(false);
+      setRefresh(!refresh);
       fetchBookings();
     } catch (error) {
       console.error("Error:", error);
