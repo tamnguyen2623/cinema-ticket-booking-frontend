@@ -7,7 +7,7 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import "./egiftdetailcustomer.css";
 import FloatingNavigation from "../../components/UtilityBar/FloatingNavigation";
-import { Form } from "antd/lib";
+import { Form, notification } from "antd/lib";
 import { AuthContext } from "../../context/AuthContext";
 import EgiftForm from "./EgiftForm";
 import { set } from "react-hook-form";
