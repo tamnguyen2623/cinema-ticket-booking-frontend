@@ -2,12 +2,14 @@ import {
   EditOutlined,
   DeleteOutlined,
   PlusOutlined,
-  SearchOutlined
+  SearchOutlined,
+  FileOutlined
 } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, Space, Table, Typography, message } from 'antd';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { FaFileExport } from 'react-icons/fa';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -287,10 +289,46 @@ const RolePage = () => {
     },
   ];
 
+    const handleExport = async () => {
+      try {
+        const response = await axios.get(
+          `/user/export-customers`,
+          {
+            headers: {
+              "Content-Type":
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              Authorization: `Bearer ${auth.token}`,
+            },
+            responseType: "blob",
+          }
+        );
+  
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(response.data);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "customers.xlsx";
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          window.URL.revokeObjectURL(url);
+        } else {
+          console.error("Failed to download file:", response);
+        }
+      } catch (error) {
+        console.error("Error exporting orders:", error);
+      }
+    };
+
   return (
     <div className="w-full min-h-screen bg-white p-8 rounded-none shadow-none">
       <Title level={2}>Role Management</Title>
       <Space className="mb-4">
+        <Button type="primary" icon={<FaFileExport/>}
+          className="custom-edit-btn"
+          onClick={handleExport}>
+          Export File
+        </Button>
         <Button type="primary" icon={<PlusOutlined />}
           className="custom-edit-btn"
           onClick={handleAddUser}>
