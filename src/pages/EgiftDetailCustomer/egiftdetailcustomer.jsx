@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { IconButton } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
-import './egiftdetailcustomer.css';
+import "./egiftdetailcustomer.css";
 import FloatingNavigation from "../../components/UtilityBar/FloatingNavigation";
 import { Form, notification } from "antd/lib";
 import { AuthContext } from "../../context/AuthContext";
@@ -21,80 +21,74 @@ const EgiftDetailCustomer = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [form] = Form.useForm();
 
-    useEffect(() => {
-        const fetchEgift = async () => {
-            try {
-                const response = await axios.get(`/egift/egifts/${id}`);
-                if (response.data && response.data.data) {
-                    setEgift(response.data.data);
-                } else {
-                    setEgift(null);
-                }
-            } catch (error) {
-                setError("Lỗi khi lấy dữ liệu!");
-            } finally {
-                setLoading(false);
-            }
-        };
+  useEffect(() => {
+    const fetchEgift = async () => {
+      try {
+        const response = await axios.get(`/egift/egifts/${id}`);
+        setEgift(response.data.data);
+      } catch (error) {
+        setError("Lỗi khi lấy dữ liệu!");
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchEgift();
   }, [id]);
 
- if (loading) return <p className="loading-message">Đang tải...</p>;
-    if (error) return <p className="error-message">{error}</p>;
-    if (!egift) {
-        return (
-            <div className="no-data-container">
-                <p className="no-data-message">Không có dữ liệu!</p>
-            </div>
-        );
+  if (loading) return <p>Đang tải...</p>;
+  if (error) return <p>{error}</p>;
+
+  const sendEgiftToUser = async (values, auth, setIsFormVisible) => {
+    if (!auth.token) {
+      return notification.error({
+        message: "Unauthorized",
+        description: "You are not authorized to create or update a movie.",
+      });
     }
-    const sendEgiftToUser = async (values, auth, setIsFormVisible) => {
-        if (!auth.token) {
-          return notification.error({
-            message: "Unauthorized",
-            description: "You are not authorized to create or update a movie.",
-          });
-        }
-      try {
-        const response = await axios.post(`/egift/egift-cards/send/${id}`, values, {
-          headers: {
-            Authorization: `Bearer ${auth.token}`,
-          },
-        });
-        setIsFormVisible(false);
-        notification.success({ message: "Gift card to user successfully!" });
-      } catch (error) {
-        console.error("Lỗi khi gửi eGift:", error);
-      }
-    };
-  
-    const showGiftForm = () => {
-      setIsFormVisible(true);
+    try {
+      const response = await axios.post(`/egift/egift-cards/send/${id}`, values, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      setIsFormVisible(false);
+      notification.success({ message: "Gift card to user successfully!" });
+    } catch (error) {
+      console.error("Lỗi khi gửi eGift:", error);
     }
-    return (
-        <div className="movie-detail-container">
-            <div className="movie-detail-header">
-                <p className="movie-detail-title">EGIFT</p>
+  };
+
+  const showGiftForm = () => {
+    setIsFormVisible(true);
+  }
+
+  return (
+    <div className="movie-detail-container">
+      <div className="movie-detail-header">
+        <p className="movie-detail-title">EGIFT</p>
+      </div>
+      <div className="movie-detail-content">
+        <div className="movie-detail-main-info">
+          <div className="detail-images">
+            <img src={egift?.image} alt={egift?.name} />
+            <button onClick={showGiftForm} className="btn-book-ticket">Gift card</button>
+          </div>
+          <div className="movie-detail-info">
+            <div className="movie-detail-name-wrapper">
+              <h2 className="movie-detail-name">{egift?.name}</h2>
             </div>
-            <div className="movie-detail-content">
-                <div className="movie-detail-main-info">
-                    <div className="detail-images">
-                        <img src={egift?.image} alt={egift?.name} />
-                        <button className="btn-book-ticket">Buy card</button>
-                    </div>
-                    <div className="movie-detail-info">
-                        <div className="movie-detail-name-wrapper">
-                            <h2 className="movie-detail-name">{egift?.name}</h2>
-                        </div>
-                        <div className="movie-detail-inf-wrapper">
-                            <p><span className="label">Description:</span> <span className="value">{egift?.description}</span></p>
-                        </div>
-                    </div>
-                </div>
+            <div className="movie-detail-inf-wrapper">
+              <p>
+                <span className="label">Description:</span>{" "}
+                <span className="value">{egift?.description}</span>
+              </p>
             </div>
-            <FloatingNavigation />
-            <EgiftForm
+          </div>
+        </div>
+      </div>
+      <FloatingNavigation />
+      <EgiftForm
         isFormVisible={isFormVisible}
         handleCancel={() => setIsFormVisible(false)}
         onFinish={(values) =>
@@ -105,8 +99,8 @@ const EgiftDetailCustomer = () => {
           )
         }
       />
-        </div>
-    );
+    </div>
+  );
 };
 
 export default EgiftDetailCustomer;
