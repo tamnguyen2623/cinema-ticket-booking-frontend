@@ -28,7 +28,6 @@ const { Option } = Select;
 const RolePage = () => {
   const { auth } = useContext(AuthContext);
   const [filteredRoles, setFilteredRoles] = useState([]);
-  const [filteredRoles, setFilteredRoles] = useState([]);
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
   const [roles, setRoles] = useState([]);
@@ -164,9 +163,7 @@ const RolePage = () => {
     );
     setFilteredRoles(filtered);
   }, [searchTerm, roles]);
-    setFilteredRoles(filtered);
-  }, [searchTerm, roles]);
-
+    
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
@@ -231,7 +228,6 @@ const RolePage = () => {
         </Button>
         <Input
           placeholder="Search role"
-          placeholder="Search role"
           prefix={<SearchOutlined />}
           style={{ width: 300 }}
           onChange={handleSearch}
@@ -239,13 +235,10 @@ const RolePage = () => {
         />
       </Space>
 
-      {/* 👉 Bảng danh sách Role hiển thị ngay trên giao diện */}
 
       {/* 👉 Bảng danh sách Role hiển thị ngay trên giao diện */}
       <Table
-        className="mt-4"
-        columns={roleColumns}
-        dataSource={filteredRoles} // Sử dụng danh sách đã lọc
+      // Sử dụng danh sách đã lọc
         className="mt-4"
         columns={roleColumns}
         dataSource={filteredRoles} // Sử dụng danh sách đã lọc
@@ -253,9 +246,7 @@ const RolePage = () => {
         pagination={{ pageSize: 5 }}
       />
 
-        pagination={{ pageSize: 5 }}
-      />
-
+       
       <Modal
         title={isRoleEditing ? "Edit Role" : "Add Role"}
         open={isRoleModalVisible}
