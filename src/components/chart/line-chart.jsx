@@ -1,78 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 export const ApexLineChart = ({ data, categories }) => {
-  console.log(data);
-  console.log(categories);
-  const [state, setState] = useState({
-    series: [
-      {
-        name: "Revenue",
-        data: data,
-      },
-    ],
-    options: {
-      chart: {
-        height: "500px",
-        width: "100%",
-        type: "line",
-        zoom: {
-          enabled: false,
-        },
-      },
-      //   colors: colors,
-      plotOptions: {
-        bar: {
-          columnWidth: "80%",
-          distributed: true,
-        },
-      },
-      dataLabels: {
+  const [chartOptions, setChartOptions] = useState({
+    chart: {
+      height: "500px",
+      type: "line",
+      zoom: {
         enabled: false,
       },
-      legend: {
-        show: true,
-      },
-      stroke: {
-        curve: "straight",
-      },
-      xaxis: {
-        categories: categories,
-        labels: {
-          style: {
-            // colors: colors,
-            fontSize: "10px",
-          },
-          rotate: 0,
+    },
+    stroke: {
+      curve: "straight",
+    },
+    xaxis: {
+      categories: categories,
+      labels: {
+        style: {
+          fontSize: "10px",
         },
-        title: {
-          text: "Day",
-          style: {
-            fontSize: "14px",
-            fontWeight: 600,
-            cssClass: "apexcharts-xaxis-title",
-          },
+        rotate: 0,
+      },
+      title: {
+        text: "Day",
+        style: {
+          fontSize: "14px",
+          fontWeight: 600,
+          cssClass: "apexcharts-xaxis-title",
         },
       },
-      yaxis: {
-        title: {
-          text: "Revenue ($)",
-          style: {
-            fontSize: "14px",
-            fontWeight: 600,
-            cssClass: "apexcharts-yaxis-title",
-          },
+    },
+    yaxis: {
+      title: {
+        text: "Revenue ($)",
+        style: {
+          fontSize: "14px",
+          fontWeight: 600,
+          cssClass: "apexcharts-yaxis-title",
         },
       },
     },
   });
 
+  const [series, setSeries] = useState([
+    {
+      name: "Revenue",
+      data: data,
+    },
+  ]);
+
+  // Cập nhật dữ liệu khi `data` hoặc `categories` thay đổi
+  useEffect(() => {
+    setSeries([{ name: "Revenue", data: data }]);
+    setChartOptions((prevOptions) => ({
+      ...prevOptions,
+      xaxis: { ...prevOptions.xaxis, categories: categories },
+    }));
+  }, [data, categories]);
+
   return (
     <div>
       <div id="chart">
         <ReactApexChart
-          options={state.options}
-          series={state.series}
+          options={chartOptions}
+          series={series}
           type="line"
           height={350}
         />

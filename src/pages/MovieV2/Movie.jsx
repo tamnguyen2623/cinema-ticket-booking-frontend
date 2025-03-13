@@ -43,7 +43,7 @@ const [searchTerm, setSearchTerm] = useState("");
   }, []);
 
   const handleDelete = useCallback(
-    (id) => handleDeleteMovie(id, setMovies, auth.token),
+    (id, checked) => handleDeleteMovie(id, checked, setMovies, auth.token),
     [auth.token]
   );
 

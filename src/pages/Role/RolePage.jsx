@@ -28,6 +28,7 @@ const { Option } = Select;
 const RolePage = () => {
   const { auth } = useContext(AuthContext);
   const [filteredRoles, setFilteredRoles] = useState([]);
+  const [filteredRoles, setFilteredRoles] = useState([]);
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
   const [roles, setRoles] = useState([]);
@@ -110,6 +111,7 @@ const RolePage = () => {
   // 👉 Xử lý submit form thêm/sửa role
   const handleRoleFormSubmit = async (values) => {
     console.log("Dữ liệu gửi đi:", values);
+    console.log("Dữ liệu gửi đi:", values);
 
     const isDuplicate = roles.some(
       (role) =>
@@ -124,6 +126,7 @@ const RolePage = () => {
     try {
       if (isRoleEditing) {
         // 👉 Sửa role
+        // 👉 Sửa role
         await axios.put(`/role/${editingRole._id}`, values, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
@@ -136,6 +139,7 @@ const RolePage = () => {
         message.success("Thêm role thành công");
       }
 
+      fetchRoles(); // Cập nhật danh sách role
       fetchRoles(); // Cập nhật danh sách role
       setIsRoleModalVisible(false);
       setIsRoleEditing(false);
@@ -160,6 +164,8 @@ const RolePage = () => {
     );
     setFilteredRoles(filtered);
   }, [searchTerm, roles]);
+    setFilteredRoles(filtered);
+  }, [searchTerm, roles]);
 
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
@@ -172,6 +178,7 @@ const RolePage = () => {
   };
   const roleColumns = [
     { title: "Role Name", dataIndex: "name", key: "name" },
+    { title: "Members", dataIndex: "memberCount", key: "memberCount" },
     { title: "Members", dataIndex: "memberCount", key: "memberCount" },
     {
       title: "Action",
@@ -224,6 +231,7 @@ const RolePage = () => {
         </Button>
         <Input
           placeholder="Search role"
+          placeholder="Search role"
           prefix={<SearchOutlined />}
           style={{ width: 300 }}
           onChange={handleSearch}
@@ -232,11 +240,19 @@ const RolePage = () => {
       </Space>
 
       {/* 👉 Bảng danh sách Role hiển thị ngay trên giao diện */}
+
+      {/* 👉 Bảng danh sách Role hiển thị ngay trên giao diện */}
       <Table
         className="mt-4"
         columns={roleColumns}
         dataSource={filteredRoles} // Sử dụng danh sách đã lọc
+        className="mt-4"
+        columns={roleColumns}
+        dataSource={filteredRoles} // Sử dụng danh sách đã lọc
         rowKey="_id"
+        pagination={{ pageSize: 5 }}
+      />
+
         pagination={{ pageSize: 5 }}
       />
 
@@ -272,6 +288,7 @@ const RolePage = () => {
       </Modal>
     </div>
   );
+
 };
 
 export default RolePage;
