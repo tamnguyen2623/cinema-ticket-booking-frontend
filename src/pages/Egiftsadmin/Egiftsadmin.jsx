@@ -61,6 +61,16 @@ const EgiftAdmin = () => {
     }
   };
 
+  
+  useEffect(() => {
+    if (currentEgift) {
+      form.setFieldsValue({
+        name: currentEgift.name,
+        description: currentEgift.description,
+      });
+    }
+  }, [currentEgift, form]);
+  
   const handleEditEgift = async () => {
     try {
       const values = await form.validateFields();
