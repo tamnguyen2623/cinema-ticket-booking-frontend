@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Table, Button, Input, Select } from "antd";
+import { Table, Button, Input, Select, Switch } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
@@ -7,6 +7,7 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons";
 import "../../components/styles/MovieList.css";
+import { fetchMovies } from "../../components/api/movieApi";
 
 const { Option } = Select;
 
@@ -41,7 +42,11 @@ const MovieList = ({
       dataIndex: "img",
       key: "img",
       render: (img) => (
-        <img src={img} alt="Movie" style={{ width: 100, height: 100, objectFit: "cover" }} />
+        <img
+          src={img}
+          alt="Movie"
+          style={{ width: 100, height: 100, objectFit: "cover" }}
+        />
       ),
     },
     {
@@ -70,7 +75,7 @@ const MovieList = ({
       dataIndex: "description",
       key: "description",
     },
-// ✅ Thêm cột Release Date
+    // ✅ Thêm cột Release Date
     {
       title: "Release Date",
       dataIndex: "releaseDate",
@@ -80,33 +85,43 @@ const MovieList = ({
     {
       title: "Actions",
       key: "actions",
-      render: (record) => (
-        <div className="action-buttons">
+      render: (_, record) => (
+        <div style={{ display: "flex", flexDirection: "row" }}>
           <Button
-            type="primary"
-            size="small"
-            onClick={() => handleDetail(record._id)}
-            className="info-btn"
-          >
-            <InfoCircleOutlined />
-          </Button>
-          <Button
-            type="primary"
-            size="small"
+            icon={<EditOutlined />}
             onClick={() => handleEdit(record)}
-            className="edit-btn"
+            className="actionButton editButton"
           >
-            <EditOutlined />
+            Update
           </Button>
+
           <Button
-            type="danger"
-            size="small"
-            onClick={() => handleDelete(record._id)}
-            className="delete-btn"
+            icon={<InfoCircleOutlined />}
+            onClick={() => handleDetail(record._id)}
+            className="actionButton infoButton"
           >
-            <DeleteOutlined />
+            Detail
           </Button>
+
+          {/* <Button
+                icon={<DeleteOutlined />}
+                onClick={() => handleDelete(record._id)}
+                className="actionButton deleteButton"
+              /> */}
         </div>
+      ),
+    },
+    {
+      title: "Disabled",
+      key: "disabled",
+      render: (record) => (
+        <Switch
+          checked={record.isDeleted}
+          className="custom-switch"
+          onChange={(checked) =>
+            handleDelete(record._id, checked)
+          }
+        />
       ),
     },
   ];
