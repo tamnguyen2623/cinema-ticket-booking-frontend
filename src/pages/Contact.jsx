@@ -20,13 +20,14 @@ export default function Contact() {
   }, []);
 
   return (
-    <div className="contact__container">
-      <CinemaList
-        cinemas={cinemas}
-        selectedCinema={selectedCinema}
-        setSelectedCinema={setSelectedCinema}
-      />
-      <CinemaDetail cinema={selectedCinema} />
-    </div>
+    <><div className="hot_movies">
+      <p className="title-unique">CONTACT</p>
+    </div><div className="contact__container">
+        <CinemaList
+          cinemas={cinemas}
+          selectedCinema={selectedCinema}
+          setSelectedCinema={setSelectedCinema} />
+        <CinemaDetail cinema={selectedCinema} />
+      </div></>
   );
 }

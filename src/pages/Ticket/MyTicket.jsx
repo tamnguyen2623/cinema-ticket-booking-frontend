@@ -66,8 +66,8 @@ const MyTicket = () => {
       const bookingsData = Array.isArray(response.data)
         ? response.data
         : Array.isArray(response.data.bookings)
-        ? response.data.bookings
-        : [];
+          ? response.data.bookings
+          : [];
       console.log(bookingsData);
 
       setBookings(bookingsData);
@@ -91,122 +91,119 @@ const MyTicket = () => {
       />
     );
   console.log("booking", bookings);
-
-  // Nếu API thành công nhưng không có vé -> Hiển thị thông báo "Bạn chưa đặt vé nào."
   if (!bookings || bookings.length === 0 || error) {
-    return <Alert message="Bạn chưa đặt vé nào." type="info" showIcon />;
+    return (<div><div className="hot_movies">
+      <p className="title-unique">MY TICKETS</p>
+    </div><Alert message="Bạn chưa đặt vé nào." type="info" showIcon /></div>);
   }
   return (
-    <div className="head-container">
-      <div className="sub-container">
-        <Row gutter={[32, 32]} justify="center">
-          {bookings.map((ticket) => (
-            <Col key={ticket._id}>
-              <div className="ticket-card">
-                <div className="ticket-content">
-                  {/* Ảnh phim bên trái */}
-                  <div className="img-movie">
-                    <img src={ticket.movieImage} alt={ticket.movieName} />
-                  </div>
+    <><div className="hot_movies">
+      <p className="title-unique">MY TICKETS</p>
+    </div><div className="head-container">
 
-                  {/* Thông tin vé bên phải */}
-                  <div className="information-ticket">
-                    <h3> {ticket.movieName}</h3>
-                    <div>
-                      <strong>Rạp:</strong> {ticket.cinema}
-                    </div>
-                    <div>
-                      <strong>Ngày chiếu:</strong>{" "}
-                      {dayjs(ticket.date).format("DD/MM/YYYY")}
-                    </div>
-                    <div>
-                      <strong>Ghế:</strong> {ticket.seats.join(", ")}
-                    </div>
-                    <div>
-                      <strong>Giá:</strong> {ticket.price.toLocaleString()} $
+        <div className="sub-container">
+          <Row gutter={[32, 32]} justify="center">
+            {bookings.map((ticket) => (
+              <Col key={ticket._id}>
+                <div className="ticket-card">
+                  <div className="ticket-content">
+                    {/* Ảnh phim bên trái */}
+                    <div className="img-movie">
+                      <img src={ticket.movieImage} alt={ticket.movieName} />
                     </div>
 
-                    <div className="flex items-center justify-between pr-5">
-                      <Tag
-                        color={
-                          {
+                    {/* Thông tin vé bên phải */}
+                    <div className="information-ticket">
+                      <h3> {ticket.movieName}</h3>
+                      <div>
+                        <strong>Rạp:</strong> {ticket.cinema}
+                      </div>
+                      <div>
+                        <strong>Ngày chiếu:</strong>{" "}
+                        {dayjs(ticket.date).format("DD/MM/YYYY")}
+                      </div>
+                      <div>
+                        <strong>Ghế:</strong> {ticket.seats.join(", ")}
+                      </div>
+                      <div>
+                        <strong>Giá:</strong> {ticket.price.toLocaleString()} $
+                      </div>
+
+                      <div className="flex items-center justify-between pr-5">
+                        <Tag
+                          color={{
                             success: "green",
                             pending: "orange",
                             failed: "red",
                             cancelled: "volcano",
-                          }[ticket.status]
-                        }
-                      >
-                        {ticket.status.toUpperCase()}
-                      </Tag>
+                          }[ticket.status]}
+                        >
+                          {ticket.status.toUpperCase()}
+                        </Tag>
+
+                        {ticket.status === "success" && (
+                          <button
+                            onClick={() => showModal(ticket)}
+                            className="text-red-700 italic hover:text-red-500 flex items-center gap-1 underline"
+                          >
+                            {ticket.isFeedback ? (
+                              <EyeOutlined />
+                            ) : (
+                              <EditOutlined />
+                            )}
+                            {ticket.isFeedback ? "View feedback" : "Review"}
+                          </button>
+                        )}
+                      </div>
 
                       {ticket.status === "success" && (
                         <button
-                          onClick={() => showModal(ticket)}
-                          className="text-red-700 italic hover:text-red-500 flex items-center gap-1 underline"
+                          onClick={() => navigate(`/myticketdetail/${ticket._id}`)}
+                          className="btn btn-primary"
                         >
-                          {ticket.isFeedback ? (
-                            <EyeOutlined />
-                          ) : (
-                            <EditOutlined />
-                          )}
-                          {ticket.isFeedback ? "View feedback" : "Review"}
+                          Detail
                         </button>
                       )}
                     </div>
-
-                    {ticket.status === "success" && (
-                      <button
-                        onClick={() =>
-                          navigate(`/myticketdetail/${ticket._id}`)
-                        }
-                        className="btn btn-primary"
-                      >
-                        Detail
-                      </button>
-                    )}
                   </div>
                 </div>
-              </div>
-            </Col>
-          ))}
-        </Row>
-      </div>
-      <Modal
-        title={`Ratting & Feedback "${booking?.movieName}"`}
-        open={addModal}
-        onCancel={handleCancelAddModal}
-        width={1000}
-        footer={null}
-      >
-        <FeedbackForm
-          userId={auth.userId}
-          form={"Add"}
-          booking={booking}
-          setModal={setAddModal}
-          fetchBookings={fetchBookings}
-          handleCancelModal={handleCancelAddModal}
-          setRefresh={setRefresh}
-          refresh={refresh}
-        />
-      </Modal>
+              </Col>
+            ))}
+          </Row>
+        </div>
+        <Modal
+          title={`Ratting & Feedback "${booking?.movieName}"`}
+          open={addModal}
+          onCancel={handleCancelAddModal}
+          width={1000}
+          footer={null}
+        >
+          <FeedbackForm
+            userId={auth.userId}
+            form={"Add"}
+            booking={booking}
+            setModal={setAddModal}
+            fetchBookings={fetchBookings}
+            handleCancelModal={handleCancelAddModal}
+            setRefresh={setRefresh}
+            refresh={refresh} />
+        </Modal>
 
-      <Modal
-        title={`View feedback "${booking?.movieName}"`}
-        open={viewModal}
-        onCancel={handleCancelViewModal}
-        width={1000}
-        footer={null}
-      >
-        <FeedbackDetail
-          userId={auth.userId}
-          booking={booking}
-          // setModal={setViewModal}
-          fetchBookings={fetchBookings}
-          handleCancelViewModal={handleCancelViewModal}
-        />
-      </Modal>
-    </div>
+        <Modal
+          title={`View feedback "${booking?.movieName}"`}
+          open={viewModal}
+          onCancel={handleCancelViewModal}
+          width={1000}
+          footer={null}
+        >
+          <FeedbackDetail
+            userId={auth.userId}
+            booking={booking}
+            // setModal={setViewModal}
+            fetchBookings={fetchBookings}
+            handleCancelViewModal={handleCancelViewModal} />
+        </Modal>
+      </div></>
   );
 };
 export default MyTicket;
