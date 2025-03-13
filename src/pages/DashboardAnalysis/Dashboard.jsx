@@ -4,6 +4,9 @@ import {
   ShoppingCartIcon,
   CurrencyDollarIcon,
 } from "@heroicons/react/24/outline";
+import { Select } from "antd";
+
+const { Option } = Select;
 import axios from "axios";
 import Navbar from "../../components/Navbar";
 import { AuthContext } from "../../context/AuthContext";
@@ -12,6 +15,7 @@ import { AnalyticsCurrentVisits } from "../../components/AnalysisCircle";
 import { ApexColumnChart } from "../../components/chart/column-chart";
 import { ApexBarChart } from "../../components/chart/bar-chart";
 import { ApexLineChart } from "../../components/chart/line-chart";
+import { set } from "react-hook-form";
 
 const Dashboard = () => {
   const { auth } = useContext(AuthContext);
@@ -27,6 +31,11 @@ const Dashboard = () => {
   const [yearForByMonth, setYearForByMonth] = useState("2025");
   const [yearForByDay, setYearForByDay] = useState("2025");
   const [month, setMonth] = useState("3");
+  const monthList = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  // Danh sách năm từ 2000 đến năm hiện tại + 10
+  const currentYear = new Date().getFullYear();
+  const yearList = Array.from({ length: 30 }, (_, i) => currentYear - 15 + i);
 
   const fetchTotalUsers = async (data) => {
     try {
@@ -164,7 +173,7 @@ const Dashboard = () => {
           cinemaAnalysis,
           revenueByMovie,
           revenueByNewCustomers,
-          revenueByDay
+          revenueByDay,
         ] = await Promise.all([
           fetchTotalUsers(),
           fetchTotalMovies(),
@@ -184,6 +193,12 @@ const Dashboard = () => {
 
     fetchAllData();
   }, [yearForByDay, month]);
+
+  useEffect(() => {
+    console.log("Fetching data for:", { month, yearForByDay });
+    getTotalRevenueByDay(month, yearForByDay);
+}, [month, yearForByDay]);
+
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -298,19 +313,22 @@ const Dashboard = () => {
               component: (
                 <AnalyticsCurrentVisits
                   chart={{
-                    series: revenueByNewCustomers || [{ label: "ABC", value: 1 }],
+                    series: revenueByNewCustomers || [
+                      { label: "ABC", value: 1 },
+                    ],
                   }}
                 />
               ),
             },
             {
               title: "Revenue By Day",
-              component: revenueByDay != null && revenueByDay.days?.length>0 && (
-                <ApexLineChart
-                  data={revenueByDay.totalRevenueByDay}
-                  categories={revenueByDay.days}
-                />
-              ),
+              component: revenueByDay != null &&
+                revenueByDay.days?.length > 0 && (
+                  <ApexLineChart
+                    data={revenueByDay.totalRevenueByDay}
+                    categories={revenueByDay.days}
+                  />
+                ),
             },
           ].map(({ title, component }, index) => (
             <div
@@ -318,7 +336,36 @@ const Dashboard = () => {
               className="flex flex-col gap-4 rounded-lg bg-gray-50 p-6 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
               <span className="text-xl font-semibold text-gray-800">
-                {title}
+                {title} {index == 1 && (
+                  <>
+                    <Select
+                      value={month}
+                      onChange={(e) => setMonth(e)}
+                      className="w-24"
+                      placeholder="Select Month"
+                    >
+                      {monthList.map((m) => (
+                        <Option key={m} value={m}>
+                          {m}
+                        </Option>
+                      ))}
+                    </Select>
+
+                    {/* Chọn Năm */}
+                    <Select
+                      value={yearForByDay}
+                      onChange={(e) => setYearForByDay(e)}
+                      className="w-28"
+                      placeholder="Select Year"
+                    >
+                      {yearList.map((y) => (
+                        <Option key={y} value={y}>
+                          {y}
+                        </Option>
+                      ))}
+                    </Select>
+                  </>
+                )}
               </span>
               {component}
             </div>

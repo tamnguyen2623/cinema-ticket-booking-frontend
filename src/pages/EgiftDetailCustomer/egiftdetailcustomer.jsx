@@ -40,12 +40,12 @@ const EgiftDetailCustomer = () => {
   if (error) return <p>{error}</p>;
 
   const sendEgiftToUser = async (values, auth, setIsFormVisible) => {
-      if (!auth.token) {
-        return notification.error({
-          message: "Unauthorized",
-          description: "You are not authorized to create or update a movie.",
-        });
-      }
+    if (!auth.token) {
+      return notification.error({
+        message: "Unauthorized",
+        description: "You are not authorized to gift E-Gift card.",
+      });
+    }
     try {
       const response = await axios.post(`/egift/egift-cards/send/${id}`, values, {
         headers: {
@@ -72,7 +72,6 @@ const EgiftDetailCustomer = () => {
         <div className="movie-detail-main-info">
           <div className="detail-images">
             <img src={egift?.image} alt={egift?.name} />
-            <button className="btn-book-ticket">Buy card</button>
             <button onClick={showGiftForm} className="btn-book-ticket">Gift card</button>
           </div>
           <div className="movie-detail-info">

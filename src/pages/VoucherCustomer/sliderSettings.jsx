@@ -1,6 +1,6 @@
 const sliderSettings = {
   dots: true, // Hiển thị chấm tròn phía dưới
-  infinite: true, // Lặp lại carousel vô hạn
+  infinite: false, // Lặp lại carousel vô hạn
   speed: 500,
   slidesToShow: 3, // Hiển thị 3 voucher mỗi lần
   slidesToScroll: 1,

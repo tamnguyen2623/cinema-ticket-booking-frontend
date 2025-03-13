@@ -238,10 +238,13 @@ const MovieShowingList = () => {
         <Form form={form} onFinish={handleAddMovieShowing} layout="vertical">
           <Form.Item name="movieId" label="Movie" rules={[{ required: true }]}>
             <Select
-              options={movies.map((movie) => ({
-                value: movie._id,
-                label: movie.name,
-              }))}
+              options={movies
+                .filter((movie) => new Date(movie.releaseDate) <= new Date()) // Lọc phim
+                .map((movie) => ({
+                  value: movie._id,
+                  label: movie.name,
+                }))
+              }
             />
           </Form.Item>
 
