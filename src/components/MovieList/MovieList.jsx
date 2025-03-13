@@ -120,7 +120,7 @@ const MovieList = () => {
                       </Link>
                     </button>
                   ) : (
-                    <button className="btn btn-disabled" disabled>
+                    <button className="btn btn-disabled cursor-not-allowed" disabled>
                       <p>Not Yet Available</p>
                     </button>
                   )}

@@ -24,7 +24,10 @@ const VoucherCustomer = ({ setBookingData }) => {
         console.log("API Response:", response.data);
 
         if (response.data && Array.isArray(response.data.vouchers)) {
-          setVouchers(response.data.vouchers);
+          const filteredVouchers = response.data.vouchers.filter(
+            (voucher) => !voucher.isUsed
+          );
+          setVouchers(filteredVouchers);
         } else {
           throw new Error("Invalid data format from API");
         }

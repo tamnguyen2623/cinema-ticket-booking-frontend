@@ -22,7 +22,7 @@ const CinemaCustomer = () => {
   const [form] = Form.useForm();
   const { auth } = useContext(AuthContext);
   const [mapModalVisible, setMapModalVisible] = useState(false);
-  const [mapUrl, setMapUrl] = useState(""); 
+  const [mapUrl, setMapUrl] = useState("");
 
   const fetchCinema = async () => {
     try {
@@ -132,7 +132,12 @@ const CinemaCustomer = () => {
   const handleEditClick = (cinema) => {
     setCurrentCinema(cinema);
     setModalType("edit");
-    form.setFieldsValue({ name: cinema.name, address: cinema.address , phoneNumber: cinema.phoneNumber, map: cinema.map});
+    form.setFieldsValue({
+      name: cinema.name,
+      address: cinema.address,
+      phoneNumber: cinema.phoneNumber,
+      map: cinema.map,
+    });
   };
 
   const handleToggleDelete = async (id, isDelete) => {
@@ -234,6 +239,11 @@ const CinemaCustomer = () => {
     },
   ];
 
+  const handleAddClick = () => {
+    form.resetFields(); // Reset form trước khi mở modal
+    setModalType("add");
+  };
+
   return (
     <div className="content">
       <div className="searchFilterContainer">
@@ -249,7 +259,7 @@ const CinemaCustomer = () => {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setModalType("add")}
+            onClick={handleAddClick}
             className="addTicketButton"
           >
             Add Cinema
@@ -278,9 +288,7 @@ const CinemaCustomer = () => {
           <Form.Item
             name="address"
             label="Address"
-            rules={[
-              { required: true, message: "Please enter an address!" },
-            ]}
+            rules={[{ required: true, message: "Please enter an address!" }]}
           >
             <Input />
           </Form.Item>
@@ -291,9 +299,28 @@ const CinemaCustomer = () => {
               { required: true, message: "Please enter a phone number!" },
               {
                 pattern: /^0\d{9}$/,
-                message:
-                  "Invalid phone number!",
+                message: "Invalid phone number!",
               },
+              () => ({
+                validator(_, value) {
+                  if (!value) return Promise.resolve();
+                  let isDuplicate;
+                  if (modalType === "add") {
+                    isDuplicate = cinemas.some(
+                      (cinema) => cinema.phoneNumber === value
+                    );
+                  } else {
+                    const oldPhoneNumber = currentCinema?.phoneNumber;
+                    isDuplicate =
+                      value !== oldPhoneNumber &&
+                      cinemas.some((cinema) => cinema.phoneNumber === value);
+                  }
+
+                  return isDuplicate
+                    ? Promise.reject(new Error("Phone number already exists!"))
+                    : Promise.resolve();
+                },
+              }),
             ]}
           >
             <Input />

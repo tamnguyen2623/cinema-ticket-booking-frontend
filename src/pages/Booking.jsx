@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Modal, Spin } from "antd";
+import { Modal, Spin, Button } from "antd";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "../components/styles/payment.css";
@@ -56,7 +56,7 @@ const Booking = () => {
   }
 
   if (!bookingInfo) {
-    return <Alert message="Not find ticket." type="error" />;
+    return <toast message="Not find ticket." type="error" />;
   }
 
   if (bookingInfo.status === "failed") {
@@ -71,7 +71,7 @@ const Booking = () => {
           </Button>,
         ]}
       >
-        <Alert message="Payment Failed. Please try again!" type="error" />
+        <toast message="Payment Failed. Please try again!" type="error" />
       </Modal>
     );
   }
