@@ -13,6 +13,7 @@ const TicketForm = ({
   editingTicket,
   ticketDetail,
 }) => {
+  const room = [...new Set(rooms?.map((room) => room.roomtype))];
   return (
     <>
       <Modal
@@ -31,9 +32,9 @@ const TicketForm = ({
             rules={[{ required: true }]}
           >
             <Select>
-              {rooms.map((room) => (
-                <Select.Option key={room._id} value={room.roomtype}>
-                  {room.roomtype}
+              {room.map((roomtype, index) => (
+                <Select.Option key={index} value={roomtype}>
+                  {roomtype}
                 </Select.Option>
               ))}
             </Select>
