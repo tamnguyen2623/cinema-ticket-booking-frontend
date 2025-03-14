@@ -80,96 +80,88 @@ const ComboCarousel = () => {
   };
 
   return (
-    <div className="combo-container">
-      <h2 className="combo-title">Choose Your Combo</h2>
-      {loading ? (
-        <p>Loading combos...</p>
-      ) : (
-        <div className="carousel-container">
-          <Button
-            className="carousel-arrow left-arrow"
-            icon={<LeftOutlined />}
-            onClick={() => carouselRef.current && carouselRef.current.prev()}
-          />
-          <Carousel
-            autoplay
-            dots={true}
-            slidesToShow={3}
-            slidesToScroll={1}
-            ref={carouselRef}
-            className="combo-slider"
-          >
-            {combos.map((combo) => {
-              const existingCombo = selectedCombos.find(
-                (c) => c._id === combo._id
-              );
-              const selectedQuantity = existingCombo
-                ? existingCombo.quantity
-                : 0;
+    <><div className="hot_movies">
+      <p className="title-unique">Choose Your Combo</p>
+    </div><div className="combo-container">
 
-              return (
-                <div key={combo._id} className="combo-slide">
-                  <Card
-                    hoverable
-                    className="combo-card"
-                    cover={
-                      <img
+        {loading ? (
+          <p>Loading combos...</p>
+        ) : (
+          <div className="carousel-container">
+            <Button
+              className="carousel-arrow left-arrow"
+              icon={<LeftOutlined />}
+              onClick={() => carouselRef.current && carouselRef.current.prev()} />
+            <Carousel
+              dots={true}
+              slidesToShow={3}
+              slidesToScroll={1}
+              ref={carouselRef}
+              className="combo-slider"
+            >
+              {combos.map((combo) => {
+                const existingCombo = selectedCombos.find(
+                  (c) => c._id === combo._id
+                );
+                const selectedQuantity = existingCombo
+                  ? existingCombo.quantity
+                  : 0;
+
+                return (
+                  <div key={combo._id} className="combo-slide">
+                    <Card
+                      hoverable
+                      className="combo-card"
+                      cover={<img
                         alt={combo.name}
                         src={combo.image}
-                        className="combo-image"
-                      />
-                    }
-                  >
-                    <Meta
-                      title={combo.name}
-                      description={
-                        <strong className="combo-description">
+                        className="combo-image" />}
+                    >
+                      <Meta
+                        title={combo.name}
+                        description={<strong className="combo-description">
                           Price: ${combo.price}
-                        </strong>
-                      }
-                    />
-                    <strong className="combo-description">
-                      Description: {combo.description}
-                    </strong>
+                        </strong>} />
+                      <strong className="combo-description">
+                        Description: {combo.description}
+                      </strong>
 
-                    <div className="combo-actions">
-                      <InputNumber
-                        min={0}
-                        max={50}
-                        value={selectedQuantity}
-                        onChange={(value) => handleQuantityChange(combo, value)}
-                        className="combo-input"
-                      />
-                    </div>
-                  </Card>
-                </div>
-              );
-            })}
-          </Carousel>
-          <Button
-            className="carousel-arrow right-arrow"
-            icon={<RightOutlined />}
-            onClick={() => carouselRef.current && carouselRef.current.next()}
-          />
-        </div>
-      )}
+                      <div className="combo-actions">
+                        <InputNumber
+                          min={0}
+                          max={50}
+                          value={selectedQuantity}
+                          onChange={(value) => handleQuantityChange(combo, value)}
+                          className="combo-input" />
+                      </div>
+                    </Card>
+                  </div>
+                );
+              })}
+            </Carousel>
+            <Button
+              className="carousel-arrow right-arrow"
+              icon={<RightOutlined />}
+              onClick={() => carouselRef.current && carouselRef.current.next()} />
+          </div>
+        )}
 
-      <Button
-        type="primary"
-        className="combo-button confirm-button"
-        onClick={handleConfirmSelection}
-      >
-        Confirm
-      </Button>
+        <Button
+          type="primary"
+          className="combo-button confirm-button"
+          onClick={handleConfirmSelection}
+        >
+          Confirm
+        </Button>
 
-      <Button
-        type="primary"
-        className="combo-button next-button"
-        onClick={() => navigate("/totalslide")}
-      >
-        Next
-      </Button>
-    </div>
+        <Button
+          type="primary"
+          className="combo-button next-button"
+          onClick={() => navigate("/totalslide")}
+        >
+          Next
+        </Button>
+      </div></>
   );
 };
 

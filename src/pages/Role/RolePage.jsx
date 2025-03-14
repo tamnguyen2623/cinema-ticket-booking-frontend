@@ -2,50 +2,38 @@ import {
   EditOutlined,
   DeleteOutlined,
   PlusOutlined,
-  SearchOutlined
-} from '@ant-design/icons';
-import { Button, Form, Input, Modal, Select, Space, Table, Typography, message } from 'antd';
-import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+  SearchOutlined,
+  FileOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Space,
+  Switch,
+  Table,
+  Typography,
+  message,
+} from "antd";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { FaFileExport } from "react-icons/fa";
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const RolePage = () => {
   const { auth } = useContext(AuthContext);
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [filteredRoles, setFilteredRoles] = useState([]);
   const [form] = Form.useForm();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [roles, setRoles] = useState([]);
   const [isRoleModalVisible, setIsRoleModalVisible] = useState(false);
   const [roleForm] = Form.useForm();
   const [isRoleEditing, setIsRoleEditing] = useState(false);
-
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get('/role/roles/get', {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
-
-      const filtered = response.data.data
-        .map(user => ({
-          ...user,
-          role: user.roleId?.name || 'N/A', // 👉 Thêm role cho user
-        }))
-        .filter(user => user.role.toLowerCase() !== 'user' && user.role !== 'N/A'); // 🚫 Loại user có role "user" hoặc "N/A"
-
-      setUsers(filtered);
-      setFilteredUsers(filtered);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
-
 
   const fetchRoles = async () => {
     try {
@@ -53,7 +41,9 @@ const RolePage = () => {
         headers: { Authorization: `Bearer ${auth.token}` },
       });
 
-      const filteredRoles = response.data.data.filter(role => role.name !== 'user'); // 👉 Lọc role "user"
+      const filteredRoles = response.data.data.filter(
+        (role) => role.name !== "user"
+      ); // 👉 Lọc role "user"
       setRoles(filteredRoles);
     } catch (error) {
       console.error("Error fetching roles:", error);
@@ -62,17 +52,22 @@ const RolePage = () => {
   const fetchRolesWithUserCount = async () => {
     try {
       const [rolesResponse, usersResponse] = await Promise.all([
-        axios.get("/role", { headers: { Authorization: `Bearer ${auth.token}` } }),
-        axios.get("/role/roles/get", { headers: { Authorization: `Bearer ${auth.token}` } }),
-
+        axios.get("/role", {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        }),
+        axios.get("/role/roles/get", {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        }),
       ]);
 
       const rolesData = rolesResponse.data.data;
       const usersData = usersResponse.data.data;
 
       // 👉 Đếm số lượng user cho từng role
-      const rolesWithCount = rolesData.map(role => {
-        const memberCount = usersData.filter(user => user.roleId?._id === role._id).length;
+      const rolesWithCount = rolesData.map((role) => {
+        const memberCount = usersData.filter(
+          (user) => user.roleId?._id === role._id
+        ).length;
         return { ...role, memberCount };
       });
 
@@ -85,204 +80,136 @@ const RolePage = () => {
   // 🔄 Gọi khi component mount
 
   useEffect(() => {
-    fetchUsers();
-    fetchRoles(); fetchRolesWithUserCount();
-
+    fetchRoles();
+    fetchRolesWithUserCount();
   }, []);
 
-  const handleDeleteRole = async (role) => {
-    if (role.name.trim().toLowerCase() === "admin") {
-      message.error('Không thể xoá role "admin"!');
-      return; // 👉 Dừng chức năng xoá
-    }
-    Modal.confirm({
-      title: 'Confirm delete',
-      content: `Delete role "${role.name}"?`,
-      okText: 'Confirm',
-      cancelText: 'Cancel',
-      onOk: async () => {
-        try {
-          await axios.delete(`/role/delete/${role._id}`, {
-            headers: { Authorization: `Bearer ${auth.token}` },
-          });
-          message.success('Role deleted successfully');
-          fetchRoles();
-        } catch (error) {
-          console.error('Delete error:', error);
-          // message.error('Failed to delete role');
-          message.success('Role deleted successfully');
-
+  const handleDelete = async (role) => {
+    try {
+      await axios.put(
+        `/role/delete/${role._id}`,
+        { isDelete: !role.isDelete },
+        {
+          headers: { Authorization: `Bearer ${auth.token}` },
         }
-      },
-    });
+      );
+
+      await fetchRoles(); // Cập nhật lại danh sách từ server
+
+      message.success(
+        `Role ${role.name}  ${
+          role.isDelete ? "vô hiệu hóa" : "Deleted "
+        } success!`
+      );
+    } catch (error) {
+      console.error("Lỗi khi cập nhật trạng thái role:", error);
+      message.error("Không thể cập nhật trạng thái role.");
+    }
   };
 
+  // 👉 Xử lý submit form thêm/sửa role
   const handleRoleFormSubmit = async (values) => {
-    const roleName = values.name.trim().toLowerCase();
+    console.log("Dữ liệu gửi đi:", values);
+    console.log("Dữ liệu gửi đi:", values);
 
-    // 🛑 Kiểm tra: Không cho phép "user" hoặc tên role chỉ toàn số
-    if (roleName === "user" || /^\d+$/.test(roleName)) {
-      message.error('Tên role không hợp lệ! Không được là "user" hoặc chỉ chứa số.');
-      return;
-    }
     const isDuplicate = roles.some(
-      (role) => role.name.trim().toLowerCase() === values.name.trim().toLowerCase()
+      (role) =>
+        role.name.trim().toLowerCase() === values.name.trim().toLowerCase()
     );
 
     if (isDuplicate) {
-      message.error('Role name already exists. Please choose a different name.');
-      return; // ⛔ Ngừng nếu trùng
+      message.error("Role này đã tồn tại!");
+      return;
     }
 
     try {
       if (isRoleEditing) {
+        // 👉 Sửa role
+        // 👉 Sửa role
         await axios.put(`/role/${editingRole._id}`, values, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
-        message.success('Role updated successfully');
+        message.success("Cập nhật role thành công");
       } else {
-        await axios.post('/role/create', values, {
+        // 👉 Thêm role mới
+        await axios.post("/role/create", values, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
-        message.success('Role created successfully');
+        message.success("Thêm role thành công");
       }
 
-      fetchRoles(); // 🔄 Cập nhật roles
+      fetchRoles(); // Cập nhật danh sách role
+      fetchRoles(); // Cập nhật danh sách role
       setIsRoleModalVisible(false);
       setIsRoleEditing(false);
       roleForm.resetFields();
     } catch (error) {
-      console.error('Save error:', error);
-      message.error('Error saving role');
+      console.error("Lỗi khi lưu role:", error);
+      message.error("Không thể lưu role");
     }
+  };
+
+  // 👉 Xử lý mở modal để thêm role mới
+  const handleAddRole = () => {
+    setIsRoleEditing(false);
+    setIsRoleModalVisible(true);
+    roleForm.resetFields(); // Reset form khi thêm mới
   };
 
   // 🔎 Xử lý tìm kiếm
   useEffect(() => {
-    const filtered = users.filter(user =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.role.toLowerCase().includes(searchTerm.toLowerCase())
+    const filtered = roles.filter((role) =>
+      role.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setFilteredUsers(filtered);
-  }, [searchTerm, users]);
-
+    setFilteredRoles(filtered);
+  }, [searchTerm, roles]);
+    
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
+    const value = e.target.value.toLowerCase();
+    setSearchTerm(value);
 
-  const handleAddUser = () => {
-    form.resetFields();
-    setIsEditing(false);
-    setIsModalVisible(true);
+    const filtered = roles.filter((role) =>
+      role.name.toLowerCase().includes(value)
+    );
+    setFilteredRoles(filtered); // Cập nhật danh sách roles sau khi lọc
   };
-
-  const handleEditUser = (user) => {
-    form.setFieldsValue({
-      username: user.username,
-      fullname: user.fullname,
-      email: user.email,
-      roleId: user.roleId?._id
-    });
-    setEditingUser(user);
-    setIsEditing(true);
-    setIsModalVisible(true);
-  };
-
-  const handleDeleteUser = async (user) => {
-    try {
-      await axios.delete(`/role/deleteEmployee/${user._id}`, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
-      message.success("User deleted successfully!");
-      fetchUsers();
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      message.error("Failed to delete user.");
-    }
-  };
-
-  const handleDeleteClick = (user) => {
-    Modal.confirm({
-      title: "Confirm delete",
-      content: `Do you want to delete "${user.username}"?`,
-      okText: "Confirm",
-      cancelText: "Cancel",
-      okType: "danger",
-      onOk: () => handleDeleteUser(user),
-    });
-  };
-  const handleAddRole = async (values) => {
-    try {
-      await axios.post('/role/create', values, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
-      message.success('Role added successfully!');
-      setIsRoleModalVisible(false);
-      roleForm.resetFields();
-      fetchRoles(); // 🔄 Cập nhật danh sách roles
-    } catch (error) {
-      console.error('Error adding role:', error);
-      message.error('Failed to add role.');
-    }
-  };
-  const handleFormSubmit = async (values) => {
-    try {
-      if (isEditing) {
-        await axios.put(`/role/putEmployee/${editingUser._id}`, values, {
-          headers: { Authorization: `Bearer ${auth.token}` },
-        });
-        message.success("User updated successfully!");
-      } else {
-        await axios.post("/role/createEmployee", values, {
-          headers: { Authorization: `Bearer ${auth.token}` },
-        });
-        message.success("User added successfully!");
-      }
-      fetchUsers();
-      setIsModalVisible(false);
-    } catch (error) {
-      console.error("Error saving user data:", error);
-      message.error("Error saving user data");
-    }
-  };
-
-  const employeeColumns = [
-    { title: 'Username', dataIndex: 'username' },
-    { title: 'Fullname', dataIndex: 'fullname' },
-    { title: 'Email', dataIndex: 'email' },
-    {
-      title: 'Role',
-      dataIndex: 'role',
-      filters: roles.map(role => ({
-        text: role.name,
-        value: role.name,
-      })),
-      onFilter: (value, record) => record.role === value,
-      render: (role) => role || 'No Role',
-    },
-    {
-      title: 'Action',
-      render: (_, record) => (
-        <Space>
-          <Button icon={<EditOutlined />} onClick={() => handleEditUser(record)}>Update</Button>
-          <Button icon={<DeleteOutlined />} danger onClick={() => handleDeleteClick(record)}>Delete</Button>
-        </Space>
-      )
-    }
-  ];
-
   const roleColumns = [
     { title: "Role Name", dataIndex: "name", key: "name" },
-    { title: "Members", dataIndex: "memberCount", key: "memberCount" }, // 👉 Thêm cột này
+    { title: "Members", dataIndex: "memberCount", key: "memberCount" },
+    { title: "Members", dataIndex: "memberCount", key: "memberCount" },
     {
-      title: "Actions",
-      key: "actions",
-      render: (_, record) => (
-        <Space>
-          <Button type="link" onClick={() => handleEditRole(record)}>Edit</Button>
-          <Button type="link" danger onClick={() => handleDeleteRole(record)}>Delete</Button>
-        </Space>
+      title: "Action",
+      key: "action",
+      render: (record) => (
+        <div style={{ display: "flex", gap: "10px" }}>
+          <Button
+            className="custom-edit-btn"
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => {
+              form.setFieldsValue({
+                name: record.name,
+              });
+              set(record);
+              setModalType("edit");
+            }}
+          >
+            Update
+          </Button>
+        </div>
+      ),
+    },
+    {
+      title: "Disabled",
+      key: "disabled",
+      render: (record) => (
+        <div style={{ display: "flex", gap: "10px" }}>
+          <Switch
+            checked={record.isDelete}
+            className="custom-switch"
+            onChange={() => handleDelete(record)}
+          />
+        </div>
       ),
     },
   ];
@@ -291,33 +218,37 @@ const RolePage = () => {
     <div className="w-full min-h-screen bg-white p-8 rounded-none shadow-none">
       <Title level={2}>Role Management</Title>
       <Space className="mb-4">
-        <Button type="primary" icon={<PlusOutlined />}
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
           className="custom-edit-btn"
-          onClick={handleAddUser}>
-          Add User
+          onClick={handleAddRole}
+        >
+          Add Role
         </Button>
         <Input
-          placeholder="Search information"
+          placeholder="Search role"
           prefix={<SearchOutlined />}
           style={{ width: 300 }}
           onChange={handleSearch}
           value={searchTerm}
         />
-        {/* <Button type="primary" icon={<PlusOutlined />} onClick={handleAddUser}>
-          Add User
-        </Button> */}
-        <Button type="default" onClick={() => setIsRoleModalVisible(true)}>
-          View Role
-        </Button>
       </Space>
+
+
+      {/* 👉 Bảng danh sách Role hiển thị ngay trên giao diện */}
       <Table
-        columns={employeeColumns}
-        dataSource={filteredUsers}
+      // Sử dụng danh sách đã lọc
+        className="mt-4"
+        columns={roleColumns}
+        dataSource={filteredRoles} // Sử dụng danh sách đã lọc
         rowKey="_id"
-        pagination={{ pageSize: 8 }}
-      />{/* Role Management Modal */}
+        pagination={{ pageSize: 5 }}
+      />
+
+       
       <Modal
-        title={isRoleEditing ? 'Edit Role' : 'Add Role'}
+        title={isRoleEditing ? "Edit Role" : "Add Role"}
         open={isRoleModalVisible}
         onCancel={() => {
           setIsRoleModalVisible(false);
@@ -330,77 +261,25 @@ const RolePage = () => {
           <Form.Item
             name="name"
             label="Role Name"
-            rules={[{ required: true, message: 'Please enter a role name!' }]}
+            rules={[{ required: true, message: "Please enter a role name!" }]}
           >
             <Input placeholder="Enter role name" />
           </Form.Item>
           <Form.Item>
             <Button
               className="custom-edit-btn"
-              type="primary" htmlType="submit" block>
-              {isRoleEditing ? 'Update Role' : 'Add Role'}
-            </Button>
-          </Form.Item>
-        </Form>
-
-        <Table
-          className="mt-4"
-          columns={roleColumns}
-          dataSource={roles}
-          rowKey="_id"
-          pagination={{ pageSize: 5 }}
-
-        />
-      </Modal>
-
-      <Modal
-        title={isEditing ? 'Update User' : 'Add User'}
-        visible={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        footer={null}
-      >
-        <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
-          <Form.Item
-            name="username"
-            label="Username"
-            rules={[{ required: true, message: 'Please input username!' }]}
-          >
-            <Input placeholder="Enter username" disabled={isEditing} />
-          </Form.Item>
-          <Form.Item
-            name="fullname"
-            label="Fullname"
-            rules={[{ required: true, message: 'Please input fullname!' }]}
-          >
-            <Input placeholder="Enter fullname" />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[{ required: true, type: 'email', message: 'Enter a valid email!' }]}
-          >
-            <Input placeholder="Enter email" />
-          </Form.Item>
-          <Form.Item
-            name="roleId"
-            label="Role"
-            rules={[{ required: true, message: "Please select a role!" }]}
-          >
-            <Select placeholder="Select role">
-              {roles.map((role) => (
-                <Option key={role._id} value={role._id}>{role.name}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block>
-              {isEditing ? "Update User" : "Add User"}
+              type="primary"
+              htmlType="submit"
+              block
+            >
+              {isRoleEditing ? "Update Role" : "Add Role"}
             </Button>
           </Form.Item>
         </Form>
       </Modal>
     </div>
   );
+
 };
 
 export default RolePage;

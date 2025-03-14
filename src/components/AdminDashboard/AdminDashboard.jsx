@@ -16,17 +16,19 @@ import {
   faComments,
   faTag,
   faClock,
-  faMoneyBillWave,
+  faCalendarCheck,
+  faGift,
   faLayerGroup,
   faBox,
   faUserShield,
   faFilm,
+  faHeadset,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
 const DashBoard = () => {
   const location = useLocation();
-  const { auth, setAuth } = useContext(AuthContext); // Lấy thông tin từ context
+  const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   if (!auth.token || auth.role !== "admin") {
@@ -48,7 +50,6 @@ const DashBoard = () => {
         pauseOnHover: false,
       });
       navigate("/movieshowing");
-
     } catch (error) {
       console.error(error);
       toast.error("Error", {
@@ -67,7 +68,7 @@ const DashBoard = () => {
           <img
             src="https://i.pravatar.cc/50"
             alt="User Avatar"
-            className="avatar"
+            className="avatar-unipue"
           />
           <div className="profile-text">
             <span className="name">{auth.username || "Admin"}</span>
@@ -86,7 +87,7 @@ const DashBoard = () => {
           </li>
           <li className={`nav-link ${isActive("/admin/booking")}`}>
             <Link to="/admin/booking">
-              <FontAwesomeIcon icon={faChartBar} className="menu-icon" />
+              <FontAwesomeIcon icon={faCalendarCheck} className="menu-icon" />
               <span>Booking</span>
             </Link>
           </li>
@@ -170,13 +171,26 @@ const DashBoard = () => {
           </li>
           <li className={`nav-link ${isActive("/admin/egiftadmin")}`}>
             <Link to="/admin/egiftadmin">
-              <FontAwesomeIcon icon={faBox} className="menu-icon" />
+              <FontAwesomeIcon icon={faGift} className="menu-icon" />
               <span>Egift</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/support")}`}>
+            <Link to="/admin/support">
+              <FontAwesomeIcon icon={faHeadset} className="menu-icon" />
+              <span>Support</span>
+            </Link>
+          </li>
           <li className="nav-link button-logout">
-            <Link onClick={onLogout} className="logout-button" disabled={isLoggingOut}>
-              <FontAwesomeIcon icon={faRightFromBracket} className="menu-icon" />
+            <Link
+              onClick={onLogout}
+              className="logout-button"
+              disabled={isLoggingOut}
+            >
+              <FontAwesomeIcon
+                icon={faRightFromBracket}
+                className="menu-icon"
+              />
               {isLoggingOut ? "Processing..." : "Logout"}
             </Link>
           </li>

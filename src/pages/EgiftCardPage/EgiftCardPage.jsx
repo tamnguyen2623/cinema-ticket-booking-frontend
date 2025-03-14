@@ -57,7 +57,6 @@ const EGiftCardPage = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-
       setImageUrl(response.data.url);
       toast.success("Tải ảnh lên thành công!");
     } catch (error) {
@@ -92,11 +91,17 @@ const EGiftCardPage = () => {
   };
 
   const handleEditClick = (egift) => {
+    console.log("EGift đang chỉnh sửa:", egift); // Kiểm tra dữ liệu
     setCurrentEGift(egift);
-    setImageUrl(egift.image || "");
+    setImageUrl(egift.image || ""); // Cập nhật ảnh
     setModalType("edit");
-    form.setFieldsValue({ name: egift.name, description: egift.description });
+    form.setFieldsValue({
+      name: egift.name,
+      description: egift.description,
+      image: egift.image, // Kiểm tra có nhận giá trị image không
+    });
   };
+  
 
   const columns = [
     {
@@ -155,21 +160,21 @@ const EGiftCardPage = () => {
         cancelText="Hủy"
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="name" label="Name" rules={[{ required: true, message: "Vui lòng nhập tên eGift!" }]}> 
+          <Form.Item name="name" label="Name" rules={[{ required: true, message: "Vui lòng nhập tên eGift!" }]}>
             <Input />
           </Form.Item>
           <Form.Item label="Upload Image">
             <Upload name="file" showUploadList={false} customRequest={handleUpload}>
               <Button icon={<UploadOutlined />} loading={uploading}>Upload File</Button>
             </Upload>
-            {imageUrl && (
+            {(imageUrl || currentEGift?.image) && (
               <div style={{ marginTop: 10 }}>
-                <img src={imageUrl} alt="Uploaded" style={{ width: "100px", height: "100px" }} />
+                <img src={imageUrl || currentEGift?.image} alt="Uploaded" style={{ width: "100px", height: "100px" }} />
                 <Button icon={<DeleteOutlined />} onClick={() => setImageUrl("")} danger style={{ marginLeft: 10 }}>Xóa ảnh</Button>
               </div>
             )}
           </Form.Item>
-          <Form.Item name="description" label="Description" rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}> 
+          <Form.Item name="description" label="Description" rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}>
             <Input.TextArea />
           </Form.Item>
         </Form>

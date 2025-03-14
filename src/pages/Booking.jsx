@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Modal, Spin } from "antd";
+import { Modal, Spin, Button } from "antd";
 import { toast } from "react-toastify";
 import axios from "axios";
 import "../components/styles/payment.css";
@@ -56,7 +56,7 @@ const Booking = () => {
   }
 
   if (!bookingInfo) {
-    return <Alert message="Not find ticket." type="error" />;
+    return <toast message="Not find ticket." type="error" />;
   }
 
   if (bookingInfo.status === "failed") {
@@ -71,7 +71,7 @@ const Booking = () => {
           </Button>,
         ]}
       >
-        <Alert message="Payment Failed. Please try again!" type="error" />
+        <toast message="Payment Failed. Please try again!" type="error" />
       </Modal>
     );
   }
@@ -146,9 +146,12 @@ const Booking = () => {
                 </p>
               </div>
               <div className="ticket-barcode">
-                {bookingInfo.qrCode}
-                <img src={bookingInfo.qrCode} alt="QR Code" />
-</div>
+                {bookingInfo.qrCode ? (
+                  <img src={bookingInfo.qrCode} alt="QR Code" />
+                ) : (
+                  <p>Loading QR Code...</p>
+                )}
+              </div>
             </div>
             <div className="ticket-footer">
               <p>Show QR code to enter the theater.</p>
@@ -157,8 +160,9 @@ const Booking = () => {
                 <strong>Note:</strong> Purchased tickets cannot be cancelled or
                 refunded.
               </p>
-              <p style={{ color: "green", fontSize: "2ex" }}>The ticket was sent Email, you can check your Email. Thank You!</p>
-
+              <p style={{ color: "green", fontSize: "2ex" }}>
+                The ticket was sent Email, you can check your Email. Thank You!
+              </p>
             </div>
           </div>
         </Modal>

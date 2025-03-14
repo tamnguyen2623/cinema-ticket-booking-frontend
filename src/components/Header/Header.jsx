@@ -50,15 +50,15 @@ const Header = () => {
                                 className="logout-button"
                                 disabled={isLoggingOut}
                             >
-                                {isLoggingOut ? "Processing..." : "Đăng Xuất"}</Link>
+                                {isLoggingOut ? "Processing..." : "Logout"}</Link>
                         </li>
                     ) : (
                         <li>
-                            <Link to="/login" className="login-link">Đăng nhập</Link>
+                            <Link to="/login" className="login-link">Login</Link>
                         </li>
                     )}
-                    <li><Link to="/membership" className="membership-link">Thẻ thành viên</Link></li>
-                    <li><Link to="/support" className="support-link">Hỗ trợ khách hàng</Link></li>
+                    {/* <li><Link to="/membership" className="membership-link">Thẻ thành viên</Link></li> */}
+                    <li><Link to="/support" className="support-link">Support</Link></li>
                 </ul>
             </div>
 
@@ -72,7 +72,7 @@ const Header = () => {
                 </div>
                 {auth.token ? (
                     <div className="user-menu" onClick={() => setDropdownOpen(!isDropdownOpen)}>
-                        Xin chào <b>{auth.fullname}</b>! ▼
+                        Welcome, <b>{auth.fullname}</b>! ▼
                         {isDropdownOpen && (
                             <ul className="dropdown-menu">
                                 <li><Link to="/profile">Trang cá nhân</Link></li>

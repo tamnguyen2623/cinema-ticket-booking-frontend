@@ -135,7 +135,7 @@ const VoucherPage = () => {
       title: "Expiration Date",
       dataIndex: "expiredDate",
       key: "expiredDate",
-      render: (date) => (date ? new Date(date).toLocaleDateString("en-US") : "N/A"),
+      render: (date) => moment(date).format("DD/MM/YYYY"),
       width: 300,
     },
     {
@@ -177,17 +177,33 @@ const VoucherPage = () => {
     },
   ];
 
+  const handleAddClick = () => {
+    form.resetFields(); // Reset form trước khi mở modal
+    setModalType("add");
+  };
+
   return (
     <div className="content">
-      <Input
-        placeholder="Search by voucher code..."
-        prefix={<SearchOutlined />}
-        onChange={handleSearch}
-        style={{ width: 300, marginBottom: 16 }}
-      />
-      <Button icon={<PlusOutlined />} onClick={() => setModalType("add")} style={{ marginLeft: "10px" }}>
-        Add Voucher
-      </Button>
+      <div className="searchFilterContainer">
+        <div>
+          <Input
+            placeholder="Search by voucher code..."
+            prefix={<SearchOutlined />}
+            onChange={handleSearch}
+            style={{ width: 300, marginBottom: 16 }}
+          />
+        </div>
+        <div className="buttonAddContainer">
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={handleAddClick}
+            className="addTicketButton"
+          >
+            Add Voucher
+          </Button>
+        </div>
+      </div>
       <Table dataSource={filteredVouchers} columns={columns} rowKey="_id" scroll={{ x: 1200 }} />
       <Modal
         title={modalType === "add" ? "Add New Voucher" : "Edit Voucher"}
@@ -206,7 +222,7 @@ const VoucherPage = () => {
             <InputNumber min={1} max={100} addonAfter="%" />
           </Form.Item>
           <Form.Item name="expiredDate" label="Expiration Date" rules={[{ required: true, message: "Select expiration date!" }]}>
-            <DatePicker format="YYYY-MM-DD" />
+            <DatePicker format="DD/MM/YYYY" />
           </Form.Item>
         </Form>
       </Modal>

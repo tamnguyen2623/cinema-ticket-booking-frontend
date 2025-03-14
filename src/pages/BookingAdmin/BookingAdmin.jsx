@@ -41,7 +41,8 @@ const BookingAdmin = () => {
                 const userMatch = item.user?.fullname?.toLowerCase().includes(searchText.toLowerCase()) ||
                     item.user?.email?.toLowerCase().includes(searchText.toLowerCase());
                 const cinemaMatch = item.cinema?.toLowerCase().includes(searchText.toLowerCase());
-                return movieMatch || userMatch || cinemaMatch;
+                const timeMatch = item.createdAt?.toString().includes(searchText);
+                return movieMatch || userMatch || cinemaMatch || timeMatch;
             });
         }
         if (statusFilter) {

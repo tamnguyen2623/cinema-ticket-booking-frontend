@@ -17,3 +17,16 @@
     flex: 2;
     /* Chiếm phần lớn diện tích */
 }
+
+.contact__movie-option {
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #cdc197;
+    color: #231f20;
+}
+
+.contact__movie-option.active {
+    border: 1px solid black;
+    font-weight: bold;
+}

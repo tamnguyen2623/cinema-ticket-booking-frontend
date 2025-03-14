@@ -8,7 +8,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (location.pathname === "/") {
-      setActivePath("/movie");
+      setActivePath("/movielist");
     } else {
       setActivePath(location.pathname);
     }
@@ -23,7 +23,7 @@ const Navbar = () => {
               to="/bookingticket"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              MUA VÉ
+              BOOK TICKET
             </NavLink>
           </li>
           <li>
@@ -31,7 +31,7 @@ const Navbar = () => {
               to="/movielist"
               className={activePath === "/movielist" ? "active" : ""}
             >
-              PHIM
+              MOVIES
             </NavLink>
           </li>
           <li>
@@ -39,7 +39,7 @@ const Navbar = () => {
               to="/myticket/:userId"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              VÉ CỦA TÔI
+              MY TICKETS
             </NavLink>
           </li>
           <li>
@@ -47,7 +47,7 @@ const Navbar = () => {
               to="/promotions"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              KHUYẾN MÃI
+              PROMOTIONS
             </NavLink>
           </li>
           <li>
@@ -55,7 +55,7 @@ const Navbar = () => {
               to="/contact"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              LIÊN HỆ
+              CONTACT
             </NavLink>
           </li>
           <li>

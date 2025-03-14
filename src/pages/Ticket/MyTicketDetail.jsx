@@ -44,16 +44,16 @@ const MyTicketDetail = () => {
     if (loading) return <Spin tip="Đang tải chi tiết vé..." className="w-full flex justify-center" />;
     if (error) return <Alert message={error} type="error" showIcon className="my-4" />;
     if (!ticket) return <Alert message="Không có dữ liệu vé." type="error" showIcon />;
-console.log("ticket",ticket);
+    console.log("ticket", ticket);
 
-    
+
 
     return (
-    <div className="px-4 md:px-8 lg:px-16 m-10">
+        <div className="px-4 md:px-8 lg:px-16 m-10">
             <div className="bg-[#ddd4b4] text-center font-bold text-lg py-1 relative mb-5">
 
                 <h3 className="detail"> TICKET DETAIL</h3>
-        </div>
+            </div>
             <table className="w-full border-collapse text-left p-4">
                 <thead>
                     <tr className="bg-black text-white text-center">
@@ -66,7 +66,7 @@ console.log("ticket",ticket);
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="border border-gray-300 ">
+                    <tr className="border border-gray-400 ">
                         <td className="p-4 text-gray-700 font-medium border-r border-gray-400">{ticket.movieName}</td>
                         <td className="p-4 border-r border-gray-400">
                             <strong className="text-black">{ticket.cinema}</strong>
@@ -83,7 +83,7 @@ console.log("ticket",ticket);
                         <td className="p-4 border-r border-gray-400">
                             <strong className="text-black">Standard</strong>
                             <p className="text-gray-600">{ticket.seats.join(", ")}</p>
-                            {/* <p className="text-gray-600">{ticket.price.toLocaleString()} $</p> */}
+                            {/* <p className="text-gray-600">{ticket.price} $</p> */}
                         </td>
                         <td className="p-4 border-r border-gray-400">
                             <strong className="text-black">Voucher: </strong>
@@ -94,11 +94,11 @@ console.log("ticket",ticket);
                             <strong className="text-black">Combo: </strong>
 
                             <p className="text-gray-600">
-                                {Array.isArray(ticket.combo) && ticket.combo.length > 0 ? `${ticket.combo.join(", ")} $` : "No combo"}
+                                {Array.isArray(ticket.combo) && ticket.combo.length > 0 ? `${ticket.combo.join(", ")} ` : "No combo"}
                             </p>
                         </td>
                         {/* Cột QR Code */}
-                        <td className="p-4 flex flex-col items-center border-r border-gray-400">
+                        <td className="p-4 flex flex-col items-center gray-400">
                             {ticket.qrCode ? (
                                 <img
                                     src={ticket.qrCode}
@@ -106,10 +106,10 @@ console.log("ticket",ticket);
                                     className="w-30 h-30  border border-gray-300 p-1 rounded"
                                 />
                             ) : (
-                                <p className="text-gray-500">Chưa có QR</p>
+                                    <p className="text-gray-500  ">Chưa có QR</p>
                             )}
                         </td>
-                        <td className="p-4 font-semibold text-black  ">{ticket.price.toLocaleString()} $</td>
+                        <td className="p-5 font-semibold  border border-gray-400 ">{ticket.price.toLocaleString()} $</td>
                     </tr>
 
                     {/* <tr className="border border-gray-300">

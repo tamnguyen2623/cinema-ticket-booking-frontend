@@ -217,16 +217,28 @@ const ComboPage = () => {
 
   return (
     <div className="content">
-      <div className="header">
-        <Input
-          placeholder="Search combo..."
-          prefix={<SearchOutlined />}
-          onChange={handleSearch}
-          style={{ width: 300 }}
-        />
-        <Button icon={<PlusOutlined />} onClick={() => setModalType("add")}>
+      <div className="searchFilterContainer">
+        <div>
+          <Input
+            placeholder="Search combo..."
+            prefix={<SearchOutlined />}
+            onChange={handleSearch}
+            style={{ width: 300 }}
+          />
+          {/* <Button icon={<PlusOutlined />} onClick={() => setModalType("add")}>
           Add Combo
-        </Button>
+        </Button> */}
+        </div>
+        <div className="buttonAddContainer">
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setModalType("add")}
+            className="addTicketButton"
+          >
+            Add Combo
+          </Button>
+        </div>
       </div>
       <Table
         dataSource={filteredCombos}
@@ -288,7 +300,7 @@ const ComboPage = () => {
           >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="image" label="Image" rules={[{ required: true, message: "Please upload a Image!" }]}>
+          <Form.Item name="image" label="Image">
             <Upload
               listType="picture"
               beforeUpload={(file) => {
