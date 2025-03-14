@@ -50,7 +50,6 @@ const RoomList = ({
         <div className="action-buttons">
           <Button
             icon={<EditOutlined />}
-            type="primary"
             size="small"
             onClick={() => handleEdit(record)}
             className="edit-btn"
@@ -59,7 +58,6 @@ const RoomList = ({
           </Button>
           <Button
             icon={<InfoCircleOutlined />}
-            type="primary"
             size="small"
             onClick={() => handleDetail(record._id)}
             className="info-btn"

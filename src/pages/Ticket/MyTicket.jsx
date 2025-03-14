@@ -9,6 +9,8 @@ import {
   Col,
   Modal,
   Button,
+  DatePicker,
+  Select,
 } from "antd";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
@@ -28,7 +30,11 @@ const MyTicket = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  {
+    /* nga them */
+  }
+  const [selectedFilter, setSelectedFilter] = useState("all");
+  const [selectedDate, setSelectedDate] = useState(null);
   const navigate = useNavigate();
   const [addModal, setAddModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
@@ -52,6 +58,44 @@ const MyTicket = () => {
   const handleCancelViewModal = () => {
     setViewModal(false);
   };
+  {
+    /* nga them */
+  }
+  const now = dayjs(); // Lấy thời gian hiện tại
+  const today = dayjs().startOf("day"); // Lấy ngày hiện tại (YYYY-MM-DD)
+  const filteredBookings = bookings.filter((ticket) => {
+    const ticketDate = dayjs(ticket.date).startOf("day");
+    const ticketTime = dayjs(ticket.showtime);
+    // const formattedShowtime = new Date(ticket.showtime).toLocaleTimeString(
+    //   "en-US",
+    //   {
+    //     hour: "2-digit",
+    //     minute: "2-digit",
+    //     hour12: true,
+    //   }
+    // );
+    if (
+      selectedDate &&
+      dayjs(ticket.date).format("DD/MM/YYYY") !== selectedDate
+    ) {
+      return false;
+    }
+    if (
+      selectedFilter === "watched" &&
+      (ticketDate.isBefore(today) ||
+        (ticketDate.isSame(today) && ticketTime.isBefore(now)))
+    ) {
+      return true;
+    }
+    if (
+      selectedFilter === "unwatched" &&
+      (ticketDate.isAfter(today) ||
+        (ticketDate.isSame(today) && ticketTime.isAfter(now)))
+    ) {
+      return true;
+    }
+    return selectedFilter === "all";
+  });
 
   const fetchBookings = async () => {
     if (!auth?.userId) {
@@ -66,8 +110,8 @@ const MyTicket = () => {
       const bookingsData = Array.isArray(response.data)
         ? response.data
         : Array.isArray(response.data.bookings)
-          ? response.data.bookings
-          : [];
+        ? response.data.bookings
+        : [];
       console.log(bookingsData);
 
       setBookings(bookingsData);
@@ -91,19 +135,70 @@ const MyTicket = () => {
       />
     );
   console.log("booking", bookings);
-  if (!bookings || bookings.length === 0 || error) {
-    return (<div><div className="hot_movies">
-      <p className="title-unique">MY TICKETS</p>
-    </div><Alert message="Bạn chưa đặt vé nào." type="info" showIcon /></div>);
-  }
-  return (
-    <><div className="hot_movies">
-      <p className="title-unique">MY TICKETS</p>
-    </div><div className="head-container">
 
+  if (!filteredBookings || filteredBookings.length === 0 || error) {
+    return (
+      <div>
+        <div className="hot_movies">
+          <p className="title-unique">MY TICKETS</p>
+        </div>
+        <div className="filter-container">
+          <DatePicker
+            className="custom-datepicker"
+            onChange={(date, dateString) => setSelectedDate(dateString)}
+            format="DD/MM/YYYY"
+            placeholder="Chọn ngày"
+            allowClear
+          />
+          <Select
+            className="custom-select"
+            value={selectedFilter}
+            onChange={(value) => setSelectedFilter(value)}
+          >
+            <Select.Option value="all">All Ticket</Select.Option>
+            <Select.Option value="watched">Watched</Select.Option>
+            <Select.Option value="unwatched">Unwatched</Select.Option>
+          </Select>
+        </div>
+
+        <Alert
+          message="Không tìm thấy vé nào theo ngày được chọn."
+          type="info"
+          showIcon
+        />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="hot_movies">
+        <p className="title-unique">MY TICKETS</p>
+      </div>
+      {/* nga them */}
+      <div className="filter-container">
+        <DatePicker
+          className="custom-datepicker"
+          onChange={(date, dateString) => setSelectedDate(dateString)}
+          format="DD/MM/YYYY"
+          placeholder="Chọn ngày"
+          allowClear
+        />
+        <Select
+          className="custom-select"
+          value={selectedFilter}
+          onChange={(value) => setSelectedFilter(value)}
+        >
+          <Select.Option value="all">All Ticket</Select.Option>
+          <Select.Option value="watched">Watched</Select.Option>
+          <Select.Option value="unwatched">Unwatched</Select.Option>
+        </Select>
+      </div>
+
+      <div className="head-container">
         <div className="sub-container">
           <Row gutter={[32, 32]} justify="center">
-            {bookings.map((ticket) => (
+            {filteredBookings.map((ticket) => (
               <Col key={ticket._id}>
                 <div className="ticket-card">
                   <div className="ticket-content">
@@ -131,12 +226,14 @@ const MyTicket = () => {
 
                       <div className="flex items-center justify-between pr-5">
                         <Tag
-                          color={{
-                            success: "green",
-                            pending: "orange",
-                            failed: "red",
-                            cancelled: "volcano",
-                          }[ticket.status]}
+                          color={
+                            {
+                              success: "green",
+                              pending: "orange",
+                              failed: "red",
+                              cancelled: "volcano",
+                            }[ticket.status]
+                          }
                         >
                           {ticket.status.toUpperCase()}
                         </Tag>
@@ -158,7 +255,9 @@ const MyTicket = () => {
 
                       {ticket.status === "success" && (
                         <button
-                          onClick={() => navigate(`/myticketdetail/${ticket._id}`)}
+                          onClick={() =>
+                            navigate(`/myticketdetail/${ticket._id}`)
+                          }
                           className="btn btn-primary"
                         >
                           Detail
@@ -186,7 +285,8 @@ const MyTicket = () => {
             fetchBookings={fetchBookings}
             handleCancelModal={handleCancelAddModal}
             setRefresh={setRefresh}
-            refresh={refresh} />
+            refresh={refresh}
+          />
         </Modal>
 
         <Modal
@@ -201,9 +301,11 @@ const MyTicket = () => {
             booking={booking}
             // setModal={setViewModal}
             fetchBookings={fetchBookings}
-            handleCancelViewModal={handleCancelViewModal} />
+            handleCancelViewModal={handleCancelViewModal}
+          />
         </Modal>
-      </div></>
+      </div>
+    </>
   );
 };
 export default MyTicket;
