@@ -300,7 +300,7 @@ const ComboPage = () => {
           >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="image" label="Image" rules={[{ required: true, message: "Please upload a Image!" }]}>
+          <Form.Item name="image" label="Image">
             <Upload
               listType="picture"
               beforeUpload={(file) => {

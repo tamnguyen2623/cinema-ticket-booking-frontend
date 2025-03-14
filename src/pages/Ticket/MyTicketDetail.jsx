@@ -66,7 +66,7 @@ const MyTicketDetail = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="border border-gray-300 ">
+                    <tr className="border border-gray-400 ">
                         <td className="p-4 text-gray-700 font-medium border-r border-gray-400">{ticket.movieName}</td>
                         <td className="p-4 border-r border-gray-400">
                             <strong className="text-black">{ticket.cinema}</strong>
@@ -94,11 +94,11 @@ const MyTicketDetail = () => {
                             <strong className="text-black">Combo: </strong>
 
                             <p className="text-gray-600">
-                                {Array.isArray(ticket.combo) && ticket.combo.length > 0 ? `${ticket.combo.join(", ")} $` : "No combo"}
+                                {Array.isArray(ticket.combo) && ticket.combo.length > 0 ? `${ticket.combo.join(", ")} ` : "No combo"}
                             </p>
                         </td>
                         {/* Cột QR Code */}
-                        <td className="p-4 flex flex-col items-center border-r border-gray-400">
+                        <td className="p-4 flex flex-col items-center gray-400">
                             {ticket.qrCode ? (
                                 <img
                                     src={ticket.qrCode}
@@ -106,10 +106,10 @@ const MyTicketDetail = () => {
                                     className="w-30 h-30  border border-gray-300 p-1 rounded"
                                 />
                             ) : (
-                                <p className="text-gray-500">Chưa có QR</p>
+                                    <p className="text-gray-500  ">Chưa có QR</p>
                             )}
                         </td>
-                        <td className="p-5 font-semibold text-black  ">{ticket.price.toLocaleString()} $</td>
+                        <td className="p-5 font-semibold  border border-gray-400 ">{ticket.price.toLocaleString()} $</td>
                     </tr>
 
                     {/* <tr className="border border-gray-300">

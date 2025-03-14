@@ -21,6 +21,8 @@ const CinemaCustomer = () => {
   const [currentCinema, setCurrentCinema] = useState(null);
   const [form] = Form.useForm();
   const { auth } = useContext(AuthContext);
+  const [mapModalVisible, setMapModalVisible] = useState(false);
+  const [mapUrl, setMapUrl] = useState("");
 
   const fetchCinema = async () => {
     try {
@@ -35,7 +37,7 @@ const CinemaCustomer = () => {
         setCinemas(response.data.data);
         setFilteredCinemas(response.data.data);
       } else {
-        throw new Error("API không trả về dữ liệu hợp lệ!");
+        throw new Error("API did not return valid data!");
       }
     } catch (err) {
       toast.error(err.message);
@@ -79,10 +81,10 @@ const CinemaCustomer = () => {
       setFilteredCinemas([...cinemas, response.data]);
       setModalType(null);
       form.resetFields();
-      toast.success("Thêm rạp phim thành công!");
+      toast.success("Adding cinema successfully!");
       fetchCinema();
     } catch (error) {
-      toast.error("Lỗi khi thêm cinema!");
+      toast.error("Error adding cinema!");
     }
   };
 
@@ -121,16 +123,21 @@ const CinemaCustomer = () => {
 
       setModalType(null);
       form.resetFields();
-      toast.success("Cập nhật thành công!");
+      toast.success("Updated successfully");
     } catch (error) {
-      toast.error("Lỗi khi cập nhật rạp phim!");
+      toast.error("Error updating cinema!");
     }
   };
 
   const handleEditClick = (cinema) => {
     setCurrentCinema(cinema);
     setModalType("edit");
-    form.setFieldsValue({ name: cinema.name, address: cinema.address });
+    form.setFieldsValue({
+      name: cinema.name,
+      address: cinema.address,
+      phoneNumber: cinema.phoneNumber,
+      map: cinema.map,
+    });
   };
 
   const handleToggleDelete = async (id, isDelete) => {
@@ -154,10 +161,15 @@ const CinemaCustomer = () => {
         )
       );
 
-      toast.success("Cập nhật trạng thái thành công!");
+      toast.success("Status update successful!");
     } catch (error) {
-      toast.error("Lỗi khi cập nhật trạng thái!");
+      toast.error("Error updating status!");
     }
+  };
+
+  const handleViewMap = (mapLink) => {
+    setMapUrl(mapLink);
+    setMapModalVisible(true);
   };
 
   if (loading) return <p>Đang tải dữ liệu...</p>;
@@ -187,20 +199,19 @@ const CinemaCustomer = () => {
       dataIndex: "map",
       key: "map",
       width: 200,
-      render: (text) =>
-        <div style={{ display: "flex", gap: "10px" }}>
-          <Button
-            className="custom-edit-btn"
-            type="primary"
-            icon={<InsertRowAboveOutlined />}
-          // onClick={() => handleEditClick(record)}
-          >
-            View Map
-          </Button>
-        </div>
+      render: (text, record) => (
+        <Button
+          type="primary"
+          className="btn-mapview"
+          icon={<InsertRowAboveOutlined />}
+          onClick={() => handleViewMap(record.map)}
+        >
+          View Map
+        </Button>
+      ),
     },
     {
-      title: "Hành Động",
+      title: "Action",
       key: "action",
       render: (record) => (
         <div style={{ display: "flex", gap: "10px" }}>
@@ -210,7 +221,7 @@ const CinemaCustomer = () => {
             icon={<EditOutlined />}
             onClick={() => handleEditClick(record)}
           >
-            Sửa
+            Edit
           </Button>
         </div>
       ),
@@ -228,6 +239,11 @@ const CinemaCustomer = () => {
     },
   ];
 
+  const handleAddClick = () => {
+    form.resetFields(); // Reset form trước khi mở modal
+    setModalType("add");
+  };
+
   return (
     <div className="content">
       <div className="searchFilterContainer">
@@ -243,7 +259,7 @@ const CinemaCustomer = () => {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setModalType("add")}
+            onClick={handleAddClick}
             className="addTicketButton"
           >
             Add Cinema
@@ -272,9 +288,7 @@ const CinemaCustomer = () => {
           <Form.Item
             name="address"
             label="Address"
-            rules={[
-              { required: true, message: "Please enter an address!" },
-            ]}
+            rules={[{ required: true, message: "Please enter an address!" }]}
           >
             <Input />
           </Form.Item>
@@ -285,9 +299,28 @@ const CinemaCustomer = () => {
               { required: true, message: "Please enter a phone number!" },
               {
                 pattern: /^0\d{9}$/,
-                message:
-                  "Invalid phone number!",
+                message: "Invalid phone number!",
               },
+              () => ({
+                validator(_, value) {
+                  if (!value) return Promise.resolve();
+                  let isDuplicate;
+                  if (modalType === "add") {
+                    isDuplicate = cinemas.some(
+                      (cinema) => cinema.phoneNumber === value
+                    );
+                  } else {
+                    const oldPhoneNumber = currentCinema?.phoneNumber;
+                    isDuplicate =
+                      value !== oldPhoneNumber &&
+                      cinemas.some((cinema) => cinema.phoneNumber === value);
+                  }
+
+                  return isDuplicate
+                    ? Promise.reject(new Error("Phone number already exists!"))
+                    : Promise.resolve();
+                },
+              }),
             ]}
           >
             <Input />
@@ -312,6 +345,26 @@ const CinemaCustomer = () => {
             />
           </Form.Item>
         </Form>
+      </Modal>
+      <Modal
+        title="Cinema Location"
+        open={mapModalVisible}
+        onCancel={() => setMapModalVisible(false)}
+        footer={null}
+        width={800}
+      >
+        {mapUrl ? (
+          <iframe
+            src={mapUrl}
+            width="100%"
+            height="450"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
+        ) : (
+          <p>No map available</p>
+        )}
       </Modal>
     </div>
   );

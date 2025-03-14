@@ -1,43 +1,45 @@
 .head-container {
-  max-width: 1200px;
-  /* Giới hạn độ rộng tối đa */
-  margin: 0 auto;
-  /* Căn giữa */
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  padding: 20px;
+    max-width: 100%;
+    /* Giới hạn độ rộng tối đa */
+    margin: 0 auto;
+    /* Căn giữa */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    padding: 20px;
 }
 .title-header {
-  text-align: center;
-  background-color: #dad2b4;
-  padding: 6px 10px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  /* Giới hạn độ rộng theo nội dung */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: #dad2b4;
+    padding: 6px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    /* Giới hạn độ rộng theo nội dung */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .title-header h3 {
-  display: inline-block;
+    display: inline-block;
 
-  border-bottom: 2px solid black;
+    border-bottom: 2px solid black;
 }
-
 .ticket-card {
-  width: 300px;
-  height: 450px;
-  padding: 15px;
-  border-radius: 15px;
-  background-color: #efebdb;
-  width: 100%;
-  /* background: linear-gradient(to right, #ffffff, #fff3e0); */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease-in-out;
+    /* width: 300px;
+    height: 450px; */
+    /* padding: 10px; */
+    border-radius: 15px;
+    background-color: #efebdb;
+    width: 65vh;
+    height: 50vh;
+    /* height: 0vh; */
+    /* background: linear-gradient(to right, #ffffff, #fff3e0); */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+    margin: 10px;
 }
 
 /* Chia layout thành 2 cột */
@@ -48,8 +50,9 @@
 }
 
 .img-movie {
-  width: 200px;
-  height: 300px;
+  width: 30vh;
+  height: 50vh;
+  padding: 10px;
   /* flex-shrink: 0; */
 }
 
@@ -64,7 +67,7 @@
 /* Thông tin vé bên phải */
 .information-ticket {
   flex: 1;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .information-ticket h3 {
@@ -99,13 +102,13 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .ticket-content {
-    flex-direction: column;
-    text-align: center;
-  }
+    .ticket-content {
+        flex-direction: column;
+        text-align: center;
+    }
 
-  .img-movie {
-    width: 100px;
-    height: 150px;
-  }
+    .img-movie {
+        width: 100px;
+        height: 150px;
+    }
 }

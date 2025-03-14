@@ -10,14 +10,11 @@ export default function CinemaList({
       {cinemas.map((cinema) => (
         <div
           key={cinema._id}
-          className={`movie-option ${
+          className={`contact__movie-option ${
             selectedCinema === cinema ? "active" : ""
           }`}
-          onClick={() =>
-            setSelectedCinema(selectedCinema === cinema ? null : cinema)
-          }
+          onClick={() => setSelectedCinema(cinema)}
         >
-          {/* {selectedCinema === cinema && <span className="checkmark">✓</span>} */}
           {cinema.name}
         </div>
       ))}

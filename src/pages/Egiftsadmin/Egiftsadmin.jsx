@@ -61,6 +61,16 @@ const EgiftAdmin = () => {
     }
   };
 
+  
+  useEffect(() => {
+    if (currentEgift) {
+      form.setFieldsValue({
+        name: currentEgift.name,
+        description: currentEgift.description,
+      });
+    }
+  }, [currentEgift, form]);
+  
   const handleEditEgift = async () => {
     try {
       const values = await form.validateFields();
@@ -172,7 +182,7 @@ const EgiftAdmin = () => {
           <Form.Item name="description" label="Description" rules={[{ required: true, message: "Please enter a description!" }]}>
             <Input.TextArea />
           </Form.Item>
-          <Form.Item name="image" label="Image" rules={[{ required: true, message: "Please upload a Image!" }]}>
+          <Form.Item name="image" label="Image">
             <Upload listType="picture" beforeUpload={(file) => { setImageFile(file); return false; }}>
               <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>
