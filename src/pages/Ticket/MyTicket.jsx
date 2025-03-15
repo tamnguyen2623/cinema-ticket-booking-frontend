@@ -66,8 +66,8 @@ const MyTicket = () => {
       const bookingsData = Array.isArray(response.data)
         ? response.data
         : Array.isArray(response.data.bookings)
-        ? response.data.bookings
-        : [];
+          ? response.data.bookings
+          : [];
       console.log(bookingsData);
 
       setBookings(bookingsData);
