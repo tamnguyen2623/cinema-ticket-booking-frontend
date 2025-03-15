@@ -43,7 +43,7 @@ const EgiftDetailCustomer = () => {
     if (!auth.token) {
       return notification.error({
         message: "Unauthorized",
-        description: "You are not authorized to create or update a movie.",
+        description: "You are not authorized to gift E-Gift card.",
       });
     }
     try {

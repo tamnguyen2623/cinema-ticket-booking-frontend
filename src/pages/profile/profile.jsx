@@ -89,12 +89,12 @@ const Profile = () => {
 
   return (
     <div className="container">
-      <div className="header-title">
-        <h2>Hồ sơ cá nhân</h2>
+      <div className="hot_movies">
+        <p className="title-unique">PROFILE</p>
       </div>
       <div className="profile-container">
         {/* Hiển thị avatar */}
-        <div className="avatar">
+        <div className="avatar-profile">
           <img
             src={preview || avatar || "https://i.pinimg.com/474x/7e/7f/d0/7e7fd01f87a51b390e051e83340b7d78.jpg"}
             alt="Avatar"

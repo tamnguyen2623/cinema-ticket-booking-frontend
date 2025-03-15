@@ -135,7 +135,7 @@ const VoucherPage = () => {
       title: "Expiration Date",
       dataIndex: "expiredDate",
       key: "expiredDate",
-      render: (date) => (date ? new Date(date).toLocaleDateString("en-US") : "N/A"),
+      render: (date) => moment(date).format("DD/MM/YYYY"),
       width: 300,
     },
     {
@@ -177,6 +177,11 @@ const VoucherPage = () => {
     },
   ];
 
+  const handleAddClick = () => {
+    form.resetFields(); // Reset form trước khi mở modal
+    setModalType("add");
+  };
+
   return (
     <div className="content">
       <div className="searchFilterContainer">
@@ -192,7 +197,7 @@ const VoucherPage = () => {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setModalType("add")}
+            onClick={handleAddClick}
             className="addTicketButton"
           >
             Add Voucher
@@ -217,7 +222,7 @@ const VoucherPage = () => {
             <InputNumber min={1} max={100} addonAfter="%" />
           </Form.Item>
           <Form.Item name="expiredDate" label="Expiration Date" rules={[{ required: true, message: "Select expiration date!" }]}>
-            <DatePicker format="YYYY-MM-DD" />
+            <DatePicker format="DD/MM/YYYY" />
           </Form.Item>
         </Form>
       </Modal>

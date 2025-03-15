@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import axios from "axios";
 import "./CinemaPage.css";
-
+import TicketBoard from "../../pages/TicketBoard/TicketBoard";
 const CinemaPage = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -396,6 +396,7 @@ const CinemaPage = () => {
           </p>
         )}
       </div>
+      <TicketBoard />
     </div>
   );
 };

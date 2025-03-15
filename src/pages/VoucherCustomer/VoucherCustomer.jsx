@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../../components/styles/VoucherCustomer.css"; // 🟢 Import CSS
 import sliderSettings from "./sliderSettings"; // 🟢 Import cấu hình Slider
-
+import { toast } from "react-toastify";
 const VoucherCustomer = ({ setBookingData }) => {
   const [vouchers, setVouchers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,10 @@ const VoucherCustomer = ({ setBookingData }) => {
         console.log("API Response:", response.data);
 
         if (response.data && Array.isArray(response.data.vouchers)) {
-          setVouchers(response.data.vouchers);
+          const filteredVouchers = response.data.vouchers.filter(
+            (voucher) => !voucher.isUsed
+          );
+          setVouchers(filteredVouchers);
         } else {
           throw new Error("Invalid data format from API");
         }
@@ -60,6 +63,8 @@ const VoucherCustomer = ({ setBookingData }) => {
   //     message.success(`Selected voucher: ${voucher.code}`);
   //   };
   const handleSelectVoucher = (voucher) => {
+    if (selectedVoucher?._id === voucher._id) return; // Tránh cập nhật nếu không có sự thay đổi
+
     setSelectedVoucher(voucher);
 
     setBookingData((prevData) => {
@@ -69,12 +74,12 @@ const VoucherCustomer = ({ setBookingData }) => {
       return updatedData;
     });
 
-    message.success(`Selected voucher: ${voucher.code}`);
+    toast.success(`Selected voucher code: ${voucher.code}`);
   };
 
   // ✅ Định dạng ngày hết hạn
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-GB", {
+    return new Date(dateString).toLocaleDateString("en-US", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",

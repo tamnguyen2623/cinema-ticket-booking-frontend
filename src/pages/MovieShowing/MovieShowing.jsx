@@ -41,7 +41,6 @@ const MovieShowingList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { auth } = useContext(AuthContext);
 
-
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -111,7 +110,8 @@ const MovieShowingList = () => {
         }
       } else if (modalType === "edit") {
         const response = await axios.put(
-          `http://localhost:8080/movieshowing/${currentMovieShowing._id}`, newMovieShowing,
+          `http://localhost:8080/movieshowing/${currentMovieShowing._id}`,
+          newMovieShowing,
           {
             headers: {
               Authorization: `Bearer ${auth.token}`,
@@ -148,7 +148,6 @@ const MovieShowingList = () => {
     });
   };
 
-
   const handleToggleDelete = async (id, isDelete) => {
     try {
       await axios.put(
@@ -172,9 +171,6 @@ const MovieShowingList = () => {
       toast.error("Lỗi khi cập nhật trạng thái!");
     }
   };
-
-
-
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -238,10 +234,12 @@ const MovieShowingList = () => {
         <Form form={form} onFinish={handleAddMovieShowing} layout="vertical">
           <Form.Item name="movieId" label="Movie" rules={[{ required: true }]}>
             <Select
-              options={movies.map((movie) => ({
-                value: movie._id,
-                label: movie.name,
-              }))}
+              options={movies
+                .filter((movie) => new Date(movie.releaseDate) <= new Date()) // Lọc phim
+                .map((movie) => ({
+                  value: movie._id,
+                  label: movie.name,
+                }))}
             />
           </Form.Item>
 
@@ -261,7 +259,11 @@ const MovieShowingList = () => {
             />
           </Form.Item>
 
-          <Form.Item name="cinemaId" label="Cinema" rules={[{ required: true }]}>
+          <Form.Item
+            name="cinemaId"
+            label="Cinema"
+            rules={[{ required: true }]}
+          >
             <Select
               options={cinemas.map((cinema) => ({
                 value: cinema._id,
@@ -284,7 +286,6 @@ const MovieShowingList = () => {
           </Form.Item>
         </Form>
       </Modal>
-
 
       <Modal
         title="Seat Map"
@@ -359,7 +360,9 @@ const MovieShowingList = () => {
                 <Switch
                   checked={record.isDelete}
                   className="custom-switch"
-                  onChange={() => handleToggleDelete(record._id, record.isDelete)}
+                  onChange={() =>
+                    handleToggleDelete(record._id, record.isDelete)
+                  }
                 />
               </div>
             ),

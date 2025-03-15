@@ -22,6 +22,7 @@ const TicketList = ({
   auth,
   fetchTickets,
 }) => {
+  const filterroomtype = [...new Set(rooms?.map((room) => room.roomtype))];
   const columns = [
     { title: "Room Type", dataIndex: "roomType", key: "roomType" },
     { title: "Seat Type", dataIndex: "seatType", key: "seatType" },
@@ -86,9 +87,9 @@ const TicketList = ({
             onChange={(value) => setFilter(value)}
           >
             <Select.Option value="all">All Room Types</Select.Option>
-            {rooms?.map((room, index) => (
-              <Select.Option key={index} value={room.roomtype}>
-                {room.roomtype}
+            {filterroomtype.map((roomtype, index) => (
+              <Select.Option key={index} value={roomtype}>
+                {roomtype}
               </Select.Option>
             ))}
           </Select>
