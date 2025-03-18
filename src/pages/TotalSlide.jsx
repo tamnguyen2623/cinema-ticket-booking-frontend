@@ -68,7 +68,7 @@ export default function PaymentTicket() {
       return;
     const ticketTotal = selectedSeats.reduce((sum, seat) => {
       return (
-        sum + findMatchingPrice(selectedShowing.room.roomtype, seat.seatId.type)
+        sum + findMatchingPrice(selectedShowing.room.roomtype, seat.type)
       );
     }, 0);
     setTotalTicket(ticketTotal);
@@ -114,7 +114,7 @@ export default function PaymentTicket() {
         cinema: bookingData.selectedCinema?.name || "N/A",
         movieId: bookingData.selectedMovie?._id || "N/A",
         address: bookingData.selectedCinema?.address || "N/A",
-        seats: selectedSeats.map((seat) => seat.seatId.name),
+        seats: selectedSeats.map((seat) => seat.name),
         seatsId: selectedSeats.map((seat) => seat._id),
         showtime: new Date(
           bookingData.selectedShowtime?.showtime?.showtime
@@ -183,12 +183,12 @@ export default function PaymentTicket() {
                   {selectedSeats.map((seat) => {
                     const seatPrice = findMatchingPrice(
                       selectedShowing.room.roomtype,
-                      seat.seatId.type
+                      seat.type
                     );
                     return (
                       <li key={seat._id} className="seat-item">
-                        <span className="seat-name">{seat.seatId.name}</span>
-                        <span className="seat-type">({seat.seatId.type})</span>
+                        <span className="seat-name">{seat.name}</span>
+                        <span className="seat-type">({seat.type})</span>
                         <span className="seat-price">
                           - ${seatPrice.toLocaleString()}
                         </span>

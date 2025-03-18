@@ -6,7 +6,7 @@ import {
   DetailRoom,
   updateRoomStatus,
 } from "../../components/api/roomApi";
-import { createSeat } from "../../components/api/seat";
+import { createSeat, deleteSeats } from "../../components/api/seat";
 import { toast } from "react-toastify";
 export const loadRoomsAndCinemas = async (
   setCinemas,
@@ -93,7 +93,8 @@ export const handleRoomSubmit = async (
   try {
     const roomData = await createOrUpdateRoom(auth.token, values, editingRoom);
     const roomId = editingRoom ? editingRoom._id : roomData._id;
-    await createSeatsForRoom(roomId, values);
+    if (editingRoom) await deleteSeats(roomId);
+    await createSeatsForRoom(roomData._id, values);
     const updatedRooms = await fetchRooms(auth.token);
     console.log("object updated", updatedRooms);
     setRooms(updatedRooms);
