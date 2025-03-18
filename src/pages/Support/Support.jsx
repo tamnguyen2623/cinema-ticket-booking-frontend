@@ -6,7 +6,7 @@ import SupportForm from "./SupportForm";
 import {
   fetchSupports,
   handleCreateOrUpdateSupport,
-  handleDeleteSupport,
+  // handleDeleteSupport,
 } from "./SupportActions";
 
 const Support = () => {

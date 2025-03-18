@@ -1,7 +1,6 @@
 import {
   fetchSupport,
   createOrUpdateSupport,
-  deleteSupport,
   toggleSupportStatus,
 } from "../../components/api/supportApi";
 import { toast } from "react-toastify";
@@ -95,3 +94,13 @@ export const handleToggleSupportStatus = async (
     toast.error(`Failed to update support status: ${error.message}`);
   }
 };
+// ✅ Xóa Support
+// export const handleDeleteSupport = async (auth, supportId, fetchSupports) => {
+//   try {
+//     await deleteSupport(auth.token, supportId);
+//     toast.success("Support deleted successfully!");
+//     fetchSupports();
+//   } catch (error) {
+//     toast.error(`Failed to delete support: ${error.message}`);
+//   }
+// };

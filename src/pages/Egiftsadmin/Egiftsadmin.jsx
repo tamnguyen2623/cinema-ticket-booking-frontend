@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Table, Button, Form, Input, Modal, Upload, Switch } from "antd";
+import { Table, Button, Form, Input, Modal, Upload, Switch, Select } from "antd";
 import { EditOutlined, PlusOutlined, UploadOutlined, SearchOutlined } from "@ant-design/icons";
 import "./Egiftsadmin.css";
 import { AuthContext } from "../../context/AuthContext";
@@ -61,7 +61,7 @@ const EgiftAdmin = () => {
     }
   };
 
-  
+
   useEffect(() => {
     if (currentEgift) {
       form.setFieldsValue({
@@ -70,7 +70,7 @@ const EgiftAdmin = () => {
       });
     }
   }, [currentEgift, form]);
-  
+
   const handleEditEgift = async () => {
     try {
       const values = await form.validateFields();
@@ -113,52 +113,73 @@ const EgiftAdmin = () => {
   const filteredEgifts = egifts.filter((egift) => egift.name?.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div className="content">
-      <div className="searchFilterContainer">
-        <div>
-          <Input placeholder="Search eGift..." prefix={<SearchOutlined />} onChange={handleSearch} style={{ width: 300 }} />
-        </div>
-        <div className="buttonAddContainer">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => setModalType("add")}
-            className="addTicketButton"
-          >
-            Add eGift
-          </Button>
-        </div>
-      </div>
-      <Table
-        dataSource={filteredEgifts}
-        columns={[
-          { title: "Name", dataIndex: "name", key: "name", width: 200 },
-          { title: "Description", dataIndex: "description", key: "description", width: 300 },
-          { title: "Image", dataIndex: "image", key: "image", render: (image) => <img src={image} alt="eGift" style={{ width: 50, height: 50 }} /> },
-          {
-            title: "Action", key: "action", render: (record) => (
-              <Button
-                className="custom-edit-btn"
-                type="primary" icon={<EditOutlined />} onClick={() => {
-                  form.setFieldsValue({ name: record.name, description: record.description });
-                  setCurrentEgift(record);
-                  setModalType("edit");
-                }}>
-                Update
-              </Button>
-            )
-          },
-          {
-            title: "Disabled", key: "disabled", render: (record) => (
-              <div style={{ display: "flex", gap: "10px" }}>
-                <Switch className="custom-switch" checked={record.isDelete} onChange={() => handleDelete(record._id, record.isDelete)} />
+    <div className="container-fluid">
+      <div className="title-ticket">Egift List</div>
+      <div className="ticketListContainer">
+        <div className="searchFilterContainer">
+          <div>
+            <Input
+              placeholder="Search eGift..."
+              onChange={handleSearch}
+              className="searchInput"
+              style={{ width: 300 }}
 
-              </div>
-            )
-          },
-        ]}
-        rowKey="_id"
-      />
+            />
+            <Select
+              placeholder="Sort by"
+              // value={sortOrder}
+              // onChange={handleSortChange}
+              className="filterSelect"
+            >
+              <Option value="">Default</Option>
+              <Option value="asc">A - Z</Option>
+              <Option value="desc">Z - A</Option>
+            </Select>
+          </div>
+          <div className="buttonAddContainer">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setModalType("add")}
+              className="addTicketButton"
+            >
+              Add eGift
+            </Button>
+          </div>
+        </div>
+
+        <Table
+          dataSource={filteredEgifts}
+          columns={[
+            { title: "Name", dataIndex: "name", key: "name", width: 200 },
+            { title: "Description", dataIndex: "description", key: "description", width: 300 },
+            { title: "Image", dataIndex: "image", key: "image", render: (image) => <img src={image} alt="eGift" style={{ width: 50, height: 50 }} /> },
+            {
+              title: "Action", key: "action", render: (record) => (
+                <Button
+                  className="custom-edit-btn"
+                  type="primary" icon={<EditOutlined />} onClick={() => {
+                    form.setFieldsValue({ name: record.name, description: record.description });
+                    setCurrentEgift(record);
+                    setModalType("edit");
+                  }}>
+                  Edit
+                </Button>
+              )
+            },
+            {
+              title: "Disabled", key: "disabled", render: (record) => (
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <Switch className="custom-switch" checked={record.isDelete} onChange={() => handleDelete(record._id, record.isDelete)} />
+
+                </div>
+              )
+            },
+          ]}
+          rowKey="_id"
+        />
+      </div>
+
       <Modal
         okButtonProps={{ className: "custom-ok-btn" }}
         title={modalType === "add" ? "Add New eGift" : "Update eGift"}

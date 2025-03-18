@@ -183,28 +183,31 @@ const VoucherPage = () => {
   };
 
   return (
-    <div className="content">
-      <div className="searchFilterContainer">
-        <div>
-          <Input
-            placeholder="Search by voucher code..."
-            prefix={<SearchOutlined />}
-            onChange={handleSearch}
-            style={{ width: 300, marginBottom: 16 }}
-          />
+    <div className="container-fluid">
+      <div className="title-ticket">Voucher List</div>
+      <div className="ticketListContainer">
+        <div className="searchFilterContainer">
+          <div>
+            <Input
+              placeholder="Search by voucher code..."
+              onChange={handleSearch}
+              className="searchInput"
+              style={{ width: 300}}
+            />
+          </div>
+          <div className="buttonAddContainer">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleAddClick}
+              className="addTicketButton"
+            >
+              Add Voucher
+            </Button>
+          </div>
         </div>
-        <div className="buttonAddContainer">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={handleAddClick}
-            className="addTicketButton"
-          >
-            Add Voucher
-          </Button>
-        </div>
+        <Table dataSource={filteredVouchers} columns={columns} rowKey="_id" scroll={{ x: 1200 }} />
       </div>
-      <Table dataSource={filteredVouchers} columns={columns} rowKey="_id" scroll={{ x: 1200 }} />
       <Modal
         title={modalType === "add" ? "Add New Voucher" : "Edit Voucher"}
         open={modalType !== null}

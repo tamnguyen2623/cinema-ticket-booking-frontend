@@ -97,8 +97,7 @@ const RolePage = () => {
       await fetchRoles(); // Cập nhật lại danh sách từ server
 
       message.success(
-        `Role ${role.name}  ${
-          role.isDelete ? "vô hiệu hóa" : "Deleted "
+        `Role ${role.name}  ${role.isDelete ? "vô hiệu hóa" : "Deleted "
         } success!`
       );
     } catch (error) {
@@ -163,7 +162,7 @@ const RolePage = () => {
     );
     setFilteredRoles(filtered);
   }, [searchTerm, roles]);
-    
+
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
@@ -194,7 +193,7 @@ const RolePage = () => {
               setModalType("edit");
             }}
           >
-            Update
+            Edit
           </Button>
         </div>
       ),
@@ -215,38 +214,42 @@ const RolePage = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-white p-8 rounded-none shadow-none">
-      <Title level={2}>Role Management</Title>
-      <Space className="mb-4">
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          className="custom-edit-btn"
-          onClick={handleAddRole}
-        >
-          Add Role
-        </Button>
-        <Input
-          placeholder="Search role"
-          prefix={<SearchOutlined />}
-          style={{ width: 300 }}
-          onChange={handleSearch}
-          value={searchTerm}
+    <div className="container-fluid">
+      <div className="title-ticket">Role List</div>
+      <div className="ticketListContainer">
+        <div className="searchFilterContainer">
+          <div>
+            <Input
+              placeholder="Search role"
+              className="searchInput"
+              style={{ width: 300 }}
+              onChange={handleSearch}
+              value={searchTerm}
+            />
+          </div>
+          <div className="buttonAddContainer">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              className="addTicketButton"
+              onClick={handleAddRole}
+            >
+              Add Role
+            </Button>
+          </div>
+        </div>
+
+        {/* 👉 Bảng danh sách Role hiển thị ngay trên giao diện */}
+        <Table
+          // Sử dụng danh sách đã lọc
+          className="mt-4"
+          columns={roleColumns}
+          dataSource={filteredRoles} // Sử dụng danh sách đã lọc
+          rowKey="_id"
+          pagination={{ pageSize: 5 }}
         />
-      </Space>
 
-
-      {/* 👉 Bảng danh sách Role hiển thị ngay trên giao diện */}
-      <Table
-      // Sử dụng danh sách đã lọc
-        className="mt-4"
-        columns={roleColumns}
-        dataSource={filteredRoles} // Sử dụng danh sách đã lọc
-        rowKey="_id"
-        pagination={{ pageSize: 5 }}
-      />
-
-       
+      </div>
       <Modal
         title={isRoleEditing ? "Edit Role" : "Add Role"}
         open={isRoleModalVisible}
