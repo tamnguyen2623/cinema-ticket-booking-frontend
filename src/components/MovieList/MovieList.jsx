@@ -50,7 +50,7 @@ const MovieList = () => {
   return (
     <div classNam="movie-list">
       <div className="hot_movies">
-        <p className="title">PHIM HOT TẠI RAP</p>
+        <p className="title-unique">HOT MOVIES IN CINEMA</p>
         <Swiper
           className="swiper-container"
           modules={[Navigation, Pagination, Autoplay]}
@@ -86,13 +86,13 @@ const MovieList = () => {
           className={filter === "nowShowing" ? "active" : ""}
           onClick={() => setFilter("nowShowing")}
         >
-         Showing Movie
+          Now Showing
         </button>
         <button
           className={filter === "upcoming" ? "active" : ""}
           onClick={() => setFilter("upcoming")}
         >
-          Upcoming Movie
+          Coming Soon
         </button>
       </div>
 
@@ -116,17 +116,17 @@ const MovieList = () => {
                         to={`/bookingticket`}
                         state={{ selectedMovie: movie }}
                       >
-                        <p>Đặt vé</p>
+                        <p>Book Ticket</p>
                       </Link>
                     </button>
                   ) : (
-                    <button className="btn btn-disabled" disabled>
-                      <p>Chưa Mở Bán</p>
+                      <button className="btn btn-disabled cursor-not-allowed" disabled>
+                      <p>Not Yet Available</p>
                     </button>
                   )}
                   <button className="btn btn-book">
                     <Link to={`/movielist/${movie._id}`}>
-                      <p>Chi tiết</p>
+                      <p>Details</p>
                     </Link>
                   </button>
                 </div>
@@ -135,17 +135,18 @@ const MovieList = () => {
                 <p className="movie-title">{movie.name}</p>
               </div>
               <div className="movie-details">
-                <p className="movie-duration">{movie.length} phút</p>
+                <p className="movie-duration">{movie.length} minutes</p>
                 <p className="movie-release-date">
                   {new Date(movie.releaseDate).toLocaleDateString("vi-VN")}
-                  {/* {movie.created} 25/10/2025 */}
                 </p>
               </div>
             </div>
           ))}
-          <button className="btn-add-close" onClick={handleShowMore}>
-            {visibleCount < allMovies.length ? "Thêm" : "Đóng"}
-          </button>
+          {allMovies.length > 9 && (
+            <button className="btn-add-close" onClick={handleShowMore}>
+              {visibleCount < allMovies.length ? "More" : "Close"}
+            </button>
+          )}
         </div>
         <FloatingNavigation />
       </div>

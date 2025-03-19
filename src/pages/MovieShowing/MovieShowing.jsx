@@ -38,16 +38,10 @@ const MovieShowingList = () => {
   const [currentMovieShowing, setCurrentMovieShowing] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterDate, setFilterDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { auth } = useContext(AuthContext);
 
-  const handleDateChange = (date, dateString) => {
-    setFilterDate(dateString);
-    if (onFilter) {
-      onFilter(dateString);
-    }
-  };
+
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -62,12 +56,10 @@ const MovieShowingList = () => {
 
       setMovies(moviesRes.data.data || []);
       setCinemas(cinemasRes.data.data || []);
-
       const filteredRooms = (roomsRes.data.rooms || []).filter(
         (room) => room.status === false
       );
       setRooms(filteredRooms);
-
       setShowtimes(Array.isArray(showtimesRes.data) ? showtimesRes.data : []);
       setMovieShowings(movieShowingsRes.data.data || []);
     } catch (err) {
@@ -119,39 +111,34 @@ const MovieShowingList = () => {
         }
       } else if (modalType === "edit") {
         const response = await axios.put(
-          `http://localhost:8080/movieshowing/${currentMovieShowing._id}`,
-          newMovieShowing,
+          `http://localhost:8080/movieshowing/${currentMovieShowing._id}`, newMovieShowing,
           {
             headers: {
               Authorization: `Bearer ${auth.token}`,
             },
           }
         );
+        console.log("Update Response:", response.data);
         if (response.data.success) {
+          console.log(response.data);
           fetchData();
         }
       }
-
       setIsModalVisible(false);
       form.resetFields();
+      toast.success("Movie Showing updated status successfully!");
     } catch (error) {
-      setError("Lỗi khi xử lý suất chiếu");
+      toast.setError("Lỗi khi xử lý suất chiếu");
       console.error("Error:", error);
-      setError("Lỗi khi xử lý suất chiếu");
+      toast.setError("Lỗi khi xử lý suất chiếu");
       console.error("Error:", error);
     }
   };
 
   const handleEditClick = (movieShowing) => {
-    if (!movieShowing) {
-      console.error("Lỗi: movieShowing là null hoặc undefined", movieShowing);
-      return;
-    }
-
     setModalType("edit");
     setCurrentMovieShowing(movieShowing);
     setIsModalVisible(true);
-
     form.setFieldsValue({
       movieId: movieShowing.movieId?._id || null,
       showtimeId: movieShowing.showtimeId?._id || null,
@@ -163,24 +150,29 @@ const MovieShowingList = () => {
 
 
   const handleToggleDelete = async (id, isDelete) => {
-    console.log("phiec", id);
-    console.log("phiec", isDelete);
     try {
-      await axios.put(`http://localhost:8080/movieshowing/${id}`, { isDelete: !isDelete }, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-      });
-      fetchData();
-      console.log("phiec", id);
-      console.log("Delete", isDelete);
+      await axios.put(
+        `http://localhost:8080/movieshowing/${id}/active`,
+        { isDelete: !isDelete },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+      setMovieShowings((prev) =>
+        prev.map((showing) =>
+          showing._id === id ? { ...showing, isDelete: !isDelete } : showing
+        )
+      );
 
       toast.success("Cập nhật trạng thái thành công!");
     } catch (error) {
       toast.error("Lỗi khi cập nhật trạng thái!");
     }
   };
+
 
 
 
@@ -193,8 +185,8 @@ const MovieShowingList = () => {
     return <Alert message="Lỗi" description={error} type="error" showIcon />;
 
   const showModal = (showing) => {
-    setCurrentMovieShowing(showing); // Lưu suất chiếu vào state
-    setIsModalOpen(true); // Mở modal
+    setCurrentMovieShowing(showing);
+    setIsModalOpen(true);
   };
 
   const handleOk = () => {
@@ -209,16 +201,11 @@ const MovieShowingList = () => {
     <div className="content">
       <div style={{ display: "flex", gap: "10px", marginBottom: 16 }}>
         <Input
-          placeholder="Tìm kiếm suất chiếu..."
+          placeholder="Search for movie showing..."
           prefix={<SearchOutlined />}
           style={{ width: 300 }}
           onChange={handleSearch}
           value={searchTerm}
-        />
-        <DatePicker
-          format="YYYY-MM-DD"
-          onChange={handleDateChange}
-          placeholder="Chọn ngày"
         />
         <Button
           icon={<PlusOutlined />}
@@ -227,17 +214,29 @@ const MovieShowingList = () => {
             setIsModalVisible(true);
           }}
         >
-          Thêm Suất Chiếu
+          Add Movie Showing
         </Button>
       </div>
       <Modal
-        title={modalType === "add" ? "Thêm Suất Chiếu" : "Chỉnh Sửa Suất Chiếu"}
+        title={modalType === "add" ? "Add Movie Showing" : "Edit Movie Showing"}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
-        footer={null}
+        footer={[
+          <Button key="cancel" onClick={() => setIsModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={() => form.submit()}
+            style={{ backgroundColor: "blue", borderColor: "blue" }}
+          >
+            Save
+          </Button>,
+        ]}
       >
         <Form form={form} onFinish={handleAddMovieShowing} layout="vertical">
-          <Form.Item name="movieId" label="Phim" rules={[{ required: true }]}>
+          <Form.Item name="movieId" label="Movie" rules={[{ required: true }]}>
             <Select
               options={movies
                 .filter((movie) => new Date(movie.releaseDate) <= new Date()) // Lọc phim
@@ -251,7 +250,7 @@ const MovieShowingList = () => {
 
           <Form.Item
             name="showtimeId"
-            label="Suất Chiếu"
+            label="Showtime"
             rules={[{ required: true }]}
           >
             <Select
@@ -265,7 +264,7 @@ const MovieShowingList = () => {
             />
           </Form.Item>
 
-          <Form.Item name="cinemaId" label="Rạp" rules={[{ required: true }]}>
+          <Form.Item name="cinemaId" label="Cinema" rules={[{ required: true }]}>
             <Select
               options={cinemas.map((cinema) => ({
                 value: cinema._id,
@@ -274,7 +273,7 @@ const MovieShowingList = () => {
             />
           </Form.Item>
 
-          <Form.Item name="roomId" label="Phòng" rules={[{ required: true }]}>
+          <Form.Item name="roomId" label="Room" rules={[{ required: true }]}>
             <Select
               options={rooms.map((room) => ({
                 value: room._id,
@@ -283,25 +282,12 @@ const MovieShowingList = () => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="Ngày chiếu"
-            name="date"
-            rules={[{ required: true }]}
-          >
+          <Form.Item label="Show Date" name="date" rules={[{ required: true }]}>
             <DatePicker format="YYYY-MM-DD" />
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{ backgroundColor: "blue", borderColor: "blue" }}
-            >
-              {modalType === "add" ? "Thêm Suất Chiếu" : "Lưu Thay Đổi"}
-            </Button>
           </Form.Item>
         </Form>
       </Modal>
+
 
       <Modal
         title="Seat Map"
@@ -316,36 +302,30 @@ const MovieShowingList = () => {
       </Modal>
 
       <Table
-        dataSource={movieShowings.filter(
-          (showing) =>
-            showing.movieId?.name
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()) &&
-            (!filterDate || showing.date === filterDate)
-        )}
+        dataSource={movieShowings}
         columns={[
           {
-            title: "Tên Phim",
+            title: "Movie Name",
             dataIndex: "movieId",
             render: (movie) => (movie ? movie.name : "N/A"),
           },
           {
-            title: "Tên Rạp",
+            title: "Cinema Name",
             dataIndex: "cinemaId",
             render: (cinema) => (cinema ? cinema.name : "N/A"),
           },
           {
-            title: "Tên Phòng",
+            title: "Room Name",
             dataIndex: "roomId",
             render: (room) => (room ? room.roomname : "N/A"),
           },
           {
-            title: "Ngày Chiếu",
+            title: "Show Date",
             dataIndex: "date",
             render: (date) => (date ? formatShowtime(date).day : "N/A"),
           },
           {
-            title: "Giờ Chiếu",
+            title: "Showtime",
             dataIndex: "showtimeId",
             render: (showtime) => {
               return showtime && showtime.startTime
@@ -354,7 +334,7 @@ const MovieShowingList = () => {
             },
           },
           {
-            title: "Hành Động",
+            title: "Action",
             render: (record) => (
               <div style={{ display: "flex", gap: "10px" }}>
                 <Button
@@ -362,14 +342,14 @@ const MovieShowingList = () => {
                   onClick={() => showModal(record)}
                   className="custom-map-btn"
                 >
-                  Sơ đồ
+                  Map
                 </Button>
                 <Button
                   icon={<EditOutlined />}
                   onClick={() => handleEditClick(record)}
                   className="custom-edit-btn"
                 >
-                  Sửa
+                  Edit
                 </Button>
               </div>
             ),

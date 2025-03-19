@@ -24,6 +24,14 @@ export const ApexBarChart = ({ data, categories }) => {
       },
       xaxis: {
         categories: categories,
+        title: {
+          text: "Revenue ($)",
+          style: {
+            fontSize: "14px",
+            fontWeight: 600,
+            cssClass: "apexcharts-xaxis-title",
+          },
+        },
       },
       yaxis: {
         reversed: false,
@@ -31,6 +39,14 @@ export const ApexBarChart = ({ data, categories }) => {
           show: true,
         },
         rotate: 0,
+        title: {
+          text: "Movie name",
+          style: {
+            fontSize: "14px",
+            fontWeight: 600,
+            cssClass: "apexcharts-yaxis-title",
+          },
+        },
       },
     },
   });

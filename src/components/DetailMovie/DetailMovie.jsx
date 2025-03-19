@@ -106,7 +106,7 @@ const MovieDetail = () => {
         </DialogContent>
       </Dialog>
 
-      <div className="movie-detail-content">
+      <div className="movie-detail-contentunique">
         <div className="movie-detail-main-info">
           <div className="movie-detail-image">
             <img src={movie.img} alt={movie.name} />
@@ -123,7 +123,7 @@ const MovieDetail = () => {
                 <span className="label"> Thời lượng:</span>{" "}
                 <span className="value">{movie.length} phút</span>
               </p>
-              <div className="movie-meta-info">
+              <div className="movie-meta-inforunique">
                 <p>
                   <span className="label"> Thể loại: </span>
                   <span className="value">
@@ -133,14 +133,10 @@ const MovieDetail = () => {
                 <p>
                   <span className="label"> Ngày khởi chiếu:</span>{" "}
                   <span className="value">
-                    {movie.releaseDate || "Đang cập nhật"}
+                  {new Date(movie.releaseDate).toLocaleDateString("vi-VN")}
                   </span>
                 </p>
               </div>
-              <p>
-                <span className="label"> Giá vé:</span>{" "}
-                <span className="value">{movie.price} $</span>
-              </p>
               <p>
                 <span className="label"> Đạo diễn:</span>{" "}
                 <span className="value">{movie.director || "Jack 97"}</span>

@@ -62,3 +62,10 @@
     height: 2px;
     background-color: #DAD2B4;
 }
+
+.no-data {
+    text-align: center;
+    font-size: 18px;
+    color: gray;
+    margin-top: 20px;
+}

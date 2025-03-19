@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, Select, Button, Spin, Upload } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Button,
+  Spin,
+  Upload,
+  Card,
+  Typography,
+  Row,
+  Col,
+} from "antd";
 import SeatMap from "../../components/Seat/SeatMap";
 import { UploadOutlined } from "@mui/icons-material";
-
+const { Title, Text } = Typography;
 const { Option } = Select;
 
 const MovieForm = ({
@@ -36,8 +48,7 @@ const MovieForm = ({
             trailer: null,
             description: "",
             actor: "",
-          releaseDate: "", // ✅ Thêm giá trị mặc định
-
+            releaseDate: "", // ✅ Thêm giá trị mặc định
           }
       );
     }
@@ -55,44 +66,60 @@ const MovieForm = ({
       open={isFormVisible}
       onCancel={handleCancel}
       footer={null}
-      width={movieDetail ? "80%" : "50%"}
+      width={"50%"}
     >
       {movieDetail ? (
-        <div>
-          <p>
-            <strong>Movie Name:</strong> {movieDetail.name}
-          </p>
-          <p>
-            <strong>Genre:</strong> {movieDetail.movieType.name}
-          </p>
-          <p>
-            <strong>Length:</strong> {movieDetail.length}
-          </p>
-          <p>
-            <strong>Image:</strong>{" "}
-            <img
-              src={movieDetail.img}
-              alt="Movie"
-              style={{ width: 100, height: 100, objectFit: "cover" }}
-            />
-          </p>
-          <p>
-            <strong>Trailer:</strong>{" "}
-            <video width="150" height="100" controls>
-              <source src={movieDetail.trailer} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </p>
-          <p>
-            <strong>Actor:</strong> {movieDetail.actor}
-          </p>
-          <p>
-            <strong>Description:</strong> {movieDetail.description}
-          </p>
+        <div
+          className="max-w-lg mx-auto bg-gray-50 shadow-md rounded-xl p-6 border border-gray-200"
+          hoverable
+        >
+          <Title level={3} className="text-center text-gray-800">
+            {movieDetail.name}
+          </Title>
 
-          <Button onClick={handleCancel} style={{ marginTop: 16 }}>
-            Close
-          </Button>
+          <Row gutter={[16, 16]} align="middle">
+            <Col xs={24} md={10} className="flex flex-col items-center">
+              <img
+                src={movieDetail.img}
+                alt="Movie"
+                className="w-40 h-40 object-cover rounded-lg shadow-sm mb-3"
+              />
+              <video
+                width="160"
+                height="100"
+                controls
+                className="rounded-lg shadow-sm"
+              >
+                <source src={movieDetail.trailer} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </Col>
+
+            <Col xs={24} md={14}>
+              <p className="text-gray-700">
+                <Text strong>🎭 Genre:</Text> {movieDetail.movieType.name}
+              </p>
+              <p className="text-gray-700">
+                <Text strong>⏳ Length:</Text> {movieDetail.length} minutes
+              </p>
+              <p className="text-gray-700">
+                <Text strong>🎬 Actor:</Text> {movieDetail.actor}
+              </p>
+              <p className="text-gray-700">
+                <Text strong>📜 Description:</Text> {movieDetail.description}
+              </p>
+            </Col>
+          </Row>
+
+          <div className="text-center mt-6">
+            <Button
+              type="primary"
+              onClick={handleCancel}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md"
+            >
+              Close
+            </Button>
+          </div>
         </div>
       ) : (
         <Form form={form} layout="vertical" onFinish={onFinish}>
@@ -161,7 +188,7 @@ const MovieForm = ({
               maxCount={1}
               beforeUpload={(file) => {
                 form.setFieldsValue({ trailer: file });
-                console.log(file)
+                console.log(file);
                 return false;
               }}
             >
@@ -183,15 +210,14 @@ const MovieForm = ({
           >
             <Input placeholder="Enter desciption" />
           </Form.Item>
-{/* // ✅ Thêm releaseDate */}
-            <Form.Item
-              name="releaseDate"
-              label="Release Date"
-              rules={[{ required: true, message: "Release Date is required" }]}
-            >
-              <Input type="date" />
-            </Form.Item>
-
+          {/* // ✅ Thêm releaseDate */}
+          <Form.Item
+            name="releaseDate"
+            label="Release Date"
+            rules={[{ required: true, message: "Release Date is required" }]}
+          >
+            <Input type="date" />
+          </Form.Item>
 
           <div className="modalFooter">
             <Button onClick={handleCancel} style={{ marginRight: 8 }}>
@@ -208,7 +234,6 @@ const MovieForm = ({
             </Button>
           </div>
         </Form>
-        
       )}
     </Modal>
   );

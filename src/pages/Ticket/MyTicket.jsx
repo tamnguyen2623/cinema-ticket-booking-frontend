@@ -56,7 +56,7 @@ const MyTicket = () => {
   const fetchBookings = async () => {
     if (!auth?.userId) {
       setLoading(false);
-      setBooking([])
+      setBooking([]);
       return;
     }
     try {
@@ -66,15 +66,14 @@ const MyTicket = () => {
       const bookingsData = Array.isArray(response.data)
         ? response.data
         : Array.isArray(response.data.bookings)
-          ? response.data.bookings
-          : [];
+        ? response.data.bookings
+        : [];
       console.log(bookingsData);
 
       setBookings(bookingsData);
     } catch (err) {
       setError("Lỗi khi tải danh sách vé.");
-      setBookings([]);  // Đảm bảo rằng bookings là rỗng khi có lỗi
-
+      setBookings([]); // Đảm bảo rằng bookings là rỗng khi có lỗi
     } finally {
       setLoading(false);
     }
@@ -91,7 +90,7 @@ const MyTicket = () => {
         className="w-full flex justify-center"
       />
     );
-  console.log("booking", bookings)
+  console.log("booking", bookings);
 
   // Nếu API thành công nhưng không có vé -> Hiển thị thông báo "Bạn chưa đặt vé nào."
   if (!bookings || bookings.length === 0 || error) {
@@ -102,10 +101,8 @@ const MyTicket = () => {
       <div className="sub-container">
         <Row gutter={[32, 32]} justify="center">
           {bookings.map((ticket) => (
-            <Col key={ticket._id} >
+            <Col key={ticket._id}>
               <div className="ticket-card">
-
-
                 <div className="ticket-content">
                   {/* Ảnh phim bên trái */}
                   <div className="img-movie">
@@ -115,19 +112,30 @@ const MyTicket = () => {
                   {/* Thông tin vé bên phải */}
                   <div className="information-ticket">
                     <h3> {ticket.movieName}</h3>
-                    <div><strong>Rạp:</strong> {ticket.cinema}</div>
-                    <div><strong>Ngày chiếu:</strong> {dayjs(ticket.date).format('DD/MM/YYYY')}</div>
-                    <div><strong>Ghế:</strong> {ticket.seats.join(', ')}</div>
-                    <div><strong>Giá:</strong> {ticket.price.toLocaleString()} $</div>
+                    <div>
+                      <strong>Rạp:</strong> {ticket.cinema}
+                    </div>
+                    <div>
+                      <strong>Ngày chiếu:</strong>{" "}
+                      {dayjs(ticket.date).format("DD/MM/YYYY")}
+                    </div>
+                    <div>
+                      <strong>Ghế:</strong> {ticket.seats.join(", ")}
+                    </div>
+                    <div>
+                      <strong>Giá:</strong> {ticket.price.toLocaleString()} $
+                    </div>
 
-                    <div className="flex items-center gap-12">
+                    <div className="flex items-center justify-between pr-5">
                       <Tag
-                        color={{
-                          success: "green",
-                          pending: "orange",
-                          failed: "red",
-                          cancelled: "volcano",
-                        }[ticket.status]}
+                        color={
+                          {
+                            success: "green",
+                            pending: "orange",
+                            failed: "red",
+                            cancelled: "volcano",
+                          }[ticket.status]
+                        }
                       >
                         {ticket.status.toUpperCase()}
                       </Tag>
@@ -137,7 +145,11 @@ const MyTicket = () => {
                           onClick={() => showModal(ticket)}
                           className="text-red-700 italic hover:text-red-500 flex items-center gap-1 underline"
                         >
-                          {ticket.isFeedback ? <EyeOutlined /> : <EditOutlined />}
+                          {ticket.isFeedback ? (
+                            <EyeOutlined />
+                          ) : (
+                            <EditOutlined />
+                          )}
                           {ticket.isFeedback ? "View feedback" : "Review"}
                         </button>
                       )}
@@ -145,53 +157,56 @@ const MyTicket = () => {
 
                     {ticket.status === "success" && (
                       <button
-                        onClick={() => navigate(`/myticketdetail/${ticket._id}`)}
+                        onClick={() =>
+                          navigate(`/myticketdetail/${ticket._id}`)
+                        }
                         className="btn btn-primary"
                       >
                         Detail
                       </button>
                     )}
                   </div>
-             </div>
-            </div>
+                </div>
+              </div>
             </Col>
           ))}
-      </Row>
-    </div>
-    <Modal
-                  title={`Ratting & Feedback "${booking?.movieName}"`}
-                  open={addModal}
-                  onCancel={handleCancelAddModal}
-                  width={1000}
-                  footer={null}
-                >
-                  <FeedbackForm
-                    userId={auth.userId}
-                    form={"Add"}
-                    booking={booking}
-                    setModal={setAddModal}
-                    fetchBookings={fetchBookings}
-                    handleCancelModal={handleCancelAddModal}
-                    refresh={refresh}
-                  />
-                </Modal>
-
-                <Modal
-                  title={`View feedback "${booking?.movieName}"`}
-                  open={viewModal}
-                  onCancel={handleCancelViewModal}
-                  width={1000}
-                  footer={null}
-                >
-                  <FeedbackDetail
-                    userId={auth.userId}
-                    booking={booking}
-                    // setModal={setViewModal}
-                    fetchBookings={fetchBookings}
-                    handleCancelViewModal={handleCancelViewModal}
-                  />
+        </Row>
+      </div>
+      <Modal
+        title={`Ratting & Feedback "${booking?.movieName}"`}
+        open={addModal}
+        onCancel={handleCancelAddModal}
+        width={1000}
+        footer={null}
+      >
+        <FeedbackForm
+          userId={auth.userId}
+          form={"Add"}
+          booking={booking}
+          setModal={setAddModal}
+          fetchBookings={fetchBookings}
+          handleCancelModal={handleCancelAddModal}
+          setRefresh={setRefresh}
+          refresh={refresh}
+        />
       </Modal>
-    </div >
+
+      <Modal
+        title={`View feedback "${booking?.movieName}"`}
+        open={viewModal}
+        onCancel={handleCancelViewModal}
+        width={1000}
+        footer={null}
+      >
+        <FeedbackDetail
+          userId={auth.userId}
+          booking={booking}
+          // setModal={setViewModal}
+          fetchBookings={fetchBookings}
+          handleCancelViewModal={handleCancelViewModal}
+        />
+      </Modal>
+    </div>
   );
 };
 export default MyTicket;

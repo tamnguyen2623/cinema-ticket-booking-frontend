@@ -89,7 +89,7 @@ const router = createBrowserRouter([
       { path: "myticket/:userId", element: <MyTicket /> },
       { path: "contact", element: <Contact /> },
       { path: "egiftcustomer", element: <EgiftCustomer /> },
-      // { path: "egiftdetailcustomer", element: <EgiftDetailCustomer /> },
+      { path: "egiftdetailcustomer/:id", element: <EgiftDetailCustomer /> },
       { path: "myticketdetail/:id", element: <MyTicketDetail /> },
       { path: "combocustomer", element: <ComboCustomer /> },
       { path: "/profile", element: <Profile /> },

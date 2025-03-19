@@ -88,9 +88,9 @@ const Profile = () => {
 
 
   return (
-    <div className="container">
-      <div className="header-title">
-        <h2>Hồ sơ cá nhân</h2>
+    <div className="container-head">
+      <div className="hot_movies">
+        <p className="title-unique">Profile</p>
       </div>
       <div className="profile-container">
         {/* Hiển thị avatar */}

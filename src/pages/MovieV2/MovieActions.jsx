@@ -27,7 +27,7 @@ export const loadMoviesAndMovieTypes = async (
   }
 };
 
-export const handleDeleteMovie = async (movieId, setMovies, token) => {
+export const handleDeleteMovie = async (movieId, checked, setMovies, token) => {
   if (!token) {
     return notification.error({
       message: "Unauthorized",
@@ -35,10 +35,14 @@ export const handleDeleteMovie = async (movieId, setMovies, token) => {
     });
   }
   try {
-    await deleteMovie(token, movieId);
+    await deleteMovie(token, movieId, checked);
     const updatedMovies = await fetchMovies(token);
     setMovies(updatedMovies);
-    notification.success({ message: "Movie deleted successfully!" });
+    if(!checked){
+      notification.success({ message: "Enable movie successfully!" });
+    }else{
+      notification.success({ message: "Disable movie successfully!" });
+    }
   } catch (error) {
     console.error("Error deleting movie:", error);
     notification.error({ message: "Error deleting movie!" });

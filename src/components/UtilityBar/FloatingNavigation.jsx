@@ -33,19 +33,19 @@ const FloatingNavigation = () => {
         <li>
           <Link to="/booking">
             <FaTicketAlt className="icon" />
-            <p>Đặt vé nhanh</p>
+            <p>Quick Booking</p>
           </Link>
         </li>
         <li>
           <Link to="/where-to-book">
             <FaMapMarkerAlt className="icon" />
-            <p>Nơi đặt vé</p>
+            <p>Where to Book</p>
           </Link>
         </li>
         <li>
           <Link to="/customer-center">
             <FaHeadset className="icon" />
-            <p>Trung tâm khách hàng</p>
+            <p>Customer Center</p>
           </Link>
         </li>
       </ul>

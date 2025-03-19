@@ -19,8 +19,13 @@ const EgiftCustomer = () => {
             const response = await axios.get(`/egift/egifts`);
             const data = response.data.data;
             console.log("Dữ liệu từ API:", response.data.data);
+
+            const validEgifts = Array.isArray(data) ? data.filter(item => !item.isDelete) : [];
+            setEgifts(validEgifts);
+            console.log("Dữ liệu từ API:", validEgifts);
+
             // Kiểm tra nếu API trả về dữ liệu không phải là mảng, đặt giá trị mặc định là []
-            setEgifts(Array.isArray(data) ? data : []);
+            // setEgifts(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Lỗi khi tải dữ liệu eGift:", error);
             setEgifts([]); // Nếu lỗi, đặt egifts thành mảng rỗng để tránh lỗi .map()
@@ -38,22 +43,25 @@ const EgiftCustomer = () => {
                         <div className="space"></div>
                         <div className="egift-container">
                         </div>
-                        <Swiper
-                            slidesPerView={2}
-                            spaceBetween={-190}
-                            navigation={true}
-                            modules={[Navigation]}
-                            className="egift-swiper"
-                        >
-                            {egifts.map((egift) => (
-                                <SwiperSlide key={egift._id} className="egift-slide">
-                                    <Link to={`/egiftdetailcustomer/${egift._id}`}>
-                                        <img src={egift.image} alt={egift.name} className="egift-image" />
-                                    </Link>
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
-
+                        {egifts.length === 0 ? (
+                            <p className="no-data">No eGift data.</p>
+                        ) : (
+                            <Swiper
+                                slidesPerView={1}
+                                spaceBetween={-490}
+                                navigation={true}
+                                modules={[Navigation]}
+                                className="egift-swiper"
+                            >
+                                {egifts.map((egift) => (
+                                    <SwiperSlide key={egift._id} className="egift-slide">
+                                        <Link to={`/egiftdetailcustomer/${egift._id}`}>
+                                            <img src={egift.image} alt={egift.name} className="egift-image" />
+                                        </Link>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                        )}
                     </div>
                 </div>
             </div>

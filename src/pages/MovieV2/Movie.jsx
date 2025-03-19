@@ -9,6 +9,7 @@ import {
   handleDetailMovie,
 } from "./MovieActions";
 import "../../components/styles/MovieList.css";
+import { Form } from "antd/lib";
 
 const Movie = () => {
   const { auth } = useContext(AuthContext);
@@ -16,11 +17,21 @@ const Movie = () => {
   const [movieTypes, setMovieTypes] = useState([]);
   const [loadingMovieTypes, setLoadingMovieTypes] = useState(true);
   const [isFormVisible, setIsFormVisible] = useState(false);
+   const [filteredMovies, setFilteredMovies] = useState([]);
   const [editingMovie, setEditingMovie] = useState(null);
   const [movieDetail, setMovieDetail] = useState(null);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [filter, setFilter] = useState("all");
+const [searchTerm, setSearchTerm] = useState("");
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    loadMoviesAndMovieTypes(setMovieTypes, setMovies, setLoadingMovieTypes, auth.token);
+    loadMoviesAndMovieTypes(
+      setMovieTypes,
+      setMovies,
+      setLoadingMovieTypes,
+      auth.token
+    );
   }, [auth.token]);
 
   useEffect(() => {}, [movies]);
@@ -32,7 +43,7 @@ const Movie = () => {
   }, []);
 
   const handleDelete = useCallback(
-    (id) => handleDeleteMovie(id, setMovies, auth.token),
+    (id, checked) => handleDeleteMovie(id, checked, setMovies, auth.token),
     [auth.token]
   );
 

@@ -67,7 +67,7 @@
 /* Thông tin vé bên phải */
 .information-ticket {
   flex: 1;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .information-ticket h3 {

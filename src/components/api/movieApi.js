@@ -64,9 +64,9 @@ export const createOrUpdateMovie = async (token, movieData, editingMovie) => {
 /**
  * 📌 Xóa phòng
  */
-export const deleteMovie = async (token, movieId) => {
+export const deleteMovie = async (token, movieId, checked) => {
   try {
-    const response = await axios.delete(`${apiUrl}/${movieId}`, {
+    const response = await axios.delete(`${apiUrl}/${movieId}?checked=${checked}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
