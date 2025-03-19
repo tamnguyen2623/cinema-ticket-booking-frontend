@@ -147,7 +147,7 @@ const MyTicket = () => {
             className="custom-datepicker"
             onChange={(date, dateString) => setSelectedDate(dateString)}
             format="DD/MM/YYYY"
-            placeholder="Chọn ngày"
+            placeholder="Selected day"
             allowClear
           />
           <Select
@@ -161,11 +161,7 @@ const MyTicket = () => {
           </Select>
         </div>
 
-        <Alert
-          message="Không tìm thấy vé nào theo ngày được chọn."
-          type="info"
-          showIcon
-        />
+        <Alert message="Not find." type="info" showIcon />
       </div>
     );
   }
@@ -181,7 +177,7 @@ const MyTicket = () => {
           className="custom-datepicker"
           onChange={(date, dateString) => setSelectedDate(dateString)}
           format="DD/MM/YYYY"
-          placeholder="Chọn ngày"
+          placeholder="Selected day"
           allowClear
         />
         <Select

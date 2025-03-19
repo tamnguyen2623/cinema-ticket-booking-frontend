@@ -3,11 +3,7 @@ import { Form } from "antd";
 import { AuthContext } from "../../context/AuthContext";
 import SupportList from "./SupportList";
 import SupportForm from "./SupportForm";
-import {
-  fetchSupports,
-  handleCreateOrUpdateSupport,
-  handleDeleteSupport,
-} from "./SupportActions";
+import { fetchSupports, handleCreateOrUpdateSupport } from "./SupportActions";
 
 const Support = () => {
   const { auth } = useContext(AuthContext);
@@ -37,7 +33,7 @@ const Support = () => {
 
   return (
     <div className="container-fluid">
-      <strong className="title-ticket">Supports list</strong>
+      
       <SupportForm
         isVisible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
@@ -58,7 +54,6 @@ const Support = () => {
       <SupportList
         supports={filteredSupports}
         showModal={showModal}
-        handleDelete={handleDeleteSupport}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         filter={filter}

@@ -1,7 +1,6 @@
 import {
   fetchSupport,
   createOrUpdateSupport,
-  deleteSupport,
   toggleSupportStatus,
 } from "../../components/api/supportApi";
 import { toast } from "react-toastify";
