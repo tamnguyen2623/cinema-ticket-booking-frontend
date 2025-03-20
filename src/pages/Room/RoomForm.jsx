@@ -108,10 +108,10 @@ const RoomForm = ({
             </Select>
           </Form.Item>
           <Form.Item name="row" label="Number of Rows">
-            <Input type="number" min={1} max={300} disabled={!!editingRoom} />
+            <Input type="number" min={1} max={300} />
           </Form.Item>
           <Form.Item name="colum" label="Number of Columns">
-            <Input type="number" min={1} max={300} disabled={!!editingRoom} />
+            <Input type="number" min={1} max={300} />
           </Form.Item>
 
           <div className="modalFooter">

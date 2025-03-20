@@ -203,7 +203,7 @@ const ShowtimePage = () => {
                             setModalType("edit");
                         }}
                     >
-                        Update
+                        Edit
                     </Button>
                 </div>
             ),
@@ -222,32 +222,35 @@ const ShowtimePage = () => {
     ];
 
     return (
-        <div className='content'>
-            <div className="searchFilterContainer">
-                <div>
-                    <Input placeholder="Search by showtime..."
-                        prefix={<SearchOutlined />}
-                        onChange={handleSearch}
-                        style={{ width: 300 }}
-                    />
+        <div className="container-fluid">
+            <div className="title-ticket">Showtime List</div>
+            <div className="ticketListContainer">
+                <div className="searchFilterContainer">
+                    <div>
+                        <Input placeholder="Search by showtime..."
+                            onChange={handleSearch}
+                            className="searchInput"
+                            style={{ width: 300 }}
+                        />
+                    </div>
+                    <div className="buttonAddContainer">
+                        <Button
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={() => setModalType("add")}
+                            className="addTicketButton"
+                        >
+                            Add Showtime
+                        </Button>
+                    </div>
                 </div>
-                <div className="buttonAddContainer">
-                    <Button
-                        type="primary"
-                        icon={<PlusOutlined />}
-                        onClick={() => setModalType("add")}
-                        className="addTicketButton"
-                    >
-                        Add Showtime
-                    </Button>
-                </div>
+                <Table
+                    dataSource={filteredShowtimes}
+                    columns={columns}
+                    rowKey="_id"
+                    scroll={{ x: 800 }}
+                />
             </div>
-            <Table
-                dataSource={filteredShowtimes}
-                columns={columns}
-                rowKey="_id"
-                scroll={{ x: 800 }}
-            />
             <Modal
                 okButtonProps={{ className: "custom-ok-btn" }}
                 title={modalType === "add" ? "Add New Showtimes" : "Edit Show Time"}

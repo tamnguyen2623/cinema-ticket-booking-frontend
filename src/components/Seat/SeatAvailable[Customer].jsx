@@ -41,7 +41,7 @@ export default function SeatAvailableForCustomer() {
   // Hàm xử lý chọn ghế
   const handleSelectSeat = (seat) => {
     const isDisabled =
-      seat.seatId.type === "Disabled" || seat.isAvailable === false;
+      seat.type === "Disabled" || seat.isAvailable === false;
     if (isDisabled) return; // Không cho phép chọn ghế đã bị disable
 
     setSelectedSeats((prev) =>
@@ -53,14 +53,14 @@ export default function SeatAvailableForCustomer() {
 
   // // Hàm gửi danh sách ghế đã chọn
   // const handleConfirmSelection = () => {
-  //   const seatIds = selectedSeats.map((s) => s.seatId._id); // Lấy danh sách _id
+  //   const seatIds = selectedSeats.map((s) => s._id); // Lấy danh sách _id
 
   //   console.log("Suất chiếu: ", movieShowing);
   //   console.log("Thông tin chi tiết của các ghế: ", selectedSeats);
   //   console.log("Danh sách ID ghế đã chọn: ", seatIds);
 
   //   alert(
-  //     `Ghế bạn đã chọn: ${selectedSeats.map((s) => s.seatId.name).join(", ")}`
+  //     `Ghế bạn đã chọn: ${selectedSeats.map((s) => s.name).join(", ")}`
   //   );
   // };
 
@@ -70,8 +70,8 @@ export default function SeatAvailableForCustomer() {
       return;
     }
 
-    const seatNames = selectedSeats.map((s) => s.seatId.name).join(", ");
-    const seatIds = selectedSeats.map((s) => s.seatId._id);
+    const seatNames = selectedSeats.map((s) => s.name).join(", ");
+    // const seatIds = selectedSeats.map((s) => s._id);
 
     // ✅ Hiển thị thông báo trước khi điều hướng
     alert(`Bạn đã chọn ghế: ${seatNames}`);
@@ -107,7 +107,7 @@ export default function SeatAvailableForCustomer() {
       >
         {seats.map((seat) => {
           const isDisabled =
-            seat.seatId.type === "Disabled" || seat.isAvailable === false;
+            seat.type === "Disabled" || seat.isAvailable === false;
           const isSelected = selectedSeats.some((s) => s._id === seat._id);
 
           return (
@@ -116,11 +116,11 @@ export default function SeatAvailableForCustomer() {
               className={`w-8 h-8 flex items-center justify-center text-xs cursor-pointer ${
                 isDisabled
                   ? "relative bg-yellow-100 after:content-[''] after:absolute after:top-2.5 after:right-2.5 after:w-full after:h-full after:border-t-2 after:border-red-500 after:rotate-45 after:pointer-events-none"
-                  : seatTypeColors[seat.seatId.type]
+                  : seatTypeColors[seat.type]
               } ${isSelected ? "border-2 border-black" : ""}`}
               onClick={() => handleSelectSeat(seat)}
             >
-              {seat.seatId.name}
+              {seat.name}
             </div>
           );
         })}

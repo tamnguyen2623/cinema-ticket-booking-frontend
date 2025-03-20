@@ -53,7 +53,8 @@ const [searchTerm, setSearchTerm] = useState("");
   );
 
   return (
-    <div className="movie-container">
+    <div className="container-fluid">
+      <div className="title-ticket">Movie List</div>
       <MovieList
         movies={movies}
         handleEdit={handleEdit}

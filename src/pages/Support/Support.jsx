@@ -4,7 +4,6 @@ import { AuthContext } from "../../context/AuthContext";
 import SupportList from "./SupportList";
 import SupportForm from "./SupportForm";
 import { fetchSupports, handleCreateOrUpdateSupport } from "./SupportActions";
-
 const Support = () => {
   const { auth } = useContext(AuthContext);
   const [supports, setSupports] = useState([]);
@@ -33,7 +32,6 @@ const Support = () => {
 
   return (
     <div className="container-fluid">
-      
       <SupportForm
         isVisible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}

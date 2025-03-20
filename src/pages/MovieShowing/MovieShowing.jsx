@@ -194,24 +194,31 @@ const MovieShowingList = () => {
   };
 
   return (
-    <div className="content">
-      <div style={{ display: "flex", gap: "10px", marginBottom: 16 }}>
-        <Input
-          placeholder="Search for movie showing..."
-          prefix={<SearchOutlined />}
-          style={{ width: 300 }}
-          onChange={handleSearch}
-          value={searchTerm}
-        />
-        <Button
-          icon={<PlusOutlined />}
-          onClick={() => {
-            setModalType("add");
-            setIsModalVisible(true);
-          }}
-        >
-          Add Movie Showing
-        </Button>
+    <div className="container-fluid">
+      <div className="title-ticket">Movie Showing List</div>
+      <div className="ticketListContainer">
+        <div className="searchFilterContainer">
+          <div>
+            <Input
+              placeholder="Search for movie showing..."
+              value={searchTerm}
+              style={{ width: 300 }}
+              onChange={handleSearch}
+            />
+          </div>
+          <div className="buttonAddContainer">
+            <Button
+              icon={<PlusOutlined />}
+              onClick={() => {
+                setModalType("add");
+                setIsModalVisible(true);
+              }}
+              className="addTicketButton"
+            >
+              Add Movie Showing
+            </Button>
+          </div>
+        </div>
       </div>
       <Modal
         title={modalType === "add" ? "Add Movie Showing" : "Edit Movie Showing"}

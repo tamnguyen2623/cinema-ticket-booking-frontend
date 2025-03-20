@@ -21,7 +21,7 @@ export default function seatMap({ roomInfo }) {
 
   useEffect(() => {
     fetchSeats();
-  }, [refresh]);
+  }, [refresh, roomInfo]);
 
   const seatTypeColors = {
     Standard: "bg-purple-500",

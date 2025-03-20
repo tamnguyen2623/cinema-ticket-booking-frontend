@@ -41,18 +41,18 @@ export default function SeatAvailableForAdmin({ movieShowing }) {
       >
         {seats.map((seat) => {
           const isDisabled =
-            seat.seatId.type === "Disabled" || seat.isAvailable === false;
+            seat.type === "Disabled" || seat.isAvailable === false;
 
           return (
             <div
-              key={seat.seatId._id}
+              key={seat._id}
               className={`w-8 h-8 flex items-center justify-center text-xs ${
                 isDisabled
                   ? "relative bg-yellow-100 after:content-[''] after:absolute after:top-2.5 after:right-2.5 after:w-full after:h-full after:border-t-2 after:border-red-500 after:rotate-45 after:pointer-events-none"
-                  : seatTypeColors[seat.seatId.type]
+                  : seatTypeColors[seat.type]
               }`}
             >
-              {seat.seatId.name}
+              {seat.name}
             </div>
           );
         })}

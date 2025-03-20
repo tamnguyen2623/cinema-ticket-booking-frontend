@@ -37,7 +37,7 @@ const TicketList = ({
             onClick={() => showModal(record)}
             className="actionButton editButton"
           >
-            Update
+            Edit
           </Button>
 
           <Button
@@ -79,6 +79,7 @@ const TicketList = ({
             className="searchInput"
             placeholder="Search by room or seat type"
             value={searchTerm}
+            style={{ width: 300 }}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Select
