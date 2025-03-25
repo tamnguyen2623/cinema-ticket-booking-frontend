@@ -135,7 +135,7 @@ const VoucherPage = () => {
       title: "Expiration Date",
       dataIndex: "expiredDate",
       key: "expiredDate",
-      render: (date) => (date ? new Date(date).toLocaleDateString("en-US") : "N/A"),
+      render: (date) => moment(date).format("DD/MM/YYYY"),
       width: 300,
     },
     {
@@ -177,29 +177,37 @@ const VoucherPage = () => {
     },
   ];
 
+  const handleAddClick = () => {
+    form.resetFields(); // Reset form trước khi mở modal
+    setModalType("add");
+  };
+
   return (
-    <div className="content">
-      <div className="searchFilterContainer">
-        <div>
-          <Input
-            placeholder="Search by voucher code..."
-            prefix={<SearchOutlined />}
-            onChange={handleSearch}
-            style={{ width: 300, marginBottom: 16 }}
-          />
+    <div className="container-fluid">
+      <div className="title-ticket">Voucher List</div>
+      <div className="ticketListContainer">
+        <div className="searchFilterContainer">
+          <div>
+            <Input
+              placeholder="Search by voucher code..."
+              onChange={handleSearch}
+              className="searchInput"
+              style={{ width: 300}}
+            />
+          </div>
+          <div className="buttonAddContainer">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleAddClick}
+              className="addTicketButton"
+            >
+              Add Voucher
+            </Button>
+          </div>
         </div>
-        <div className="buttonAddContainer">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => setModalType("add")}
-            className="addTicketButton"
-          >
-            Add Voucher
-          </Button>
-        </div>
+        <Table dataSource={filteredVouchers} columns={columns} rowKey="_id" scroll={{ x: 1200 }} />
       </div>
-      <Table dataSource={filteredVouchers} columns={columns} rowKey="_id" scroll={{ x: 1200 }} />
       <Modal
         title={modalType === "add" ? "Add New Voucher" : "Edit Voucher"}
         open={modalType !== null}
@@ -217,7 +225,7 @@ const VoucherPage = () => {
             <InputNumber min={1} max={100} addonAfter="%" />
           </Form.Item>
           <Form.Item name="expiredDate" label="Expiration Date" rules={[{ required: true, message: "Select expiration date!" }]}>
-            <DatePicker format="YYYY-MM-DD" />
+            <DatePicker format="DD/MM/YYYY" />
           </Form.Item>
         </Form>
       </Modal>

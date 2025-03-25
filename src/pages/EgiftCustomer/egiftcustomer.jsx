@@ -35,7 +35,7 @@ const EgiftCustomer = () => {
     return (
         <div classNam="movie-list">
             <div className="hot_movies">
-                <p className="title">EGIFT</p>
+                <p className="title-unique">EGIFT CARD</p>
             </div>
             <div className="screen_cwrap">
                 <div className="movie-list">

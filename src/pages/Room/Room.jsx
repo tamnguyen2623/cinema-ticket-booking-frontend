@@ -40,7 +40,8 @@ const Room = () => {
   );
 
   return (
-    <div className="room-container">
+    <div className="container-fluid">
+      <div className="title-ticket">Room List</div>
       <RoomList
         rooms={rooms}
         setRooms={setRooms} // ✅ Truyền setRooms

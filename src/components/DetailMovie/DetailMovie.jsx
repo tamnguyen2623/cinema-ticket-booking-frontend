@@ -116,7 +116,7 @@ const MovieDetail = () => {
           </div>
           <div className="movie-detail-info">
             <div className="movie-detail-name-wrapper">
-              <h2 className="movie-detail-name">{movie.name}</h2>
+              <h2 className="movie-detail-name">{movie?.name || "Không có tên phim"}</h2>
             </div>
             <div className="movie-detail-inf-wrapper">
               <p>
@@ -127,7 +127,7 @@ const MovieDetail = () => {
                 <p>
                   <span className="label"> Thể loại: </span>
                   <span className="value">
-                    {movie.movieType.name || "Hành Động, Khoa Học Viễn Tưởng"}
+                    {movie.movieType?.name || "Hành Động, Khoa Học Viễn Tưởng"}
                   </span>
                 </p>
                 <p>

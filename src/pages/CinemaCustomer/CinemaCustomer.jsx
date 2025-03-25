@@ -22,7 +22,7 @@ const CinemaCustomer = () => {
   const [form] = Form.useForm();
   const { auth } = useContext(AuthContext);
   const [mapModalVisible, setMapModalVisible] = useState(false);
-  const [mapUrl, setMapUrl] = useState(""); 
+  const [mapUrl, setMapUrl] = useState("");
 
   const fetchCinema = async () => {
     try {
@@ -132,7 +132,12 @@ const CinemaCustomer = () => {
   const handleEditClick = (cinema) => {
     setCurrentCinema(cinema);
     setModalType("edit");
-    form.setFieldsValue({ name: cinema.name, address: cinema.address , phoneNumber: cinema.phoneNumber, map: cinema.map});
+    form.setFieldsValue({
+      name: cinema.name,
+      address: cinema.address,
+      phoneNumber: cinema.phoneNumber,
+      map: cinema.map,
+    });
   };
 
   const handleToggleDelete = async (id, isDelete) => {
@@ -234,30 +239,37 @@ const CinemaCustomer = () => {
     },
   ];
 
-  return (
-    <div className="content">
-      <div className="searchFilterContainer">
-        <div>
-          <Input
-            placeholder="Search by cinema name..."
-            prefix={<SearchOutlined />}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ width: 300, marginBottom: 16 }}
-          />
-        </div>
-        <div className="buttonAddContainer">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => setModalType("add")}
-            className="addTicketButton"
-          >
-            Add Cinema
-          </Button>
-        </div>
-      </div>
-      <Table dataSource={filteredCinemas} columns={columns} rowKey="_id" />
+  const handleAddClick = () => {
+    form.resetFields(); // Reset form trước khi mở modal
+    setModalType("add");
+  };
 
+  return (
+    <div className="container-fluid">
+      <div className="title-ticket">Cinema List</div>
+      <div className="ticketListContainer">
+        <div className="searchFilterContainer">
+          <div>
+            <Input
+              placeholder="Search by cinema name..."
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="searchInput"
+              style={{ width: 300 }}
+            />
+          </div>
+          <div className="buttonAddContainer">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleAddClick}
+              className="addTicketButton"
+            >
+              Add Cinema
+            </Button>
+          </div>
+        </div>
+        <Table dataSource={filteredCinemas} columns={columns} rowKey="_id" />
+      </div>
       <Modal
         title={modalType === "add" ? "Thêm Cinema Mới" : "Chỉnh Sửa Cinema"}
         open={modalType !== null}
@@ -278,9 +290,7 @@ const CinemaCustomer = () => {
           <Form.Item
             name="address"
             label="Address"
-            rules={[
-              { required: true, message: "Please enter an address!" },
-            ]}
+            rules={[{ required: true, message: "Please enter an address!" }]}
           >
             <Input />
           </Form.Item>
@@ -291,9 +301,28 @@ const CinemaCustomer = () => {
               { required: true, message: "Please enter a phone number!" },
               {
                 pattern: /^0\d{9}$/,
-                message:
-                  "Invalid phone number!",
+                message: "Invalid phone number!",
               },
+              () => ({
+                validator(_, value) {
+                  if (!value) return Promise.resolve();
+                  let isDuplicate;
+                  if (modalType === "add") {
+                    isDuplicate = cinemas.some(
+                      (cinema) => cinema.phoneNumber === value
+                    );
+                  } else {
+                    const oldPhoneNumber = currentCinema?.phoneNumber;
+                    isDuplicate =
+                      value !== oldPhoneNumber &&
+                      cinemas.some((cinema) => cinema.phoneNumber === value);
+                  }
+
+                  return isDuplicate
+                    ? Promise.reject(new Error("Phone number already exists!"))
+                    : Promise.resolve();
+                },
+              }),
             ]}
           >
             <Input />

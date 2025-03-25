@@ -21,8 +21,8 @@ export default function Seat() {
   };
 
   return (
-    <div className="p-8">
-      <Title>List of seats</Title>
+    <div className="container-fluid">
+      <div className="title-ticket">List of seats</div>
       <div style={{ marginBottom: 16 }}>
         <SeatFilter options={options} onFilterChange={handleFilterChange} />
       </div>

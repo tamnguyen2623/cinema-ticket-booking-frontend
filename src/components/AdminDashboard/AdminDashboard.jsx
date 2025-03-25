@@ -22,6 +22,7 @@ import {
   faBox,
   faUserShield,
   faFilm,
+  faHeadset,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
@@ -49,7 +50,6 @@ const DashBoard = () => {
         pauseOnHover: false,
       });
       navigate("/movieshowing");
-
     } catch (error) {
       console.error(error);
       toast.error("Error", {
@@ -175,9 +175,22 @@ const DashBoard = () => {
               <span>Egift</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/support")}`}>
+            <Link to="/admin/support">
+              <FontAwesomeIcon icon={faHeadset} className="menu-icon" />
+              <span>Support</span>
+            </Link>
+          </li>
           <li className="nav-link button-logout">
-            <Link onClick={onLogout} className="logout-button" disabled={isLoggingOut}>
-              <FontAwesomeIcon icon={faRightFromBracket} className="menu-icon" />
+            <Link
+              onClick={onLogout}
+              className="logout-button"
+              disabled={isLoggingOut}
+            >
+              <FontAwesomeIcon
+                icon={faRightFromBracket}
+                className="menu-icon"
+              />
               {isLoggingOut ? "Processing..." : "Logout"}
             </Link>
           </li>

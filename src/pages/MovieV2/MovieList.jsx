@@ -92,7 +92,7 @@ const MovieList = ({
             onClick={() => handleEdit(record)}
             className="actionButton editButton"
           >
-            Update
+            Edit
           </Button>
 
           <Button
@@ -127,21 +127,22 @@ const MovieList = ({
   ];
 
   return (
-    <div className="container">
-      <div className="title-list">Movies List</div>
-      <div className="search-filter-add-container">
-        <div className="search-filter-container">
+    <div className="ticketListContainer">
+      <div className="searchFilterContainer">
+        <div>
           <Input
             placeholder="Search by Movie Name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
+            className="searchInput"
+            style={{ width: 300 }}
           />
           <Select
             placeholder="Filter by MovieType"
             value={selectedMovieType}
             onChange={(value) => setSelectedMovieType(value)}
-            className="filter-select"
+            className="filterSelect"
+
           >
             <Option value="">All MovieTypes</Option>
             {movieTypes.map((movieType) => (
@@ -151,14 +152,16 @@ const MovieList = ({
             ))}
           </Select>
         </div>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={handleAddMovie}
-          className="add-movie-button"
-        >
-          Add Movie
-        </Button>
+        <div className="buttonAddContainer">
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={handleAddMovie}
+            className="addTicketButton"
+          >
+            Add Movie
+          </Button>
+        </div>
       </div>
       <Table
         className="movie-table"

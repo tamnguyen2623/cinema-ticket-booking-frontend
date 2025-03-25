@@ -102,16 +102,15 @@
   width: 100%;
   font-weight: bold;
   margin-top: 10px;
-  background: #18a0e0 !important;
+  background: #EFEBDB !important;
   border: none;
   border-radius: 8px;
   height: 40px;
   margin-left: 20px;
   transition: all 0.3s ease;
+  color: black;
 }
-.combo-button:hover {
-  background: #18a0e0 !important;
-}
+
 .next-button,
 .confirm-button {
   width: 100px;
@@ -119,5 +118,7 @@
 }
 .next-button:hover,
 .confirm-button:hover {
-  background: dodgerblue !important;
+  background: #DAD2B4 !important;
+  /* opacity: 0.6; */
+  color: black !important;
 }

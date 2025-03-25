@@ -1,9 +1,9 @@
 import {
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined,
-  SearchOutlined,
-  FileOutlined
+	EditOutlined,
+	DeleteOutlined,
+	PlusOutlined,
+	SearchOutlined,
+	FileOutlined
 } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, Space, Switch, Table, Typography, message } from 'antd';
 import axios from 'axios';
@@ -28,11 +28,11 @@ const User = () => {
   const [roleForm] = Form.useForm();
   const [isRoleEditing, setIsRoleEditing] = useState(false);
 
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get('/role/roles/get', {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
+	const fetchUsers = async () => {
+		try {
+			const response = await axios.get('/role/roles/get', {
+				headers: { Authorization: `Bearer ${auth.token}` },
+			});
 
       setUsers(response.data.data);
       setFilteredUsers(response.data.data);
@@ -58,13 +58,14 @@ const User = () => {
 
 
 
-  // 🔄 Gọi khi component mount
+	// 🔄 Gọi khi component mount
 
   useEffect(() => {
     fetchUsers();
 
 
-  }, []);
+	}, []);
+
 
 
 
@@ -78,76 +79,76 @@ const User = () => {
     setFilteredUsers(filtered);
   }, [searchTerm, users]);
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
+	const handleSearch = (e) => {
+		setSearchTerm(e.target.value);
+	};
 
-  const handleAddUser = () => {
-    form.resetFields();
-    setIsEditing(false);
-    setIsModalVisible(true);
-  };
+	const handleAddUser = () => {
+		form.resetFields();
+		setIsEditing(false);
+		setIsModalVisible(true);
+	};
 
-  const handleEditUser = (user) => {
-    form.setFieldsValue({
-      username: user.username,
-      fullname: user.fullname,
-      email: user.email,
-      roleId: user.roleId?._id
-    });
-    setEditingUser(user);
-    setIsEditing(true);
-    setIsModalVisible(true);
-  };
+	const handleEditUser = (user) => {
+		form.setFieldsValue({
+			username: user.username,
+			fullname: user.fullname,
+			email: user.email,
+			roleId: user.roleId?._id
+		});
+		setEditingUser(user);
+		setIsEditing(true);
+		setIsModalVisible(true);
+	};
 
-  const handleDeleteUser = async (user) => {
-    try {
-      await axios.put(`/role/deleteEmployee/${user._id}`, { isDelete: !user.isDelete }, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
-      message.success("User deleted successfully!");
-      await fetchUsers();
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      message.error("Failed to delete user.");
-    }
-  };
+	const handleDeleteUser = async (user) => {
+		try {
+			await axios.put(`/role/deleteEmployee/${user._id}`, { isDelete: !user.isDelete }, {
+				headers: { Authorization: `Bearer ${auth.token}` },
+			});
+			message.success("User deleted successfully!");
+			await fetchUsers();
+		} catch (error) {
+			console.error("Error deleting user:", error);
+			message.error("Failed to delete user.");
+		}
+	};
 
 
-  const handleAddRole = async (values) => {
-    try {
-      await axios.post('/role/create', values, {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      });
-      message.success('Role added successfully!');
-      setIsRoleModalVisible(false);
-      roleForm.resetFields();
-      fetchRoles(); // 🔄 Cập nhật danh sách roles
-    } catch (error) {
-      console.error('Error adding role:', error);
-      message.error('Failed to add role.');
-    }
-  };
-  const handleFormSubmit = async (values) => {
-    try {
-      if (isEditing) {
-        await axios.put(`/role/putEmployee/${editingUser._id}`, values, {
-          headers: { Authorization: `Bearer ${auth.token}` },
-        });
-        message.success("User updated successfully!");
-      } else {
-        await axios.post("/role/createEmployee", values, {
-          headers: { Authorization: `Bearer ${auth.token}` },
-        });
-        message.success("User added successfully!");
-      }
-      fetchUsers();
-      setIsModalVisible(false);
-    } catch (error) {
-      console.error("Error saving user data:", error);
-      message.error("Error saving user data");
-    }
-  };
+	const handleAddRole = async (values) => {
+		try {
+			await axios.post('/role/create', values, {
+				headers: { Authorization: `Bearer ${auth.token}` },
+			});
+			message.success('Role added successfully!');
+			setIsRoleModalVisible(false);
+			roleForm.resetFields();
+			fetchRoles(); // 🔄 Cập nhật danh sách roles
+		} catch (error) {
+			console.error('Error adding role:', error);
+			message.error('Failed to add role.');
+		}
+	};
+	const handleFormSubmit = async (values) => {
+		try {
+			if (isEditing) {
+				await axios.put(`/role/putEmployee/${editingUser._id}`, values, {
+					headers: { Authorization: `Bearer ${auth.token}` },
+				});
+				message.success("User updated successfully!");
+			} else {
+				await axios.post("/role/createEmployee", values, {
+					headers: { Authorization: `Bearer ${auth.token}` },
+				});
+				message.success("User added successfully!");
+			}
+			fetchUsers();
+			setIsModalVisible(false);
+		} catch (error) {
+			console.error("Error saving user data:", error);
+			message.error("Error saving user data");
+		}
+	};
 
   const employeeColumns = [
     { title: 'Username', dataIndex: 'username' },

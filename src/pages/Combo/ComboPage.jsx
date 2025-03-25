@@ -199,7 +199,7 @@ const ComboPage = () => {
               setModalType("edit");
             }}
           >
-            Update
+            Edit
           </Button>
         </div>
       ),
@@ -216,36 +216,37 @@ const ComboPage = () => {
   ];
 
   return (
-    <div className="content">
-      <div className="searchFilterContainer">
-        <div>
-          <Input
-            placeholder="Search combo..."
-            prefix={<SearchOutlined />}
-            onChange={handleSearch}
-            style={{ width: 300 }}
-          />
-          {/* <Button icon={<PlusOutlined />} onClick={() => setModalType("add")}>
-          Add Combo
-        </Button> */}
+    <div className="container-fluid">
+      <div className="title-ticket">Combo List</div>
+      <div className="ticketListContainer">
+        <div className="searchFilterContainer">
+          <div>
+            <Input
+              placeholder="Search combo..."
+              onChange={handleSearch}
+              className="searchInput"
+              style={{ width: 300 }}
+            />
+          </div>
+          <div className="buttonAddContainer">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setModalType("add")}
+              className="addTicketButton"
+            >
+              Add Combo
+            </Button>
+          </div>
         </div>
-        <div className="buttonAddContainer">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => setModalType("add")}
-            className="addTicketButton"
-          >
-            Add Combo
-          </Button>
-        </div>
+        <Table
+          dataSource={filteredCombos}
+          columns={columns}
+          rowKey="_id"
+          scroll={{ x: 800 }}
+        />
       </div>
-      <Table
-        dataSource={filteredCombos}
-        columns={columns}
-        rowKey="_id"
-        scroll={{ x: 800 }}
-      />
+
       <Modal
         okButtonProps={{ className: "custom-ok-btn" }}
         title={modalType === "add" ? "Add New Combo" : "Update Combo"}
@@ -300,7 +301,7 @@ const ComboPage = () => {
           >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="image" label="Image" rules={[{ required: true, message: "Please upload a Image!" }]}>
+          <Form.Item name="image" label="Image">
             <Upload
               listType="picture"
               beforeUpload={(file) => {
@@ -315,7 +316,7 @@ const ComboPage = () => {
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </div >
   );
 };
 
