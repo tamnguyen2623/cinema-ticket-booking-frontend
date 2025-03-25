@@ -14,6 +14,7 @@ const EgiftAdmin = () => {
   const [currentEgift, setCurrentEgift] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [sortOrder, setSortOrder] = useState(""); // State lưu thứ tự sắp xếp
 
   useEffect(() => {
     fetchEgifts();
@@ -109,8 +110,16 @@ const EgiftAdmin = () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
-
+  const handleSortChange = (value) => {
+    setSortOrder(value);
+  };
   const filteredEgifts = egifts.filter((egift) => egift.name?.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  const sortedEgifts = [...filteredEgifts].sort((a, b) => {
+    if (sortOrder === "asc") return a.name.localeCompare(b.name);
+    if (sortOrder === "desc") return b.name.localeCompare(a.name);
+    return 0; // Không sắp xếp nếu không có lựa chọn
+  });
 
   return (
     <div className="container-fluid">
@@ -127,8 +136,8 @@ const EgiftAdmin = () => {
             />
             <Select
               placeholder="Sort by"
-              // value={sortOrder}
-              // onChange={handleSortChange}
+              value={sortOrder}
+              onChange={handleSortChange}
               className="filterSelect"
             >
               <Option value="">Default</Option>
@@ -149,7 +158,7 @@ const EgiftAdmin = () => {
         </div>
 
         <Table
-          dataSource={filteredEgifts}
+          dataSource={sortedEgifts}
           columns={[
             { title: "Name", dataIndex: "name", key: "name", width: 200 },
             { title: "Description", dataIndex: "description", key: "description", width: 300 },
