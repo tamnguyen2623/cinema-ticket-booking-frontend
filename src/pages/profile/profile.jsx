@@ -135,7 +135,7 @@ const Profile = () => {
               <p><strong>Email:</strong> {user.email}</p>
 
               {/* Hiển thị tổng số tiền đã mua vé */}
-              <div className="flex items-center gap-4 rounded">
+              <div className="flex items-center gap-4 rounded profile-name">
 
                 <p><strong>Total:</strong> {totalSpent.toLocaleString()} $</p>
                 <button

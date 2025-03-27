@@ -117,3 +117,7 @@
 .active-link:hover {
   background: #29293d;
 }
+.MuiDialog-paper{
+  background: #fff !important;
+  transition: none !important;
+}
