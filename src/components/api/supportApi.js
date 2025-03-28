@@ -14,6 +14,16 @@ export const fetchSupport = async (token) => {
     throw new Error("Failed to fetch support list.");
   }
 };
+export const fetchAvailbleSupport = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/customer`, {
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching support list:", error);
+    throw new Error("Failed to fetch support list.");
+  }
+};
 
 // Lấy một Support theo ID
 export const getSupportById = async (token, supportId) => {
