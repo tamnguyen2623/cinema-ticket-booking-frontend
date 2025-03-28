@@ -10,6 +10,8 @@ import { getAvailableFeedbacks } from "../api/feedback";
 import "./DetailMovie.css";
 import FloatingNavigation from "../UtilityBar/FloatingNavigation";
 import moment from "moment";
+import { Select } from "antd"; // Import Select từ Ant Design
+const { Option } = Select;
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -17,6 +19,7 @@ const MovieDetail = () => {
   const [loading, setLoading] = useState(true);
   const [openTrailer, setOpenTrailer] = useState(false);
   const [feedbackData, setFeedbackData] = useState([]);
+  const [selectedRating, setSelectedRating] = useState(null);
   const navigate = useNavigate();
 
   const fetchMovie = async () => {
@@ -48,6 +51,15 @@ const MovieDetail = () => {
 
   if (loading) return <p>Loading...</p>;
   if (!movie) return <p>Movie not found</p>;
+
+  // Hàm xử lý thay đổi bộ lọc rating
+  const handleRatingFilter = (value) => {
+    setSelectedRating(value);
+  };
+  // Lọc feedback dựa trên rating đã chọn
+  const filteredFeedback = selectedRating
+    ? feedbackData.filter((feedback) => feedback.ratting === selectedRating)
+    : feedbackData;
 
   return (
     <div className="movie-detail-container">
@@ -133,7 +145,7 @@ const MovieDetail = () => {
                 <p>
                   <span className="label"> Ngày khởi chiếu:</span>{" "}
                   <span className="value">
-                  {new Date(movie.releaseDate).toLocaleDateString("vi-VN")}
+                    {new Date(movie.releaseDate).toLocaleDateString("vi-VN")}
                   </span>
                 </p>
               </div>
@@ -160,10 +172,24 @@ const MovieDetail = () => {
       </div>
 
       <div className="movie-detail-reviews">
-        
         <hr className="divider" />
+        <div className="filter-section">
+          <label>Filter by Rating: </label>
+          <Select
+            defaultValue="All"
+            style={{ width: 120 }}
+            onChange={handleRatingFilter}
+          >
+            <Option value={null}>All</Option>
+            <Option value={5}>5 ★</Option>
+            <Option value={4}>4 ★</Option>
+            <Option value={3}>3 ★</Option>
+            <Option value={2}>2 ★</Option>
+            <Option value={1}>1 ★</Option>
+          </Select>
+        </div>
         <div className="review-list">
-          {feedbackData.map((feedback) => (
+          {filteredFeedback.map((feedback) => (
             <div key={feedback._id} className="review-item">
               <div className="review-header">
                 <div className="review-info">
@@ -171,7 +197,9 @@ const MovieDetail = () => {
                   <p className="review-stars">{feedback.ratting} ★</p>
                 </div>
                 <p className="review-content">{feedback.comment}</p>
-                <p className="review-date">{moment(feedback.date).format("DD/MM/YYYY HH:mm")}</p>
+                <p className="review-date">
+                  {moment(feedback.date).format("DD/MM/YYYY HH:mm")}
+                </p>
               </div>
               <div className="review-user">
                 <p className="review-username">{feedback.userId.fullname}</p>

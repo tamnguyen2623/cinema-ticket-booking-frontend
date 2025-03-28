@@ -50,7 +50,7 @@ const VerifyOtpRegister = () => {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-900 to-blue-500 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{backgroundColor: "#DAD2B4"}}>
             <div className="w-full max-w-md space-y-8 rounded-2xl bg-white p-4 shadow-xl">
                 <h2 className="text-center text-4xl font-extrabold text-gray-900">Verify OTP</h2>
                 <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -65,7 +65,8 @@ const VerifyOtpRegister = () => {
 
                     <button
                         type="submit"
-                        className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none"
+                        className="w-full py-2 px-4 text-white rounded-md hover:bg-blue-700 focus:outline-none"
+                        style={{backgroundColor: "#DAD2B4", color: "#231F20"}}
                         disabled={isVerifying}
                     >
                         {isVerifying ? "Verifying..." : "Verify OTP"}

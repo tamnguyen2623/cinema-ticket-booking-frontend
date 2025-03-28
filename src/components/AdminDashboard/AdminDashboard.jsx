@@ -101,6 +101,12 @@ const DashBroad = () => {
               <span>Dashboard</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/banner")}`}>
+            <Link to="/admin/banner">
+              <FontAwesomeIcon icon={faTicket} className="menu-icon" />
+              <span>Banner</span>
+            </Link>
+          </li>
           <li className={`nav-link ${isActive("/admin/booking")}`}>
             <Link to="/admin/booking">
               <FontAwesomeIcon icon={faCalendarCheck} className="menu-icon" />

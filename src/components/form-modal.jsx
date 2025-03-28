@@ -22,7 +22,7 @@ const FormModal = ({ open, handleClose, onSubmit, formData }) => {
         "& .MuiDialog-paper": {
           padding: "16px",
           borderRadius: "16px",
-          backgroundColor: "#fff",
+          backgroundColor: "#ffffff",
           boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.3)",
           transition: "all 0.3s ease-in-out",
         },
