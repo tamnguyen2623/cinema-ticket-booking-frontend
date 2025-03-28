@@ -8,6 +8,7 @@ import {
   Spin,
   Upload,
   message,
+  Radio,
 } from "antd";
 import SeatMap from "../../components/Seat/SeatMap";
 import { UploadOutlined } from "@mui/icons-material";
@@ -24,6 +25,7 @@ const EgiftForm = ({ isFormVisible, handleCancel, onFinish, isSubmitting }) => {
         fullName: "",
         message: "",
         balance: 0,
+        method: "",
       });
     }
   }, [isFormVisible, form]);
@@ -65,6 +67,19 @@ const EgiftForm = ({ isFormVisible, handleCancel, onFinish, isSubmitting }) => {
         >
           <Input type="number" min={1} max={2000} />
         </Form.Item>
+        <Form.Item
+          name="method"
+          label="Payment Method"
+          rules={[
+            { required: true, message: "Please select a payment method" },
+          ]}
+        >
+          <Radio.Group>
+            <Radio value="momo">MoMo</Radio>
+            <Radio value="vnpay">VNPAY</Radio>
+          </Radio.Group>
+        </Form.Item>
+
         <div className="modalFooter">
           <Button onClick={handleCancel} style={{ marginRight: 8 }}>
             Cancel

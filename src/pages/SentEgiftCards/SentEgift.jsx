@@ -43,61 +43,6 @@ const SentEgift = () => {
   const [booking, setBooking] = useState();
   const [refresh, setRefresh] = useState(false);
 
-  const showModal = (booking) => {
-    setBooking(booking); // Lưu suất chiếu vào state
-    if (booking.isFeedback) {
-      setViewModal(true);
-      return;
-    }
-    setAddModal(true); // Mở modal
-  };
-
-  const handleCancelAddModal = () => {
-    setAddModal(false);
-    setRefresh(!refresh);
-  };
-
-  const handleCancelViewModal = () => {
-    setViewModal(false);
-  };
-  {
-    /* nga them */
-  }
-  const now = dayjs(); // Lấy thời gian hiện tại
-  const today = dayjs().startOf("day"); // Lấy ngày hiện tại (YYYY-MM-DD)
-  const filteredBookings = bookings.filter((ticket) => {
-    const ticketDate = dayjs(ticket.date).startOf("day");
-    const ticketTime = dayjs(ticket.showtime);
-    // const formattedShowtime = new Date(ticket.showtime).toLocaleTimeString(
-    //   "en-US",
-    //   {
-    //     hour: "2-digit",
-    //     minute: "2-digit",
-    //     hour12: true,
-    //   }
-    // );
-    if (
-      selectedDate &&
-      dayjs(ticket.date).format("DD/MM/YYYY") !== selectedDate
-    ) {
-      return false;
-    }
-    if (
-      selectedFilter === "watched" &&
-      (ticketDate.isBefore(today) ||
-        (ticketDate.isSame(today) && ticketTime.isBefore(now)))
-    ) {
-      return true;
-    }
-    if (
-      selectedFilter === "unwatched" &&
-      (ticketDate.isAfter(today) ||
-        (ticketDate.isSame(today) && ticketTime.isAfter(now)))
-    ) {
-      return true;
-    }
-    return selectedFilter === "all";
-  });
 
   const fetchBookings = async () => {
     if (!auth?.userId) {
@@ -106,13 +51,14 @@ const SentEgift = () => {
       return;
     }
     try {
-      const response = await axios.get(`/booking/booking/user/${auth.userId}`, {
+      const response = await axios.get(`/egift/egift-cards/history`, {
         headers: { Authorization: `Bearer ${auth.token}` },
       });
-      const bookingsData = Array.isArray(response.data)
-        ? response.data
-        : Array.isArray(response.data.bookings)
-          ? response.data.bookings
+        console.log("API Response:", response.data); // Kiểm tra dữ liệu từ API 
+      const bookingsData = Array.isArray(response.data.data)
+        ? response.data.data
+        : Array.isArray(response.data.data)
+          ? response.data.data
           : [];
       console.log(bookingsData);
 
@@ -138,36 +84,6 @@ const SentEgift = () => {
     );
   console.log("booking", bookings);
 
-  if (!filteredBookings || filteredBookings.length === 0 || error) {
-    return (
-      <div>
-        <div className="hot_movies">
-          <p className="title-unique">MY TICKETS</p>
-        </div>
-        <div className="filter-container">
-          <DatePicker
-            className="custom-datepicker"
-            onChange={(date, dateString) => setSelectedDate(dateString)}
-            format="DD/MM/YYYY"
-            placeholder="Selected day"
-            allowClear
-          />
-          <Select
-            className="custom-select"
-            value={selectedFilter}
-            onChange={(value) => setSelectedFilter(value)}
-          >
-            <Select.Option value="all">All Ticket</Select.Option>
-            <Select.Option value="watched">Watched</Select.Option>
-            <Select.Option value="unwatched">Unwatched</Select.Option>
-          </Select>
-        </div>
-
-        <Alert message="Not find." type="info" showIcon />
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="hot_movies">
@@ -177,20 +93,20 @@ const SentEgift = () => {
       <div className="head-container">
         <div className="sub-container">
           <Row gutter={[32, 32]} justify="center">
-            {filteredBookings.map((ticket) => (
+            {bookings.length > 0 && bookings.map((ticket) => (
               <Col key={ticket._id}>
                 <div className="ticket-card">
                   <div className="ticket-content">
                     {/* Ảnh phim bên trái */}
                     <div className="img-movie" style={{ width: "250px" }}>
-                      <img src={ticket.image} alt="Egift" />
+                      <img src={ticket.egift.image} alt="Egift" />
                     </div>
 
                     {/* Thông tin vé bên phải */}
                     <div className="information-ticket">
-                      <h3>To: {ticket.fullName}</h3>
+                      <h3>To: {ticket.egiftRecipient.fullName}</h3>
                       <div>
-                        <strong>Their email:</strong> {ticket.email}
+                        <strong>Their email:</strong> {ticket.egiftRecipient.email}
                       </div>
                       <div>
                         <strong>Balance:</strong> {ticket.balance} $
@@ -206,10 +122,9 @@ const SentEgift = () => {
                         <Tag
                           color={
                             {
-                              success: "green",
+                              active: "green",
                               pending: "orange",
-                              failed: "red",
-                              cancelled: "volcano",
+                              inactive: "red",
                             }[ticket.status]
                           }
                         >
@@ -226,40 +141,6 @@ const SentEgift = () => {
             ))}
           </Row>
         </div>
-        <Modal
-          title={`Ratting & Feedback "${booking?.movieName}"`}
-          open={addModal}
-          onCancel={handleCancelAddModal}
-          width={1000}
-          footer={null}
-        >
-          <FeedbackForm
-            userId={auth.userId}
-            form={"Add"}
-            booking={booking}
-            setModal={setAddModal}
-            fetchBookings={fetchBookings}
-            handleCancelModal={handleCancelAddModal}
-            setRefresh={setRefresh}
-            refresh={refresh}
-          />
-        </Modal>
-
-        <Modal
-          title={`View feedback "${booking?.movieName}"`}
-          open={viewModal}
-          onCancel={handleCancelViewModal}
-          width={1000}
-          footer={null}
-        >
-          <FeedbackDetail
-            userId={auth.userId}
-            booking={booking}
-            // setModal={setViewModal}
-            fetchBookings={fetchBookings}
-            handleCancelViewModal={handleCancelViewModal}
-          />
-        </Modal>
       </div>
     </>
   );

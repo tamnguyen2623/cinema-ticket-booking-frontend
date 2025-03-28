@@ -87,7 +87,7 @@ const Header = () => {
                         {isDropdownOpen && (
                             <ul className="dropdown-menu">
                                 <li><Link to="/profile">Trang cá nhân</Link></li>
-                                <li><Link to="/egift">Egift</Link></li>
+                                <li><Link to="/egift/history">Sent Egift</Link></li>
                             </ul>
                         )}
                     </div>

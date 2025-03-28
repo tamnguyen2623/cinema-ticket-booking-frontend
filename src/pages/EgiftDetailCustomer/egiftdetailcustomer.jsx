@@ -40,6 +40,7 @@ const EgiftDetailCustomer = () => {
   if (error) return <p>{error}</p>;
 
   const sendEgiftToUser = async (values, auth, setIsFormVisible) => {
+    console.log("Sending eGift with values:", values);
     if (!auth.token) {
       return notification.error({
         message: "Unauthorized",
@@ -53,6 +54,8 @@ const EgiftDetailCustomer = () => {
         },
       });
       setIsFormVisible(false);
+      console.log("Response from sending eGift:", response);
+      window.location.href = response.data.data;
       notification.success({ message: "Gift card to user successfully!" });
     } catch (error) {
       console.error("Lỗi khi gửi eGift:", error);

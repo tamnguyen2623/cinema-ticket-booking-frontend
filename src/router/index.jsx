@@ -102,7 +102,7 @@ const router = createBrowserRouter([
       { path: "/profile", element: <Profile /> },
       { path: "egiftdetailcustomer/:id", element: <EgiftDetailCustomer /> },
       { path: "ticketboard", element: <TicketBorad /> },
-      { path: "egift", element: <SentEgift /> },
+      { path: "egift/history", element: <SentEgift /> },
       // { path: "support", element: <SupportQuestion /> },
     ],
   },
