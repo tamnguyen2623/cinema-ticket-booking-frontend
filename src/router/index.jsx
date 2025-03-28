@@ -53,6 +53,7 @@ import Profile from "../pages/profile/profile";
 import TicketBorad from "../pages/TicketBoard/TicketBoard";
 import Support from "../pages/Support/Support";
 import Banner from "../pages/Banner";
+import SentEgift from "../pages/SentEgiftCards/SentEgift";
 
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
@@ -101,7 +102,8 @@ const router = createBrowserRouter([
       { path: "/profile", element: <Profile /> },
       { path: "egiftdetailcustomer/:id", element: <EgiftDetailCustomer /> },
       { path: "ticketboard", element: <TicketBorad /> },
-      { path: "support", element: <SupportQuestion /> },
+      { path: "egift", element: <SentEgift /> },
+      // { path: "support", element: <SupportQuestion /> },
     ],
   },
 
