@@ -77,7 +77,14 @@ const SupportList = ({
           Add Support
         </Button>
       </div>
-      <Table columns={columns} dataSource={supports} rowKey="_id" />
+      <Table
+        columns={columns}
+        dataSource={supports}
+        rowKey="_id"
+        pagination={{
+          pageSize: 5,
+        }}
+      />
     </div>
   );
 };

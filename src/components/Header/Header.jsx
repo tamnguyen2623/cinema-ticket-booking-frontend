@@ -53,18 +53,18 @@ const Header = () => {
         <ul className="menu">
           {auth.token ? (
             <>
-              <li className={`${isActive("")}`}>
-                <Link onClick={showChangePasswordForm} className="support-link">
+              <li>
+                <a onClick={showChangePasswordForm} className="support-link">
                   Change Password
-                </Link>
+                </a>
               </li>
-              <li className={`${isActive("")}`}>
-                <Link
+              <li>
+                <a
                   onClick={() => setIsModalUsernameOpen(true)}
                   className="support-link"
                 >
                   Change Username
-                </Link>
+                </a>
               </li>
               <li>
                 <Link

@@ -29,6 +29,7 @@ const SupportForm = ({
           name="answer"
           label="Answer"
           rules={[{ required: true, message: "Please enter a answer" }]}
+          className="textarea-resizable"
         >
           <Input.TextArea />
         </Form.Item>

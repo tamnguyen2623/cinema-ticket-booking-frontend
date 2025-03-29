@@ -87,19 +87,6 @@
     filter: brightness(0.1);
 }
 
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.movie-image-container:hover .overlay {
-    opacity: 1;
-}
 
 .movie-actions {
     position: absolute;

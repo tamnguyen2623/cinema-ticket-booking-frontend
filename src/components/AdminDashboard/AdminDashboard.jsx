@@ -24,8 +24,12 @@ import {
   faUserShield,
   faFilm,
   faHeadset,
+  faDongSign,
+  faFire,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import { FaProductHunt } from "react-icons/fa";
+
 import { AuthContext } from "../../context/AuthContext";
 const DashBroad = () => {
   const location = useLocation();
@@ -111,6 +115,12 @@ const DashBroad = () => {
             <Link to="/admin/booking">
               <FontAwesomeIcon icon={faCalendarCheck} className="menu-icon" />
               <span>Booking</span>
+            </Link>
+          </li>
+          <li className={`nav-link ${isActive("/admin/service")}`}>
+            <Link to="/admin/service">
+              <FontAwesomeIcon icon={faCalendarCheck} className="menu-icon" />
+              <span>Service</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/role")}`}>
@@ -209,6 +219,12 @@ const DashBroad = () => {
               <span>Support</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/promotion")}`}>
+            <Link to="/admin/promotion">
+              <FontAwesomeIcon icon={faFire} className="menu-icon" />
+              <span>Promotion</span>
+            </Link>
+          </li>
           <li className="nav-link button-logout">
             <Link
               onClick={onLogout}
@@ -231,4 +247,5 @@ const DashBroad = () => {
 };
 
 export default DashBroad;
+
 

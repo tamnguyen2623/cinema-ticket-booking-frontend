@@ -106,6 +106,7 @@ export default function BannerForm({
             listType="picture"
             beforeUpload={() => false}
             fileList={fileList}
+            maxCount={1}
             onChange={handleUploadChange}
           >
             <Button icon={<UploadOutlined />}>Upload</Button>

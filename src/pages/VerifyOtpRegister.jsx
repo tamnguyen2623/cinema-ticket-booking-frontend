@@ -74,7 +74,8 @@ const VerifyOtpRegister = () => {
                 </form>
                 <button
                     onClick={resendOtp}
-                    className="w-full py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none"
+                    className="w-full py-2 px-4 rounded-md focus:outline-none"
+                    style={{backgroundColor: "#231F20", color: "#DAD2B4"}}
                     disabled={isResending}
                 >
                     {isResending ? "Resending..." : "Resend OTP"}

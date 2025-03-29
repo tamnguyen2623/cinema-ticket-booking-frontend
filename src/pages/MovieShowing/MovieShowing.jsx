@@ -27,6 +27,7 @@ import { toast } from "react-toastify";
 
 const MovieShowingList = () => {
   const [movieShowings, setMovieShowings] = useState([]);
+  const [filterMovieShowings, setFilterMovieShowings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -179,6 +180,10 @@ const MovieShowingList = () => {
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
+    const filter = movieShowings.filter((movieShowing) =>
+      movieShowing.movieId.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilterMovieShowings(filter);
   };
 
   if (loading) return <Spin size="large" tip="Đang tải..." />;
@@ -319,7 +324,7 @@ const MovieShowingList = () => {
       </Modal>
 
       <Table
-        dataSource={movieShowings}
+        dataSource={searchTerm == "" ? movieShowings : filterMovieShowings}
         columns={[
           {
             title: "Movie Name",

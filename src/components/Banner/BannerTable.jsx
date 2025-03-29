@@ -12,7 +12,7 @@ export default function BannerTable({ banners, setModalType, setCurrentBanner, u
     }
   };
 
-  (() => {
+  useEffect(() => {
   }, [banners]);
 
   return (

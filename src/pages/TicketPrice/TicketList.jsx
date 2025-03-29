@@ -40,13 +40,13 @@ const TicketList = ({
             Edit
           </Button>
 
-          <Button
+          {/* <Button
             icon={<InfoCircleOutlined />}
             onClick={() => showDetailModal(record._id)}
             className="actionButton infoButton"
           >
             Detail
-          </Button>
+          </Button> */}
 
           {/* <Button
             icon={<DeleteOutlined />}
@@ -106,7 +106,14 @@ const TicketList = ({
           </Button>
         </div>
       </div>
-      <Table columns={columns} dataSource={tickets} rowKey="_id" />
+      <Table
+        columns={columns}
+        dataSource={tickets}
+        rowKey="_id"
+        pagination={{
+          pageSize: 5,
+        }}
+      />
     </div>
   );
 };

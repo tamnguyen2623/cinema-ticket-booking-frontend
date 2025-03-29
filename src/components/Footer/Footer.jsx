@@ -36,10 +36,10 @@ const Footer = () => {
                 <nav className="footer-section">
                     <h4>Links</h4>
                     <ul>
-                        <li><Link to="/about">About Us</Link></li>
-                        <li><Link to="/policy">Privacy Policy</Link></li>
-                        <li><Link to="/terms">Terms of Use</Link></li>
-                        <li><Link to="/contact">Contact</Link></li>
+                        <li><a>About Us</a></li>
+                        <li><a>Privacy Policy</a></li>
+                        <li><a>Terms of Use</a></li>
+                        <li><a>Contact</a></li>
                     </ul>
                 </nav>
 

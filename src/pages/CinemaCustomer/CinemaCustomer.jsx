@@ -201,8 +201,8 @@ const CinemaCustomer = () => {
       width: 200,
       render: (text, record) => (
         <Button
-          type="primary"
-          className="btn-mapview"
+          // type="primary"
+          // className="btn-mapview"
           icon={<InsertRowAboveOutlined />}
           onClick={() => handleViewMap(record.map)}
         >

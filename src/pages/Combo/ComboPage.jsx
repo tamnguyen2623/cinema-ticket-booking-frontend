@@ -235,7 +235,7 @@ const ComboPage = () => {
         <div className="searchFilterContainer">
           <div>
             <Input
-              placeholder="Search combo..."
+              placeholder="Search by combo name..."
               onChange={handleSearch}
               className="searchInput"
               style={{ width: 300 }}

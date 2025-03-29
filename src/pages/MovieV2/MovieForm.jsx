@@ -109,7 +109,7 @@ const MovieForm = ({
                 <Text strong>🎭 Genre:</Text> {movieDetail.movieType.name}
               </p>
               <p className="text-gray-700">
-                <Text strong>⏳ Length:</Text> {movieDetail.length} minutes
+              <Text strong>⏳ Length:</Text> {movieDetail.length} minutes
               </p>
               <p className="text-gray-700">
                 <Text strong>🎬 Actor:</Text> {movieDetail.actor}
