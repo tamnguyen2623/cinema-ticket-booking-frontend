@@ -102,23 +102,24 @@
   width: 100%;
   font-weight: bold;
   margin-top: 10px;
-  background: #EFEBDB !important;
+  background: #DAD2B4 !important;
+  color: black !important;
   border: none;
   border-radius: 8px;
   height: 40px;
   margin-left: 20px;
   transition: all 0.3s ease;
-  color: black;
 }
 
 .next-button,
 .confirm-button {
+  background-color: #DAD2B4 !important;
   width: 100px;
   margin-top: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 .next-button:hover,
 .confirm-button:hover {
-  background: #DAD2B4 !important;
-  /* opacity: 0.6; */
-  color: black !important;
+  background-color: #231f20 !important;
+  color: #efebdb !important;
 }

@@ -52,6 +52,11 @@ import VerifyOtpRegisterGoogle from "../pages/VerifyOtpRegisterGoogle";
 import Profile from "../pages/profile/profile";
 import TicketBorad from "../pages/TicketBoard/TicketBoard";
 import Support from "../pages/Support/Support";
+import FavoriteMovies from "../pages/Favorite/FavoriteMovies";
+import Service from "../pages/Service/Service";
+import AdminServiceList from "../pages/ServiceForAdmin/AdminServiceList";
+
+
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
 
@@ -95,6 +100,8 @@ const router = createBrowserRouter([
       { path: "egiftdetailcustomer/:id", element: <EgiftDetailCustomer /> },
       { path: "myticketdetail/:id", element: <MyTicketDetail /> },
       { path: "combocustomer", element: <ComboCustomer /> },
+      { path: "favoritemovie", element: <FavoriteMovies /> },
+      { path: "service", element: <Service /> },
       // { path: "vouchercustomerpage", element: <VoucherCustomerPage /> },
       { path: "/profile", element: <Profile /> },
       { path: "egiftdetailcustomer/:id", element: <EgiftDetailCustomer /> },
@@ -128,6 +135,7 @@ const router = createBrowserRouter([
       { path: "/admin/booking", element: <BookingAdmin /> },
       { path: "/admin/egiftadmin", element: <EgiftsAdminPage /> },
       { path: "/admin/support", element: <Support /> },
+      { path: "/admin/service", element: <AdminServiceList /> },
     ],
   },
 

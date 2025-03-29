@@ -107,7 +107,7 @@ const MovieList = () => {
                   alt={movie.title}
                   className="movie-image"
                 />
-                <div className="overlay"> </div>
+                
                 <div className="movie-actions">
                   {new Date(movie.releaseDate) <= new Date() ? (
 

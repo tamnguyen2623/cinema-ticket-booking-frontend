@@ -147,7 +147,6 @@ const ComboCarousel = () => {
         )}
 
         <Button
-          type="primary"
           className="combo-button confirm-button"
           onClick={handleConfirmSelection}
         >
@@ -155,7 +154,6 @@ const ComboCarousel = () => {
         </Button>
 
         <Button
-          type="primary"
           className="combo-button next-button"
           onClick={() => navigate("/totalslide")}
         >
