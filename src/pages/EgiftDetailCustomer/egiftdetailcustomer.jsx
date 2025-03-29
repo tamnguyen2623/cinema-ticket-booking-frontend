@@ -74,17 +74,17 @@ const EgiftDetailCustomer = () => {
       <div className="movie-detail-header">
         <p className="movie-detail-title">EGIFT</p>
       </div>
-      <div className="movie-detail-content">
-        <div className="movie-detail-main-info">
-          <div className="detail-images">
+      <div className="moviecontent">
+        <div className="moviemaininfo">
+          <div className="detailimages">
             <img src={egift?.image} alt={egift?.name} />
-            <button onClick={showGiftForm} className="btn-book-ticket">Send as gift</button>
+            <button onClick={showGiftForm} className="btnsendgift">Send as gift</button>
           </div>
-          <div className="movie-detail-info">
-            <div className="movie-detail-name-wrapper">
-              <h2 className="movie-detail-name">{egift?.name}</h2>
+          <div className="movieinfo">
+            <div className="movienamewrapper">
+              <h2 className="moviename">{egift?.name}</h2>
             </div>
-            <div className="movie-detail-inf-wrapper">
+            <div className="movieinfowrapper">
               <p>
                 <span className="label">Description:</span>{" "}
                 <span className="value">{egift?.description}</span>
@@ -93,6 +93,7 @@ const EgiftDetailCustomer = () => {
           </div>
         </div>
       </div>
+
       <FloatingNavigation />
       <EgiftForm
         isFormVisible={isFormVisible}
