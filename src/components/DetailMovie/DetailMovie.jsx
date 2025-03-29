@@ -118,6 +118,7 @@ const MovieDetail = () => {
           </div>
           <div className="movie-detail-info">
             <div className="movie-detail-name-wrapper">
+
               <h2 className="movie-detail-name">{movie.name}</h2>
               <FaHeart 
                 style={{ fontSize: "24px", color: isFavorite ? "red" : "#ccc", cursor: "pointer" }}

@@ -5,11 +5,12 @@ import {
   SearchOutlined,
   FileOutlined
 } from '@ant-design/icons';
-import { Button, Form, Input, Modal, Select, Space, Switch, Table, Typography, message } from 'antd';
+import { Button, Form, Input, Modal, Select, Space, Switch, Table, Typography } from 'antd';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { FaFileExport } from 'react-icons/fa';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -65,15 +66,16 @@ const User = () => {
 
 
   }, []);
- // 🔎 Xử lý tìm kiếm
+  // 🔎 Xử lý tìm kiếm
   useEffect(() => {
     const filtered = users.filter(user =>
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.roleId?.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ).sort((a, b) => a.isDelete - b.isDelete);
     setFilteredUsers(filtered);
-  }, [searchTerm, users]);
+  }
+    , [searchTerm, users]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -103,11 +105,11 @@ const User = () => {
       await axios.put(`/role/deleteEmployee/${user._id}`, { isDelete: !user.isDelete }, {
         headers: { Authorization: `Bearer ${auth.token}` },
       });
-      message.success("User deleted successfully!");
+      toast.success("User deleted successfully!", 2);
       await fetchUsers();
     } catch (error) {
       console.error("Error deleting user:", error);
-      message.error("Failed to delete user.");
+      toast.error("Failed to delete user.");
     }
   };
 
@@ -117,13 +119,13 @@ const User = () => {
       await axios.post('/role/create', values, {
         headers: { Authorization: `Bearer ${auth.token}` },
       });
-      message.success('Role added successfully!');
+      toast.success('Role added successfully!');
       setIsRoleModalVisible(false);
       roleForm.resetFields();
       fetchRoles(); // 🔄 Cập nhật danh sách roles
     } catch (error) {
       console.error('Error adding role:', error);
-      message.error('Failed to add role.');
+      toast.error('Failed to add role.');
     }
   };
   const handleFormSubmit = async (values) => {
@@ -133,18 +135,18 @@ const User = () => {
         await axios.put(`/role/putEmployee/${editingUser._id}`, values, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
-        message.success("User updated successfully!");
+        toast.success("User updated successfully!");
       } else {
         await axios.post("/role/createEmployee", values, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
-        message.success("User added successfully!");
+        toast.success("User added successfully!");
       }
       fetchUsers();
       setIsModalVisible(false);
     } catch (error) {
       console.error("Error saving user data:", error.response?.data || error);
-      message.error("Error saving user data");
+      toast.error("Error saving user data");
     }
   };
 
@@ -156,14 +158,24 @@ const User = () => {
       title: 'Role',
       dataIndex: 'roleId',
       render: (role) => role?.name || 'N/A',
-      
+
     },
 
     {
       title: 'Action',
       render: (_, record) => (
         <Space>
-          <Button icon={<EditOutlined />} onClick={() => handleEditUser(record)}>Update</Button>
+          <Button
+            className="custom-edit-btn"
+            icon={<EditOutlined />}
+            type="primary"
+            htmlType="submit"
+            block
+            onClick={() => handleEditUser(record)}>Edit
+          </Button>
+
+
+
         </Space>
       )
     },
@@ -253,7 +265,7 @@ const User = () => {
 
         <Button type="primary" icon={<PlusOutlined />}
           className="custom-edit-btn"
-          style = { {fontWeight:"bold"} }
+          style={{ fontWeight: "bold" }}
           onClick={handleAddUser}>
           Add User
         </Button>
@@ -283,8 +295,8 @@ const User = () => {
             name="fullname"
             label="Fullname"
             rules={[{ required: true, message: 'Please input fullname!' }]}
-          >        
-              <Input placeholder="Enter fullname" />
+          >
+            <Input placeholder="Enter fullname" />
           </Form.Item>
           <Form.Item
             name="password"

@@ -21,6 +21,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { FaFileExport } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -34,6 +35,7 @@ const RolePage = () => {
   const [isRoleModalVisible, setIsRoleModalVisible] = useState(false);
   const [roleForm] = Form.useForm();
   const [isRoleEditing, setIsRoleEditing] = useState(false);
+  const [editingRole, setEditingRole] = useState(null);
 
   const fetchRoles = async () => {
     try {
@@ -41,10 +43,8 @@ const RolePage = () => {
         headers: { Authorization: `Bearer ${auth.token}` },
       });
 
-      const filteredRoles = response.data.data.filter(
-        (role) => role.name !== "user"
-      ); // 👉 Lọc role "user"
-      setRoles(filteredRoles);
+      setRoles(response.data.data); // Cập nhật state roles
+      setFilteredRoles(response.data.data); // Cập nhật danh sách đã lọc
     } catch (error) {
       console.error("Error fetching roles:", error);
     }
@@ -96,13 +96,13 @@ const RolePage = () => {
 
       await fetchRoles(); // Cập nhật lại danh sách từ server
 
-      message.success(
-        `Role ${role.name}  ${role.isDelete ? "vô hiệu hóa" : "Deleted "
-        } success!`
+      toast.success(
+        `Role ${role.name}  ${role.isDelete ? "name" : "disable "
+        } success!`,2
       );
     } catch (error) {
       console.error("Lỗi khi cập nhật trạng thái role:", error);
-      message.error("Không thể cập nhật trạng thái role.");
+      toast.error("Error role")
     }
   };
 
@@ -117,34 +117,32 @@ const RolePage = () => {
     );
 
     if (isDuplicate) {
-      message.error("Role này đã tồn tại!");
+      toast.success("Role này đã tồn tại!");
       return;
     }
 
     try {
       if (isRoleEditing) {
         // 👉 Sửa role
-        // 👉 Sửa role
         await axios.put(`/role/${editingRole._id}`, values, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
-        message.success("Cập nhật role thành công");
+        toast.success("Update role successfully!");
       } else {
         // 👉 Thêm role mới
         await axios.post("/role/create", values, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
-        message.success("Thêm role thành công");
+        toast.success("Added role successfully!");
       }
 
-      fetchRoles(); // Cập nhật danh sách role
       fetchRoles(); // Cập nhật danh sách role
       setIsRoleModalVisible(false);
       setIsRoleEditing(false);
       roleForm.resetFields();
     } catch (error) {
       console.error("Lỗi khi lưu role:", error);
-      message.error("Không thể lưu role");
+      toast.error("error save role");
     }
   };
 
@@ -159,7 +157,7 @@ const RolePage = () => {
   useEffect(() => {
     const filtered = roles.filter((role) =>
       role.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ).sort((a, b) => a.isDelete - b.isDelete);; // sort by isDelete (false first, then true)
     setFilteredRoles(filtered);
   }, [searchTerm, roles]);
 
@@ -175,7 +173,7 @@ const RolePage = () => {
   const roleColumns = [
     { title: "Role Name", dataIndex: "name", key: "name" },
     { title: "Members", dataIndex: "memberCount", key: "memberCount" },
-    { title: "Members", dataIndex: "memberCount", key: "memberCount" },
+    // { title: "Members", dataIndex: "memberCount", key: "memberCount" },
     {
       title: "Action",
       key: "action",
@@ -189,9 +187,12 @@ const RolePage = () => {
               form.setFieldsValue({
                 name: record.name,
               });
-              set(record);
-              setModalType("edit");
+              setIsRoleEditing(true);  // Bật chế độ chỉnh sửa
+              setIsRoleModalVisible(true); // Mở modal
+              setEditingRole(record); // Lưu role đang chỉnh sửa
+              
             }}
+
           >
             Edit
           </Button>

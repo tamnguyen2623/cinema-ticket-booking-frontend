@@ -1,13 +1,13 @@
 .head-container {
-  max-width: 100%;
-  /* Giới hạn độ rộng tối đa */
+  /* max-width: 100%;
   margin: 0 auto;
-  /* Căn giữa */
   display: flex;
   flex-wrap: wrap;
   gap: 40px;
   justify-content: center;
-  padding: 20px;
+  padding: 20px; */
+  max-width: 1200px; /* Hoặc cùng giá trị với Navbar */
+  margin: 0 auto;
 }
 .title-header {
   text-align: center;
