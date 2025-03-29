@@ -8,9 +8,9 @@ import { getAvailableFeedbacks } from "../api/feedback";
 import "./DetailMovie.css";
 import FloatingNavigation from "../UtilityBar/FloatingNavigation";
 import moment from "moment";
-import { FaHeart } from "react-icons/fa"; 
+import { FaHeart } from "react-icons/fa";
 import { AuthContext } from "../../context/AuthContext";
-import { Select } from "antd"; 
+import { Select } from "antd";
 const { Option } = Select;
 
 const MovieDetail = () => {
@@ -43,7 +43,7 @@ const MovieDetail = () => {
     };
 
     fetchMovie();
-  }, [id, auth.favoriteMovies]); 
+  }, [id, auth.favoriteMovies]);
 
   const handleBookTicket = () => {
     navigate("/bookingticket", { state: { selectedMovie: movie } });
@@ -52,9 +52,12 @@ const MovieDetail = () => {
 
   const toggleFavorite = async () => {
     try {
-      const response = await axios.post(`http://localhost:8080/favorite/${id}`, {
-        userId: auth.userId,
-      });
+      const response = await axios.post(
+        `http://localhost:8080/favorite/${id}`,
+        {
+          userId: auth.userId,
+        }
+      );
 
       const updatedFavorites = response.data.favoriteMovies;
       setIsFavorite(updatedFavorites.includes(id));
@@ -77,6 +80,8 @@ const MovieDetail = () => {
     ? feedbackData.filter((feedback) => feedback.ratting === selectedRating)
     : feedbackData;
 
+  const isUpcoming = new Date(movie.releaseDate) > new Date();
+
   return (
     <div className="movie-detail-container">
       <div className="movie-detail-header">
@@ -85,58 +90,106 @@ const MovieDetail = () => {
 
       <div className="trailer-modal" onClick={() => setOpenTrailer(true)}>
         <div className="movie-trailer-container">
-          <img src={movie.img} alt={movie.title} className="movie-image-trailer" />
-          <PlayCircleOutlineIcon className="play-icon" sx={{ fontSize: "80px", cursor: "pointer" }} />
+          <img
+            src={movie.img}
+            alt={movie.title}
+            className="movie-image-trailer"
+          />
+          <PlayCircleOutlineIcon
+            className="play-icon"
+            sx={{ fontSize: "80px", cursor: "pointer" }}
+          />
         </div>
       </div>
 
-      <Dialog open={openTrailer} onClose={() => setOpenTrailer(false)} maxWidth="md" fullWidth className="custom-modal">
+      <Dialog
+        open={openTrailer}
+        onClose={() => setOpenTrailer(false)}
+        maxWidth="md"
+        fullWidth
+        className="custom-modal"
+      >
         <div className="modal-header">
           <DialogTitle>Trailer - {movie.name}</DialogTitle>
-          <IconButton className="close-button" onClick={() => setOpenTrailer(false)} sx={{ color: "white" }}>
+          <IconButton
+            className="close-button"
+            onClick={() => setOpenTrailer(false)}
+            sx={{ color: "white" }}
+          >
             <CloseIcon />
           </IconButton>
         </div>
         <DialogContent>
-          <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+          <div
+            style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}
+          >
             <iframe
               src={movie.trailer}
               title="Trailer"
               allow="autoplay; encrypted-media"
               allowFullScreen
-              style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+              }}
             ></iframe>
           </div>
         </DialogContent>
       </Dialog>
 
-      <div className="movie-detail-contentunique">
+      <div className="movie-detail-content2">
         <div className="movie-detail-main-info">
           <div className="movie-detail-image">
             <img src={movie.img} alt={movie.name} />
-            <button className="btn-book-ticket" onClick={handleBookTicket}>Đặt Vé</button>
+
+            <button
+              className="btn-book-ticket"
+              onClick={handleBookTicket}
+              disabled={isUpcoming}
+            >
+              {isUpcoming ? "Coming Soon" : "Book Ticket"}
+            </button>
           </div>
           <div className="movie-detail-info">
             <div className="movie-detail-name-wrapper">
-
               <h2 className="movie-detail-name">{movie.name}</h2>
-              <FaHeart 
-                style={{ fontSize: "24px", color: isFavorite ? "red" : "#ccc", cursor: "pointer" }}
+              <FaHeart
+                style={{
+                  fontSize: "30px",
+                  color: isFavorite ? "red" : "#ccc",
+                  cursor: "pointer",
+                }}
                 onClick={toggleFavorite}
                 className="icon_heart"
               />
             </div>
             <div className="movie-detail-inf-wrapper">
-              <p><span className="label"> Thời lượng:</span> <span className="value">{movie.length} phút</span></p>
+              <p>
+                <span className="label"> Duration:</span>{" "}
+                <span className="value">{movie.length} minutes</span>
+              </p>
               <div className="movie-meta-inforunique">
-                <p><span className="label"> Thể loại: </span> <span className="value">{movie.movieType?.name || "Không rõ"}</span></p>
-                <p><span className="label"> Ngày khởi chiếu:</span> <span className="value">{new Date(movie.releaseDate).toLocaleDateString("vi-VN")}</span></p>
+                <p>
+                  <span className="label"> Genre: </span>{" "}
+                  <span className="value-genre">
+                    {movie.movieType?.name || "Unknown"}
+                  </span>
+                </p>
+                <p>
+                  <span className="label"> Release Date:</span>{" "}
+                  <span className="value">
+                    {new Date(movie.releaseDate).toLocaleDateString("en-US")}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
         </div>
         <div className="movie-detail-summary">
-          <h3>Tóm tắt</h3>
+          <h3 className="movie-detail-summary-title">Summary</h3>
           <p className="movie-detail-summary-text">{movie.description}</p>
         </div>
       </div>

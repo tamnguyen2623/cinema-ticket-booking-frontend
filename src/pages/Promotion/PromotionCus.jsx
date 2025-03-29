@@ -33,7 +33,7 @@ const PromotionCus = () => {
       <div className="hot_movies">
         <p className="title-unique">PROMOTION</p>
       </div>
-      <div className="head-container">
+      <div className="head-container mt-10">
         {["Hot Promotion", "Gift Movie", "Event Cinema"].map((category) => {
           const categoryPromotions = getPromotionsByCategory(category);
           const isExpanded = expandedCategories[category] || false;

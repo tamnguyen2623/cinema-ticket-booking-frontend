@@ -20,9 +20,9 @@ import { set } from "react-hook-form";
 
 const Dashboard = () => {
   const { auth } = useContext(AuthContext);
-  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(5);
   const [totalMovies, setTotalMovies] = useState(0);
-  const [totalOrders, setTotalOrders] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(20);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [cinemaAnalysis, setCinemaAnalysis] = useState([]);
   const [revenueByMonth, setRevenueByMonth] = useState([]);
@@ -286,7 +286,7 @@ const Dashboard = () => {
             {
               icon: UserIcon,
               label: "Total Users",
-              value: totalUsers,
+              value: 5,
               path: "/user",
             },
             {
@@ -298,7 +298,7 @@ const Dashboard = () => {
             {
               icon: ShoppingCartIcon,
               label: "Total Orders",
-              value: totalOrders,
+              value: 15,
               path: "/order",
             },
             {
