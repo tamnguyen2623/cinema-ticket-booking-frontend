@@ -3,6 +3,7 @@ import CinemaList from "../components/Contact/CinemaList";
 import CinemaDetail from "../components/Contact/CinemaDetail";
 import { getAllCinema } from "../components/api/cinema";
 import "../components/Contact/Contact.css"
+import ServiceForm from "../pages/ServiceForm/Service";
 
 export default function Contact() {
   const [selectedCinema, setSelectedCinema] = useState();
@@ -20,15 +21,20 @@ export default function Contact() {
   }, []);
 
   return (
-    <><div className="hot_movies">
-      <p className="title-unique">CONTACT</p>
-    </div>
-    <div className="contact__container">
+    <>
+      <div className="hot_movies">
+        <p className="title-unique">CONTACT</p>
+      </div>
+      <div className="contact__container">
         <CinemaList
           cinemas={cinemas}
           selectedCinema={selectedCinema}
           setSelectedCinema={setSelectedCinema} />
         <CinemaDetail cinema={selectedCinema} />
-      </div></>
+      </div>
+      <div style={{ width:"100%" }}>
+        <ServiceForm />
+      </div>
+    </>
   );
 }

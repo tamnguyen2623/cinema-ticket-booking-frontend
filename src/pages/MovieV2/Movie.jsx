@@ -52,6 +52,13 @@ const [searchTerm, setSearchTerm] = useState("");
     [auth.token]
   );
 
+  const handleCancel = () => {
+    setIsFormVisible(false);
+    setEditingMovie(null); // Reset editingMovie
+    setMovieDetail(null); // Reset movieDetail
+    form.resetFields(); // Reset form
+  };
+
   return (
     <div className="container-fluid">
       <div className="title-ticket">Movie List</div>
@@ -65,12 +72,13 @@ const [searchTerm, setSearchTerm] = useState("");
           setEditingMovie(null);
           setMovieDetail(null);
           setIsFormVisible(true);
+          form.resetFields();
         }}
       />
 
       <MovieForm
         isFormVisible={isFormVisible}
-        handleCancel={() => setIsFormVisible(false)}
+        handleCancel={handleCancel}
         onFinish={(values) =>
           handleMovieSubmit(
             values,

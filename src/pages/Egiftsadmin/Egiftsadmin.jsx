@@ -130,7 +130,7 @@ const EgiftAdmin = () => {
         <div className="searchFilterContainer">
           <div>
             <Input
-              placeholder="Search eGift..."
+              placeholder="Search by Egift name..."
               onChange={handleSearch}
               className="searchInput"
               style={{ width: 300 }}
