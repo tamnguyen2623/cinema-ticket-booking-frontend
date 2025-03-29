@@ -54,9 +54,9 @@ const [searchTerm, setSearchTerm] = useState("");
 
   const handleCancel = () => {
     setIsFormVisible(false);
-    setEditingMovie(null); // Reset editingMovie
-    setMovieDetail(null); // Reset movieDetail
-    form.resetFields(); // Reset form
+    setEditingMovie(null);
+    setMovieDetail(null);
+    form.resetFields();
   };
 
   return (

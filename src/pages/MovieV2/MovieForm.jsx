@@ -248,11 +248,10 @@ const MovieForm = ({
             name="description"
             label="Description"
             rules={[{ required: true, message: "Description is required" }]}
-            style={{ resize: "vertical" }}
+            className="textarea-resizable"
           >
             <Input.TextArea placeholder="Enter movie's description" />
           </Form.Item>
-          {/* // ✅ Thêm releaseDate */}
           <Form.Item
             label="Release Date"
             name="releaseDate"
