@@ -44,6 +44,7 @@ const MovieDetail = () => {
 
   const handleBookTicket = () => {
     navigate("/bookingticket", { state: { selectedMovie: movie } });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const toggleFavorite = async () => {
@@ -63,10 +64,20 @@ const MovieDetail = () => {
   if (loading) return <p>Loading...</p>;
   if (!movie) return <p>Movie not found</p>;
 
+  // Handle rating filter change
+  const handleRatingFilter = (value) => {
+    setSelectedRating(value);
+  };
+
+  // Filter feedback based on selected rating
+  const filteredFeedback = selectedRating
+    ? feedbackData.filter((feedback) => feedback.ratting === selectedRating)
+    : feedbackData;
+
   return (
     <div className="movie-detail-container">
       <div className="movie-detail-header">
-        <p className="movie-detail-title">PHIM HOT TẠI RẠP</p>
+        <p className="movie-detail-title">HOT MOVIES IN CINEMA</p>
       </div>
 
       <div className="trailer-modal" onClick={() => setOpenTrailer(true)}>
@@ -128,8 +139,28 @@ const MovieDetail = () => {
 
       <div className="movie-detail-reviews">
         <hr className="divider" />
+        <div className="filter-section">
+          <label>Filter by Rating: </label>
+          <Select
+            defaultValue="All"
+            style={{ width: 120 }}
+            onChange={handleRatingFilter}
+          >
+            <Option value={null}>All</Option>
+            <Option value={5}>5 ★</Option>
+            <Option value={4}>4 ★</Option>
+            <Option value={3}>3 ★</Option>
+            <Option value={2}>2 ★</Option>
+            <Option value={1}>1 ★</Option>
+          </Select>
+        </div>
         <div className="review-list">
-          {feedbackData.map((feedback) => (
+          {filteredFeedback.length == 0 && (
+            <p className="text-center text-base text-gray-600">
+              - No feedback -
+            </p>
+          )}
+          {filteredFeedback.map((feedback) => (
             <div key={feedback._id} className="review-item">
               <div className="review-header">
                 <div className="review-info">
@@ -137,7 +168,9 @@ const MovieDetail = () => {
                   <p className="review-stars">{feedback.ratting} ★</p>
                 </div>
                 <p className="review-content">{feedback.comment}</p>
-                <p className="review-date">{moment(feedback.date).format("DD/MM/YYYY HH:mm")}</p>
+                <p className="review-date">
+                  {moment(feedback.date).format("DD/MM/YYYY HH:mm")}
+                </p>
               </div>
               <div className="review-user">
                 <p className="review-username">{feedback.userId.fullname}</p>

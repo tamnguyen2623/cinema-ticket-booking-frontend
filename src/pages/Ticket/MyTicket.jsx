@@ -110,8 +110,8 @@ const MyTicket = () => {
       const bookingsData = Array.isArray(response.data)
         ? response.data
         : Array.isArray(response.data.bookings)
-          ? response.data.bookings
-          : [];
+        ? response.data.bookings
+        : [];
       console.log(bookingsData);
 
       setBookings(bookingsData);
@@ -161,7 +161,10 @@ const MyTicket = () => {
           </Select>
         </div>
 
-        <Alert message="Not find." type="info" showIcon />
+        {/* <Alert message="Not find." type="info" showIcon /> */}
+        <div className="text-center text-sm text-zinc-400 italic">
+          - No data -
+        </div>
       </div>
     );
   }
@@ -193,7 +196,7 @@ const MyTicket = () => {
 
       <div className="head-container">
         <div className="sub-container">
-          <Row gutter={[32, 32]} justify="center">
+          <Row gutter={[0, 32]} justify="space-evenly">
             {filteredBookings.map((ticket) => (
               <Col key={ticket._id}>
                 <div className="ticket-card">

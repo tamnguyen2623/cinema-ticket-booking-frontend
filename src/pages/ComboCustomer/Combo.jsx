@@ -97,6 +97,7 @@ const ComboCarousel = () => {
               slidesToShow={3}
               slidesToScroll={1}
               ref={carouselRef}
+              infinite={false}
               className="combo-slider"
             >
               {combos.map((combo) => {
@@ -147,6 +148,7 @@ const ComboCarousel = () => {
         )}
 
         <Button
+          // type="primary"
           className="combo-button confirm-button"
           onClick={handleConfirmSelection}
         >
@@ -154,6 +156,7 @@ const ComboCarousel = () => {
         </Button>
 
         <Button
+          // type="primary"
           className="combo-button next-button"
           onClick={() => navigate("/totalslide")}
         >
