@@ -147,7 +147,7 @@ const MyTicket = () => {
             className="custom-datepicker"
             onChange={(date, dateString) => setSelectedDate(dateString)}
             format="DD/MM/YYYY"
-            placeholder="Chọn ngày"
+            placeholder="Selected day"
             allowClear
           />
           <Select
@@ -161,11 +161,10 @@ const MyTicket = () => {
           </Select>
         </div>
 
-        <Alert
-          message="Không tìm thấy vé nào theo ngày được chọn."
-          type="info"
-          showIcon
-        />
+        {/* <Alert message="Not find." type="info" showIcon /> */}
+        <div className="text-center text-sm text-zinc-400 italic">
+          - No data -
+        </div>
       </div>
     );
   }
@@ -181,7 +180,7 @@ const MyTicket = () => {
           className="custom-datepicker"
           onChange={(date, dateString) => setSelectedDate(dateString)}
           format="DD/MM/YYYY"
-          placeholder="Chọn ngày"
+          placeholder="Selected day"
           allowClear
         />
         <Select
@@ -197,7 +196,7 @@ const MyTicket = () => {
 
       <div className="head-container">
         <div className="sub-container">
-          <Row gutter={[32, 32]} justify="center">
+          <Row gutter={[0, 32]} justify="space-evenly">
             {filteredBookings.map((ticket) => (
               <Col key={ticket._id}>
                 <div className="ticket-card">
@@ -211,17 +210,18 @@ const MyTicket = () => {
                     <div className="information-ticket">
                       <h3> {ticket.movieName}</h3>
                       <div>
-                        <strong>Rạp:</strong> {ticket.cinema}
+                        <strong>Cinema:</strong> {ticket.cinema}
                       </div>
                       <div>
-                        <strong>Ngày chiếu:</strong>{" "}
+                        <strong>Show Date:</strong>{" "}
                         {dayjs(ticket.date).format("DD/MM/YYYY")}
                       </div>
                       <div>
-                        <strong>Ghế:</strong> {ticket.seats.join(", ")}
+                        <strong>Seats:</strong> {ticket.seats.join(", ")}
                       </div>
                       <div>
-                        <strong>Giá:</strong> {ticket.price.toLocaleString()} $
+                        <strong>Price:</strong> {ticket.price.toLocaleString()}{" "}
+                        $
                       </div>
 
                       <div className="flex items-center justify-between pr-5">

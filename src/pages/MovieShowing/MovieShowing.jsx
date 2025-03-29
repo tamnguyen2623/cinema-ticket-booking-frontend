@@ -21,12 +21,16 @@ import {
 } from "@ant-design/icons";
 import moment from "moment";
 import SeatAvailable from "../../components/Seat/SeatAvailable[Admin]";
-import { createSeatAvailable } from "../../components/api/seatAvailable";
+import {
+  createSeatAvailable,
+  deleteSeatAvailables,
+} from "../../components/api/seatAvailable";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 
 const MovieShowingList = () => {
   const [movieShowings, setMovieShowings] = useState([]);
+  const [filterMovieShowings, setFilterMovieShowings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -86,7 +90,7 @@ const MovieShowingList = () => {
       const newMovieShowing = {
         movieId: values.movieId,
         showtimeId: values.showtimeId,
-        cinemaId: values.cinemaId,
+        cinemaId: form.getFieldValue("cinemaId"),
         roomId: values.roomId,
         date: values.date.format("YYYY-MM-DD"),
       };
@@ -120,6 +124,11 @@ const MovieShowingList = () => {
         );
         console.log("Update Response:", response.data);
         if (response.data.success) {
+          await deleteSeatAvailables(response.data.data._id);
+          await createSeatAvailable({
+            roomId: response.data.data.roomId,
+            movieShowingId: response.data.data._id,
+          });
           console.log(response.data);
           fetchData();
         }
@@ -150,7 +159,7 @@ const MovieShowingList = () => {
 
   const handleToggleDelete = async (id, isDelete) => {
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8080/movieshowing/${id}/active`,
         { isDelete: !isDelete },
         {
@@ -160,20 +169,29 @@ const MovieShowingList = () => {
           },
         }
       );
-      setMovieShowings((prev) =>
-        prev.map((showing) =>
-          showing._id === id ? { ...showing, isDelete: !isDelete } : showing
-        )
-      );
 
-      toast.success("Cập nhật trạng thái thành công!");
+      if (response.data.success) {
+        setMovieShowings((prev) =>
+          prev.map((showing) =>
+            showing._id === id ? { ...showing, isDelete: !isDelete } : showing
+          )
+        );
+        toast.success("Cập nhật trạng thái thành công!");
+      } else {
+        toast.error("Lỗi khi cập nhật trạng thái!");
+      }
     } catch (error) {
       toast.error("Lỗi khi cập nhật trạng thái!");
+      console.error("Error:", error);
     }
   };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
+    const filter = movieShowings.filter((movieShowing) =>
+      movieShowing.movieId.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilterMovieShowings(filter);
   };
 
   if (loading) return <Spin size="large" tip="Đang tải..." />;
@@ -194,24 +212,31 @@ const MovieShowingList = () => {
   };
 
   return (
-    <div className="content">
-      <div style={{ display: "flex", gap: "10px", marginBottom: 16 }}>
-        <Input
-          placeholder="Search for movie showing..."
-          prefix={<SearchOutlined />}
-          style={{ width: 300 }}
-          onChange={handleSearch}
-          value={searchTerm}
-        />
-        <Button
-          icon={<PlusOutlined />}
-          onClick={() => {
-            setModalType("add");
-            setIsModalVisible(true);
-          }}
-        >
-          Add Movie Showing
-        </Button>
+    <div className="container-fluid">
+      <div className="title-ticket">Movie Showing List</div>
+      <div className="ticketListContainer">
+        <div className="searchFilterContainer">
+          <div>
+            <Input
+              placeholder="Search for movie showing..."
+              value={searchTerm}
+              style={{ width: 300 }}
+              onChange={handleSearch}
+            />
+          </div>
+          <div className="buttonAddContainer">
+            <Button
+              icon={<PlusOutlined />}
+              onClick={() => {
+                setModalType("add");
+                setIsModalVisible(true);
+              }}
+              className="addTicketButton"
+            >
+              Add Movie Showing
+            </Button>
+          </div>
+        </div>
       </div>
       <Modal
         title={modalType === "add" ? "Add Movie Showing" : "Edit Movie Showing"}
@@ -259,7 +284,7 @@ const MovieShowingList = () => {
             />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             name="cinemaId"
             label="Cinema"
             rules={[{ required: true }]}
@@ -270,7 +295,7 @@ const MovieShowingList = () => {
                 label: cinema.name,
               }))}
             />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item name="roomId" label="Room" rules={[{ required: true }]}>
             <Select
@@ -278,6 +303,12 @@ const MovieShowingList = () => {
                 value: room._id,
                 label: room.roomname,
               }))}
+              onChange={(roomId) => {
+                const selectedRoom = rooms.find((room) => room._id === roomId);
+                if (selectedRoom) {
+                  form.setFieldsValue({ cinemaId: selectedRoom.cinema._id }); // Gán giá trị cinemaId
+                }
+              }}
             />
           </Form.Item>
 
@@ -294,13 +325,14 @@ const MovieShowingList = () => {
         onCancel={handleCancel}
         okType={"default"}
         style={{ marginLeft: "350px" }}
+        cancelButtonProps={{ style: { display: "none" } }}
         width={1000}
       >
         <SeatAvailable movieShowing={currentMovieShowing} />
       </Modal>
 
       <Table
-        dataSource={movieShowings}
+        dataSource={searchTerm == "" ? movieShowings : filterMovieShowings}
         columns={[
           {
             title: "Movie Name",

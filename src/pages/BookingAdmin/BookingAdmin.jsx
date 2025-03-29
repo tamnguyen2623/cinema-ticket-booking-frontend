@@ -107,35 +107,39 @@ const BookingAdmin = () => {
     ];
 
     return (
-        <div style={{ padding: 20 }}>
-            <div style={{ textAlign: "center" }}>
-                <Title level={3}>List of bookings by customer</Title>
-            </div>
-            <Space style={{ marginBottom: 16 }}>
-                <Search
-                    placeholder="Search ..."
-                    onChange={(e) => setSearchText(e.target.value)}
-                    style={{ width: 300 }}
+        <div className="container-fluid">
+            <div className="title-ticket">Booking List</div>
+            <div className="ticketListContainer">
+                <div className="searchFilterContainer">
+                    <div>
+                        <Input
+                            placeholder="Search ..."
+                            onChange={(e) => setSearchText(e.target.value)}
+                            className="searchInput"
+                            style={{ width: 300 }}
+                        />
+                        <Select
+                            placeholder="Filter status"
+                            onChange={(value) => setStatusFilter(value)}
+                            allowClear
+                            className="filterSelect"
+                        >
+                            <Option value="pending">Pending</Option>
+                            <Option value="success">Success</Option>
+                            <Option value="failed">Failed</Option>
+                            <Option value="cancelled">Cancelled</Option>
+                        </Select>
+                    </div>
+                </div>
+                <Table
+                    columns={columns}
+                    dataSource={filteredData}
+                    rowKey="_id"
+                    loading={loading}
+                    pagination={{ pageSize: 5 }}
                 />
-                <Select
-                    placeholder="Filter status"
-                    onChange={(value) => setStatusFilter(value)}
-                    allowClear
-                    style={{ width: 200 }}
-                >
-                    <Option value="pending">Pending</Option>
-                    <Option value="success">Success</Option>
-                    <Option value="failed">Failed</Option>
-                    <Option value="cancelled">Cancelled</Option>
-                </Select>
-            </Space>
-            <Table
-                columns={columns}
-                dataSource={filteredData}
-                rowKey="_id"
-                loading={loading}
-                pagination={{ pageSize: 5 }}
-            />
+            </div>
+
         </div>
     );
 };

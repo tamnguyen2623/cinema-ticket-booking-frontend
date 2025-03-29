@@ -51,3 +51,17 @@ export const updateSeat = async (seatId, seatInfo) => {
     throw error;
   }
 };
+
+// Delete seats by roomID
+export const deleteSeats = async (roomId) => {
+  try {
+    const response = await axios.delete(`/seat/${roomId}`);
+    return response.data; // Trả về dữ liệu để sử dụng
+  } catch (error) {
+    console.error(
+      "Error deleting seats by room:",
+      error.response?.data || error.message
+    );
+    throw error; // Ném lỗi để xử lý ở nơi gọi hàm
+  }
+};

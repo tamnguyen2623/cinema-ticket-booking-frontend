@@ -37,16 +37,16 @@ const TicketList = ({
             onClick={() => showModal(record)}
             className="actionButton editButton"
           >
-            Update
+            Edit
           </Button>
 
-          <Button
+          {/* <Button
             icon={<InfoCircleOutlined />}
             onClick={() => showDetailModal(record._id)}
             className="actionButton infoButton"
           >
             Detail
-          </Button>
+          </Button> */}
 
           {/* <Button
             icon={<DeleteOutlined />}
@@ -79,6 +79,7 @@ const TicketList = ({
             className="searchInput"
             placeholder="Search by room or seat type"
             value={searchTerm}
+            style={{ width: 300 }}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Select
@@ -105,7 +106,14 @@ const TicketList = ({
           </Button>
         </div>
       </div>
-      <Table columns={columns} dataSource={tickets} rowKey="_id" />
+      <Table
+        columns={columns}
+        dataSource={tickets}
+        rowKey="_id"
+        pagination={{
+          pageSize: 5,
+        }}
+      />
     </div>
   );
 };

@@ -54,7 +54,7 @@ const RoomList = ({
             onClick={() => handleEdit(record)}
             className="edit-btn"
           >
-            Update
+            Edit
           </Button>
           <Button
             icon={<InfoCircleOutlined />}
@@ -92,21 +92,21 @@ const RoomList = ({
   ];
 
   return (
-    <div className="container">
-      <div className="title-list">Rooms List</div>
-      <div className="search-filter-add-container">
-        <div className="search-filter-container">
+    <div className="ticketListContainer">
+      <div className="searchFilterContainer">
+        <div>
           <Input
             placeholder="Search by Room Name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
+            className="searchInput"
+            style={{ width: 300 }}
           />
           <Select
             placeholder="Filter by Cinema"
             value={selectedCinema}
             onChange={(value) => setSelectedCinema(value)}
-            className="filter-select"
+            className="filterSelect"
           >
             <Option value="">All Cinemas</Option>
             {cinemas.map((cinema) => (
@@ -116,14 +116,16 @@ const RoomList = ({
             ))}
           </Select>
         </div>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={handleAddRoom}
-          className="add-room-button"
-        >
-          Add Room
-        </Button>
+        <div className="buttonAddContainer">
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={handleAddRoom}
+            className="addTicketButton"
+          >
+            Add Room
+          </Button>
+        </div>
       </div>
       <Table
         className="room-table"

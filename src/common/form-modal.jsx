@@ -26,12 +26,13 @@ const FormModal = ({ open, handleClose, onSubmit, formData }) => {
         '& .MuiDialog-paper': {
           padding: '16px',
           borderRadius: '16px',
-          backgroundColor: '#fff',
+          backgroundColor: '#fff !important',
           boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.3)',
           transition: 'all 0.3s ease-in-out',
         },
         '& .MuiBackdrop-root': {
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
           transition: 'opacity 0.5s ease-in-out',
         },
       }}

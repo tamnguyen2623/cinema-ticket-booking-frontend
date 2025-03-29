@@ -16,14 +16,22 @@ const TicketBoard = ({ token }) => {
         const ticketData = await fetchTicket(token);
         const processedData = ticketData.map((item) => ({
           ...item,
+          // weekday_before_12: item.price ?? "N/A",
+          // weekday_12_17: item.price ? item.price + 2 : "N/A",
+          // weekday_17_21: item.price ? item.price + 3 : "N/A",
+          // weekday_after_21: item.price ? item.price + 4 : "N/A",
+          // weekend_before_12: item.price ? item.price + 5 : "N/A",
+          // weekend_12_17: item.price ? item.price + 5 : "N/A",
+          // weekend_17_21: item.price ? item.price + 5 : "N/A",
+          // weekend_after_21: item.price ? item.price + 5 : "N/A",
           weekday_before_12: item.price ?? "N/A",
-          weekday_12_17: item.price ? item.price + 2 : "N/A",
-          weekday_17_21: item.price ? item.price + 3 : "N/A",
-          weekday_after_21: item.price ? item.price + 4 : "N/A",
-          weekend_before_12: item.price ? item.price + 5 : "N/A",
-          weekend_12_17: item.price ? item.price + 5 : "N/A",
-          weekend_17_21: item.price ? item.price + 5 : "N/A",
-          weekend_after_21: item.price ? item.price + 5 : "N/A",
+          weekday_12_17: item.price ? item.price : "N/A",
+          weekday_17_21: item.price ? item.price : "N/A",
+          weekday_after_21: item.price ? item.price : "N/A",
+          weekend_before_12: item.price ? item.price : "N/A",
+          weekend_12_17: item.price ? item.price : "N/A",
+          weekend_17_21: item.price ? item.price : "N/A",
+          weekend_after_21: item.price ? item.price : "N/A",
         }));
 
         // Nhóm dữ liệu
@@ -56,7 +64,12 @@ const TicketBoard = ({ token }) => {
       title: "Room Type",
       dataIndex: "roomType",
       key: "roomType",
-      render: (text) => <Tag color="blue">{text}</Tag>,
+      render: (text, record) => {
+        if (record.children) {
+          return <Tag color="blue">{text}</Tag>;
+        }
+        return <div style={{ visibility: "hidden" }}>.</div>;
+      },
     },
     {
       title: "Seat Type",
@@ -73,6 +86,32 @@ const TicketBoard = ({ token }) => {
     },
     {
       title: "Monday - Thursday",
+      // children: [
+      //   {
+      //     title: "Before 12:00",
+      //     dataIndex: "weekday_before_12",
+      //     key: "weekday_before_12",
+      //     render: (price) => formatPriceWithColor(price, "base"),
+      //   },
+      //   {
+      //     title: "12:00 - 17:00 (+$2)",
+      //     dataIndex: "weekday_12_17",
+      //     key: "weekday_12_17",
+      //     render: (price) => formatPriceWithColor(price, "weekday_12_17"),
+      //   },
+      //   {
+      //     title: "17:00 - 21:30 (+$3)",
+      //     dataIndex: "weekday_17_21",
+      //     key: "weekday_17_21",
+      //     render: (price) => formatPriceWithColor(price, "weekday_17_21"),
+      //   },
+      //   {
+      //     title: "After 21:30 (+$4)",
+      //     dataIndex: "weekday_after_21",
+      //     key: "weekday_after_21",
+      //     render: (price) => formatPriceWithColor(price, "weekday_after_21"),
+      //   },
+      // ],
       children: [
         {
           title: "Before 12:00",
@@ -81,19 +120,19 @@ const TicketBoard = ({ token }) => {
           render: (price) => formatPriceWithColor(price, "base"),
         },
         {
-          title: "12:00 - 17:00 (+$2)",
+          title: "12:00 - 17:00",
           dataIndex: "weekday_12_17",
           key: "weekday_12_17",
           render: (price) => formatPriceWithColor(price, "weekday_12_17"),
         },
         {
-          title: "17:00 - 21:30 (+$3)",
+          title: "17:00 - 21:30",
           dataIndex: "weekday_17_21",
           key: "weekday_17_21",
           render: (price) => formatPriceWithColor(price, "weekday_17_21"),
         },
         {
-          title: "After 21:30 (+$4)",
+          title: "After 21:30",
           dataIndex: "weekday_after_21",
           key: "weekday_after_21",
           render: (price) => formatPriceWithColor(price, "weekday_after_21"),
@@ -101,7 +140,7 @@ const TicketBoard = ({ token }) => {
       ],
     },
     {
-      title: "Friday - Sunday, Holiday (+$5)",
+      title: "Friday - Sunday, Holiday",
       children: [
         {
           title: "Before 12:00",
@@ -130,7 +169,6 @@ const TicketBoard = ({ token }) => {
       ],
     },
   ];
-
   return (
     <div className="ticket-board">
       <Title level={3} style={{ textAlign: "center" }}>

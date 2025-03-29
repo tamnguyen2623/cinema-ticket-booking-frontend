@@ -4,8 +4,9 @@ import {
   ShoppingCartIcon,
   CurrencyDollarIcon,
 } from "@heroicons/react/24/outline";
-import { Select } from "antd";
+import { Select, Button } from "antd";
 
+import { FaFileExport } from 'react-icons/fa';
 const { Option } = Select;
 import axios from "axios";
 import Navbar from "../../components/Navbar";
@@ -19,9 +20,9 @@ import { set } from "react-hook-form";
 
 const Dashboard = () => {
   const { auth } = useContext(AuthContext);
-  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(5);
   const [totalMovies, setTotalMovies] = useState(0);
-  const [totalOrders, setTotalOrders] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(20);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [cinemaAnalysis, setCinemaAnalysis] = useState([]);
   const [revenueByMonth, setRevenueByMonth] = useState([]);
@@ -31,6 +32,7 @@ const Dashboard = () => {
   const [yearForByMonth, setYearForByMonth] = useState("2025");
   const [yearForByDay, setYearForByDay] = useState("2025");
   const [month, setMonth] = useState("3");
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const monthList = Array.from({ length: 12 }, (_, i) => i + 1);
 
   // Danh sách năm từ 2000 đến năm hiện tại + 10
@@ -197,7 +199,7 @@ const Dashboard = () => {
   useEffect(() => {
     console.log("Fetching data for:", { month, yearForByDay });
     getTotalRevenueByDay(month, yearForByDay);
-}, [month, yearForByDay]);
+  }, [month, yearForByDay]);
 
 
   useEffect(() => {
@@ -215,6 +217,65 @@ const Dashboard = () => {
 
     fetchAllData();
   }, [yearForByMonth]);
+  const handleExport = async (type) => {
+    let apiUrl = "";
+    let fileName = "export.xlsx";
+
+    switch (type) {
+      case "cinema":
+        apiUrl = "/order/exportTotalRevenueByCinema";
+        fileName = "revenue_by_cinema.xlsx";
+        break;
+      case "movie":
+        apiUrl = "/order/exportTotalRevenueByMovie";
+        fileName = "revenue_by_movie.xlsx";
+        break;
+      case "day":
+        apiUrl = "/order/exportRevenueByDay";
+        fileName = "revenue_by_day.xlsx";
+        break;
+      case "month":
+        apiUrl = "/order/exportTotalRevenueByMonth";
+        fileName = "revenue_by_month.xlsx";
+        break;
+      case "newuser":
+        apiUrl = "/user/exportNewCustomers";
+        fileName = "revenue_by_newCustomer.xlsx";
+        break;
+      case "totalticket":
+        apiUrl = "/order/exportTotalTicketsRevenue";
+        fileName = "revenue_by_ticket.xlsx";
+        break;
+      default:
+        console.error("Invalid export type");
+        return;
+    }
+
+    try {
+      const response = await axios.get(apiUrl, {
+        headers: {
+          "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          Authorization: `Bearer ${auth.token}`,
+        },
+        responseType: "blob",
+      });
+
+      if (response.status === 200) {
+        const url = window.URL.createObjectURL(response.data);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error("Failed to download file:", response);
+      }
+    } catch (error) {
+      console.error("Error exporting orders:", error);
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col gap-8 bg-gray-100 p-6 sm:p-10">
@@ -225,7 +286,7 @@ const Dashboard = () => {
             {
               icon: UserIcon,
               label: "Total Users",
-              value: totalUsers,
+              value: 5,
               path: "/user",
             },
             {
@@ -237,7 +298,7 @@ const Dashboard = () => {
             {
               icon: ShoppingCartIcon,
               label: "Total Orders",
-              value: totalOrders,
+              value: 15,
               path: "/order",
             },
             {
@@ -261,7 +322,60 @@ const Dashboard = () => {
       </div>
 
       <div className="mx-auto w-full max-w-7xl rounded-lg bg-white p-8 shadow-lg sm:p-10">
-        <h2 className="text-3xl font-bold text-gray-800">Analysis</h2>
+        <div className="relative flex items-center justify-between">
+          <h2 className="text-3xl font-bold text-gray-800">Analysis</h2>
+          <div className="relative">
+            <button
+              onClick={() => setDropdownOpen(!isDropdownOpen)}
+              className="relative flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-white shadow-md transition-all duration-300 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+            >
+              <FaFileExport />
+              Export File ▼
+            </button>
+
+            {isDropdownOpen && (
+              <div className="absolute left-0 top-full mt-2 w-48 rounded-md bg-white shadow-lg border border-gray-300 z-50">
+                <button
+                  onClick={() => handleExport("cinema")}
+                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                >
+                  Export Revenue By Cinema
+                </button>
+                <button
+                  onClick={() => handleExport("movie")}
+                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                >
+                  Export Revenue By Movie
+                </button>
+                <button
+                  onClick={() => handleExport("day")}
+                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                >
+                  Export Revenue By Day
+                </button>
+                <button
+                  onClick={() => handleExport("month")}
+                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                >
+                  Export Revenue By Month
+                </button>
+                <button
+                  onClick={() => handleExport("newuser")}
+                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                >
+                  Export Revenue By New Customer
+                </button>
+                <button
+                  onClick={() => handleExport("totalticket")}
+                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                >
+                  Export Revenue By Total Ticket
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[
             {

@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { message, Radio, Button } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import { message, Radio, Button, Form, notification } from "antd";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import "../components/styles/slide.css";
 import { fetchTicket } from "../components/api/bookingApi";
 import Voucher from "../pages/VoucherCustomer/VoucherCustomer";
+import PaymentEgiftForm from "../components/PaymentEgiftForm";
+import { set } from "react-hook-form";
 export default function PaymentTicket() {
   const { auth } = useContext(AuthContext);
   const { id } = useParams();
@@ -67,9 +69,7 @@ export default function PaymentTicket() {
     if (!selectedSeats || selectedSeats.length === 0 || !selectedShowing.room)
       return;
     const ticketTotal = selectedSeats.reduce((sum, seat) => {
-      return (
-        sum + findMatchingPrice(selectedShowing.room.roomtype, seat.seatId.type)
-      );
+      return sum + findMatchingPrice(selectedShowing.room.roomtype, seat.type);
     }, 0);
     setTotalTicket(ticketTotal);
     console.log(" Total Ticket Price:", ticketTotal);
@@ -114,7 +114,7 @@ export default function PaymentTicket() {
         cinema: bookingData.selectedCinema?.name || "N/A",
         movieId: bookingData.selectedMovie?._id || "N/A",
         address: bookingData.selectedCinema?.address || "N/A",
-        seats: selectedSeats.map((seat) => seat.seatId.name),
+        seats: selectedSeats.map((seat) => seat.name),
         seatsId: selectedSeats.map((seat) => seat._id),
         showtime: new Date(
           bookingData.selectedShowtime?.showtime?.showtime
@@ -154,6 +154,64 @@ export default function PaymentTicket() {
     }
   };
 
+  const [error, setError] = useState(null);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  if (error) return <p>{error}</p>;
+
+  const paymentByEgift = async (values, auth, setIsFormVisible) => {
+    const currency = "USD";
+    const requestData = {
+      movieName: bookingData.selectedMovie?.name || "N/A",
+      cinema: bookingData.selectedCinema?.name || "N/A",
+      movieId: bookingData.selectedMovie?._id || "N/A",
+      address: bookingData.selectedCinema?.address || "N/A",
+      seats: selectedSeats.map((seat) => seat.name),
+      seatsId: selectedSeats.map((seat) => seat._id),
+      showtime: new Date(
+        bookingData.selectedShowtime?.showtime?.showtime
+      ).toISOString(),
+      room: selectedShowing.room?.roomname || "N/A",
+      date: bookingData.selectedDate || "N/A",
+      price: totalPrice,
+      combo: selectedCombos.map(
+        (combo) => `${combo.name} (x${combo.quantity})`
+      ),
+      currency,
+      ...(bookingData.selectedVoucher?._id && {
+        voucherId: bookingData.selectedVoucher._id,
+        discount: bookingData.selectedVoucher.discount || 0,
+      }),
+    };
+    try {
+      const response = await axios.post(
+        `/booking/booking/egift-card/order`,
+        { ...requestData, ...values },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+      setIsFormVisible(false);
+      console.log("Response from sending eGift:", response);
+      if (response.data.success) {
+        notification.success({ message: "Book tickets successfully!" });
+        navigate("/myticket/myticket");
+      }
+    } catch (error) {
+      notification.error({
+        message: error.response?.data?.message || "Failed to booking by egift!",
+      });
+      console.error("Lỗi khi gửi eGift:", error);
+    }
+  };
+
+  const showGiftForm = () => {
+    setIsFormVisible(true);
+  };
+
   return (
     <div className="payment-container">
       <div className="payment-ticket">
@@ -183,12 +241,12 @@ export default function PaymentTicket() {
                   {selectedSeats.map((seat) => {
                     const seatPrice = findMatchingPrice(
                       selectedShowing.room.roomtype,
-                      seat.seatId.type
+                      seat.type
                     );
                     return (
                       <li key={seat._id} className="seat-item">
-                        <span className="seat-name">{seat.seatId.name}</span>
-                        <span className="seat-type">({seat.seatId.type})</span>
+                        <span className="seat-name">{seat.name}</span>
+                        <span className="seat-type">({seat.type})</span>
                         <span className="seat-price">
                           - ${seatPrice.toLocaleString()}
                         </span>
@@ -249,18 +307,30 @@ export default function PaymentTicket() {
             >
               <Radio value="vnpay">VNPay</Radio>
               <Radio value="momo">MoMo</Radio>
+              <Radio value="egift">EGift Card</Radio>
             </Radio.Group>
           </div>
 
           <Button
-            type="primary"
+            // type="primary"
             className="payment-button"
-            onClick={handlePayment}
+            onClick={() => {
+              if (paymentMethod === "egift") {
+                setIsFormVisible(true);
+              } else {
+                handlePayment();
+              }
+            }}
           >
             Pay Now
           </Button>
         </div>
       </div>
+      <PaymentEgiftForm
+        isFormVisible={isFormVisible}
+        handleCancel={() => setIsFormVisible(false)}
+        onFinish={(values) => paymentByEgift(values, auth, setIsFormVisible)}
+      />
     </div>
   );
 }

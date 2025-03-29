@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Table, Button, Form, Input, Modal, Switch } from "antd";
+import { Table, Button, Form, Input, Modal, Switch, Select } from "antd";
 import { EditOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -12,6 +12,7 @@ const MovieTypePage = () => {
     const [form] = Form.useForm();
     const [currentMovieType, setCurrentMovieType] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [sortMovieType, setSortMovieType] = useState(""); // State lưu thứ tự sắp xếp
 
     useEffect(() => {
         fetchMovieTypes();
@@ -108,11 +109,18 @@ const MovieTypePage = () => {
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
     };
-
+    const handleSortChange = (value) => {
+        setSortMovieType(value);
+    };
     const filteredMovieTypes = movieTypes.filter((movieType) =>
         movieType.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const sortedMovieTypes = [...filteredMovieTypes].sort((a, b) => {
+        if (sortMovieType === "asc") return a.name.localeCompare(b.name);
+        if (sortMovieType === "desc") return b.name.localeCompare(a.name);
+        return 0; // Không sắp xếp nếu không có lựa chọn
+    });
 
     const columns = [
         {
@@ -136,7 +144,7 @@ const MovieTypePage = () => {
                             setModalType("edit");
                         }}
                     >
-                        Update
+                        Edit
                     </Button>
                 </div>
             ),
@@ -157,33 +165,46 @@ const MovieTypePage = () => {
     ];
 
     return (
-        <div className="content">
-            <div className="searchFilterContainer">
-                <div>
-                    <Input
-                        placeholder="Search by movie type..."
-                        prefix={<SearchOutlined />}
-                        onChange={handleSearch}
-                        style={{ width: 300 }}
-                    />
+        <div className="container-fluid">
+            <div className="title-ticket">Movie Type List</div>
+            <div className="ticketListContainer">
+                <div className="searchFilterContainer">
+                    <div>
+                        <Input
+                            placeholder="Search by movie type..."
+                            onChange={handleSearch}
+                            className="searchInput"
+                            style={{ width: 300 }}
+                        />
+                        <Select
+                            placeholder="Sort by"
+                            value={sortMovieType}
+                            onChange={handleSortChange}
+                            className="filterSelect"
+                        >
+                            <Option value="">Default</Option>
+                            <Option value="asc">A - Z</Option>
+                            <Option value="desc">Z - A</Option>
+                        </Select>
+                    </div>
+                    <div className="buttonAddContainer">
+                        <Button
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={() => setModalType("add")}
+                            className="addTicketButton"
+                        >
+                            Add Movie Type
+                        </Button>
+                    </div>
                 </div>
-                <div className="buttonAddContainer">
-                    <Button
-                        type="primary"
-                        icon={<PlusOutlined />}
-                        onClick={() => setModalType("add")}
-                        className="addTicketButton"
-                    >
-                        Add Movie Type
-                    </Button>
-                </div>
+                <Table
+                    dataSource={sortedMovieTypes}
+                    columns={columns}
+                    rowKey="_id"
+                    scroll={{ x: 800 }}
+                />
             </div>
-            <Table
-                dataSource={filteredMovieTypes}
-                columns={columns}
-                rowKey="_id"
-                scroll={{ x: 800 }}
-            />
             <Modal
                 okButtonProps={{ className: "custom-ok-btn" }}
                 title={modalType === "add" ? "Add New Movie Type" : "Update Movie Type"}

@@ -29,13 +29,15 @@ const AuthContextProvider = ({ children }) => {
 				fullname: response.data.data.fullname,
 				email: response.data.data.email,
 				role: response.data.data.roleId.name,
-				userId: response.data.data._id
+				userId: response.data.data._id,
+				favoriteMovies: response.data.data.favoriteMovies 
 			}
 			if (
 				updatedAuth.username !== auth.username ||
 				updatedAuth.email !== auth.email ||
 				updatedAuth.role !== auth.role ||
-				updatedAuth.fullname !== auth.fullname
+				updatedAuth.fullname !== auth.fullname 
+				
 			) {
 				setAuth(updatedAuth)
 			}

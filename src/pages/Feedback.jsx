@@ -13,8 +13,8 @@ export default function Feedback() {
   };
 
   return (
-    <div className="p-8">
-      <Title>List of feedbacks</Title>
+    <div className="container-fluid">
+      <div className="title-ticket">Feedback List</div>
       <div style={{ marginBottom: 16 }}>
         <FeedbackFilter onFilterChange={handleFilterChange} />
       </div>

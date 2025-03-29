@@ -201,8 +201,8 @@ const CinemaCustomer = () => {
       width: 200,
       render: (text, record) => (
         <Button
-          type="primary"
-          className="btn-mapview"
+          // type="primary"
+          // className="btn-mapview"
           icon={<InsertRowAboveOutlined />}
           onClick={() => handleViewMap(record.map)}
         >
@@ -245,36 +245,38 @@ const CinemaCustomer = () => {
   };
 
   return (
-    <div className="content">
-      <div className="searchFilterContainer">
-        <div>
-          <Input
-            placeholder="Search by cinema name..."
-            prefix={<SearchOutlined />}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ width: 300, marginBottom: 16 }}
-          />
+    <div className="container-fluid">
+      <div className="title-ticket">Cinema List</div>
+      <div className="ticketListContainer">
+        <div className="searchFilterContainer">
+          <div>
+            <Input
+              placeholder="Search by cinema name..."
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="searchInput"
+              style={{ width: 300 }}
+            />
+          </div>
+          <div className="buttonAddContainer">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleAddClick}
+              className="addTicketButton"
+            >
+              Add Cinema
+            </Button>
+          </div>
         </div>
-        <div className="buttonAddContainer">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={handleAddClick}
-            className="addTicketButton"
-          >
-            Add Cinema
-          </Button>
-        </div>
+        <Table dataSource={filteredCinemas} columns={columns} rowKey="_id" />
       </div>
-      <Table dataSource={filteredCinemas} columns={columns} rowKey="_id" />
-
       <Modal
-        title={modalType === "add" ? "Thêm Cinema Mới" : "Chỉnh Sửa Cinema"}
+        title={modalType === "add" ? "Add new cinema" : "Edit cinema"}
         open={modalType !== null}
         onCancel={() => setModalType(null)}
         onOk={modalType === "add" ? handleAddCinema : handleEditCinema}
-        okText="Lưu"
-        cancelText="Hủy"
+        okText="Save"
+        cancelText="Cancel"
         okButtonProps={{ className: "custom-ok-btn" }}
       >
         <Form form={form} layout="vertical">
