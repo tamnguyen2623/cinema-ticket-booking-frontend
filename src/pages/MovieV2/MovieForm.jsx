@@ -11,9 +11,11 @@ import {
   Typography,
   Row,
   Col,
+  DatePicker,
 } from "antd";
 import SeatMap from "../../components/Seat/SeatMap";
 import { UploadOutlined } from "@mui/icons-material";
+import { use } from "react";
 const { Title, Text } = Typography;
 const { Option } = Select;
 
@@ -38,33 +40,40 @@ const MovieForm = ({
 
   useEffect(() => {
     if (isFormVisible) {
-      form.setFieldsValue(
-        movieDetail ||
-          editingMovie || {
-            name: "",
-            movieType: "",
-            length: 0,
-            img: null,
-            trailer: null,
-            description: "",
-            actor: "",
-            releaseDate: "", // ✅ Thêm giá trị mặc định
-          }
-      );
+      if (editingMovie) {
+        form.setFieldsValue({
+          name: editingMovie.name || "",
+          movieType: editingMovie.movieType?._id || "",
+          length: editingMovie.length || 0,
+          img: null,
+          trailer: null,
+          description: editingMovie.description || "",
+          actor: editingMovie.actor || "",
+          releaseDate: editingMovie.releaseDate
+            ? new Date(editingMovie.releaseDate).toISOString().split("T")[0]
+            : "",
+        });
+      } else {
+        form.resetFields();
+      }
     }
-  }, [isFormVisible, editingMovie, movieDetail, form]);
+  }, [isFormVisible, editingMovie, form]);
+  
 
+  console.log(editingMovie)
   return (
     <Modal
       title={
         movieDetail
           ? "Movie Details"
           : editingMovie
-          ? "Edit Movie"
-          : "Create Movie"
+            ? "Edit Movie"
+            : "Create Movie"
       }
       open={isFormVisible}
-      onCancel={handleCancel}
+      onCancel={() => {
+        form.resetFields();
+        handleCancel()}}
       footer={null}
       width={"50%"}
     >
@@ -122,7 +131,23 @@ const MovieForm = ({
           </div>
         </div>
       ) : (
-        <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          // initialValues={{
+          //   name: editingMovie?.name || "",
+          //   movieType: editingMovie?.movieType?.name || "",
+          //   length: editingMovie?.length || 0,
+          //   img: editingMovie?.img || null,
+          //   trailer: editingMovie?.trailer || null,
+          //   description: editingMovie?.description || "",
+          //   actor: editingMovie?.actor || "",
+          //   releaseDate: editingMovie?.releaseDate
+          //   ? new Date(editingMovie.releaseDate).toISOString().split("T")[0]
+          //   : "",
+          // }}
+        >
           <Form.Item
             name="movieType"
             label="Movie Type"
@@ -158,7 +183,7 @@ const MovieForm = ({
           <Form.Item
             name="img"
             label="Poster"
-            rules={[{ required: true, message: "Please upload an image" }]}
+            rules={[{ required: editingMovie==null, message: "Please upload an image" }]}
             valuePropName="file"
             getValueFromEvent={(e) => e && e.fileList?.[0]?.originFileObj}
           >
@@ -174,11 +199,19 @@ const MovieForm = ({
               <Button icon={<UploadOutlined />}>Upload Image</Button>
             </Upload>
           </Form.Item>
-
+          {editingMovie && editingMovie.img && (
+            <Form.Item label="Current Poster"> 
+              <img
+                src={editingMovie.img}
+                alt="Current Movie Poster"
+                style={{ width: "100px", height: "100px" }}
+              />
+            </Form.Item>
+          )}
           <Form.Item
             name="trailer"
             label="Trailer"
-            rules={[{ required: true, message: "Please upload a trailer" }]}
+            rules={[{ required: editingMovie == null, message: "Please upload a trailer" }]}
             valuePropName="file"
             getValueFromEvent={(e) => e && e.fileList?.[0]?.originFileObj}
           >
@@ -195,6 +228,14 @@ const MovieForm = ({
               <Button icon={<UploadOutlined />}>Upload Trailer</Button>
             </Upload>
           </Form.Item>
+          {editingMovie && editingMovie.trailer && (
+            <Form.Item label="Current Trailer"> 
+                     <video width="150" height="100" controls>
+          <source src={editingMovie.trailer} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+            </Form.Item>
+          )}
 
           <Form.Item
             name="actor"
@@ -207,20 +248,26 @@ const MovieForm = ({
             name="description"
             label="Description"
             rules={[{ required: true, message: "Description is required" }]}
+            style={{ resize: "vertical" }}
           >
-            <Input placeholder="Enter desciption" />
+            <Input.TextArea placeholder="Enter movie's description" />
           </Form.Item>
           {/* // ✅ Thêm releaseDate */}
           <Form.Item
-            name="releaseDate"
             label="Release Date"
-            rules={[{ required: true, message: "Release Date is required" }]}
+            name="releaseDate"
+            rules={[
+              { required: true, message: "Please select a release date" },
+            ]}
           >
             <Input type="date" />
           </Form.Item>
 
           <div className="modalFooter">
-            <Button onClick={handleCancel} style={{ marginRight: 8 }}>
+            <Button onClick={() => {
+              handleCancel();
+              form.resetFields();
+            }} style={{ marginRight: 8 }}>
               Cancel
             </Button>
             <Button
