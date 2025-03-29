@@ -3,7 +3,14 @@ import { Form, Input, Modal, Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
-export default function BannerForm({ modalType, setModalType, currentBanner, fetchBanners, createBanner, updateBanner }) {
+export default function BannerForm({
+  modalType,
+  setModalType,
+  currentBanner,
+  fetchBanners,
+  createBanner,
+  updateBanner,
+}) {
   const [form] = Form.useForm();
   const [imageFile, setImageFile] = useState(null);
   const [fileList, setFileList] = useState([]);
@@ -76,10 +83,25 @@ export default function BannerForm({ modalType, setModalType, currentBanner, fet
       cancelText="Cancel"
     >
       <Form form={form} layout="vertical">
-        <Form.Item name="name" label="Name" rules={[{ required: true, message: "Please enter a name!" }]}>
+        <Form.Item
+          name="name"
+          label="Name"
+          rules={[{ required: true, message: "Please enter a name!" }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="image" label="Image">
+        <Form.Item
+          name="image"
+          label="Image"
+          rules={[
+            {required: true,
+              validator: (_, value) =>
+                fileList.length > 0
+                  ? Promise.resolve()
+                  : Promise.reject(new Error("Please upload an image!")),
+            },
+          ]}
+        >
           <Upload
             listType="picture"
             beforeUpload={() => false}

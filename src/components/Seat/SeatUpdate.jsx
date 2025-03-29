@@ -21,19 +21,22 @@ export default function seatUpdate({ seat, seatTypeColors, setRefresh }) {
       style={{ width: "150%", padding: "8px" }}
     >
       <Menu.Item
-        className={`inline-block w-8 h-8 items-center justify-center text-xs ${seatTypeColors["Standard"]}`}
+        className={`inline-block w-8 h-8 items-center justify-center text-xs text-white ${seatTypeColors["Standard"]}`}
+        style={{color: "white"}}
         onClick={() => handleUpdateSeat("Standard")}
       >
         {seat.name}
       </Menu.Item>
       <Menu.Item
         className={`inline-block w-8 h-8 items-center justify-center text-xs ${seatTypeColors["VIP"]}`}
+        style={{color: "white"}}
         onClick={() => handleUpdateSeat("VIP")}
       >
         {seat.name}
       </Menu.Item>
       <Menu.Item
         className={`inline-block w-8 h-8 items-center justify-center text-xs ${seatTypeColors["Premium"]}`}
+        style={{color: "white"}}
         onClick={() => handleUpdateSeat("Premium")}
       >
         {seat.name}
