@@ -16,16 +16,9 @@ import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
-// import "./MyTicket.css";
-import { EditOutlined, EyeOutlined } from "@ant-design/icons";
-import FeedbackForm from "../../components/Feedback/FeedbackForm";
-import FeedbackDetail from "../../components/Feedback/FeedbackDetail";
-import { Height } from "@mui/icons-material";
-import { height } from "@mui/system";
-
-// import { QRCode, QRCodeSVG } from "qrcode.react";
+import "./SendEgift.css";
 const { Title } = Typography;
-// import "./MyTicket.css";
+
 
 const SentEgift = () => {
   const { auth } = useContext(AuthContext);
@@ -95,15 +88,15 @@ const SentEgift = () => {
           <Row gutter={[32, 32]} justify="center">
             {bookings.length > 0 && bookings.map((ticket) => (
               <Col key={ticket._id}>
-                <div className="ticket-card">
-                  <div className="ticket-content">
+                <div className="egift-card">
+                  <div className="egift-content">
                     {/* Ảnh phim bên trái */}
-                    <div className="img-movie" style={{ width: "250px" }}>
+                    <div className="img-egift">
                       <img src={ticket.egift.image} alt="Egift" />
                     </div>
 
                     {/* Thông tin vé bên phải */}
-                    <div className="information-ticket">
+                    <div className="information-egift">
                       <h3>To: {ticket.egiftRecipient.fullName}</h3>
                       <div>
                         <strong>Their email:</strong> {ticket.egiftRecipient.email}
