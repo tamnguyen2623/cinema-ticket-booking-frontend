@@ -60,8 +60,8 @@ import AdminServiceList from "../pages/ServiceForAdmin/AdminServiceList";
 import Banner from "../pages/Banner";
 import SentEgift from "../pages/SentEgiftCards/SentEgift";
 import SupportQuestionCustomer from "../pages/SupportQuestionCustomer/SupportQuestionCustomer";
-import Service from "../pages/ServiceForm/Service";
-import AdminServiceList from "../pages/ServiceForAdmin/AdminServiceList";
+
+
 
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);

@@ -10,6 +10,8 @@ import FloatingNavigation from "../UtilityBar/FloatingNavigation";
 import moment from "moment";
 import { FaHeart } from "react-icons/fa"; 
 import { AuthContext } from "../../context/AuthContext";
+import { Select } from "antd"; 
+const { Option } = Select;
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -20,6 +22,7 @@ const MovieDetail = () => {
   const [openTrailer, setOpenTrailer] = useState(false);
   const [feedbackData, setFeedbackData] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [selectedRating, setSelectedRating] = useState(null);
 
   useEffect(() => {
     const fetchMovie = async () => {
