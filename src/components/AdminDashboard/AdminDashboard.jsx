@@ -24,8 +24,9 @@ import {
   faUserShield,
   faFilm,
   faHeadset,
-  faDongSign,
   faFire,
+  faConciergeBell,
+  faBullhorn,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { FaProductHunt } from "react-icons/fa";
@@ -81,8 +82,8 @@ const DashBroad = () => {
             className="avatar"
           />
           <div className="profile-text">
-            <span className="name">Huỳnh Tuấn Kiệt</span>
-            <span className="role">Admin</span>
+            <span className="name">{auth.fullname}</span>
+            {/* <span className="role">Admin</span> */}
           </div>
         </div>
       </header>
@@ -107,7 +108,7 @@ const DashBroad = () => {
           </li>
           <li className={`nav-link ${isActive("/admin/banner")}`}>
             <Link to="/admin/banner">
-              <FontAwesomeIcon icon={faTicket} className="menu-icon" />
+              <FontAwesomeIcon icon={faBullhorn} className="menu-icon" />
               <span>Banner</span>
             </Link>
           </li>
@@ -117,12 +118,12 @@ const DashBroad = () => {
               <span>Booking</span>
             </Link>
           </li>
-          <li className={`nav-link ${isActive("/admin/service")}`}>
+          {/* <li className={`nav-link ${isActive("/admin/service")}`}>
             <Link to="/admin/service">
               <FontAwesomeIcon icon={faCalendarCheck} className="menu-icon" />
               <span>Service</span>
             </Link>
-          </li>
+          </li> */}
           <li className={`nav-link ${isActive("/admin/role")}`}>
             <Link to="/admin/role">
               <FontAwesomeIcon icon={faUserShield} className="menu-icon" />
@@ -209,7 +210,7 @@ const DashBroad = () => {
           </li>
           <li className={`nav-link ${isActive("/admin/service")}`}>
             <Link to="/admin/service">
-              <FontAwesomeIcon icon={faHeadset} className="menu-icon" />
+              <FontAwesomeIcon icon={faConciergeBell} className="menu-icon" />
               <span>Service</span>
             </Link>
           </li>

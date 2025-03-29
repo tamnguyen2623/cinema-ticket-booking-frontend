@@ -1,6 +1,6 @@
 .textarea-resizable textarea {
   resize: vertical !important;
-  min-height: 100px !important;
+  min-height: 70px !important;
 }
 
 .title-support {

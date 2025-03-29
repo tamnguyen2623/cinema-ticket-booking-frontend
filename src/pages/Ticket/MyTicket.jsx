@@ -210,17 +210,18 @@ const MyTicket = () => {
                     <div className="information-ticket">
                       <h3> {ticket.movieName}</h3>
                       <div>
-                        <strong>Rạp:</strong> {ticket.cinema}
+                        <strong>Cinema:</strong> {ticket.cinema}
                       </div>
                       <div>
-                        <strong>Ngày chiếu:</strong>{" "}
+                        <strong>Show Date:</strong>{" "}
                         {dayjs(ticket.date).format("DD/MM/YYYY")}
                       </div>
                       <div>
-                        <strong>Ghế:</strong> {ticket.seats.join(", ")}
+                        <strong>Seats:</strong> {ticket.seats.join(", ")}
                       </div>
                       <div>
-                        <strong>Giá:</strong> {ticket.price.toLocaleString()} $
+                        <strong>Price:</strong> {ticket.price.toLocaleString()}{" "}
+                        $
                       </div>
 
                       <div className="flex items-center justify-between pr-5">

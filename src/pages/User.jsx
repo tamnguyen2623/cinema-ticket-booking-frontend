@@ -225,7 +225,7 @@ const User = () => {
 
   return (
     <div className="container-fluid">
-      <div className="title-ticket">User Management</div>
+      <div className="title-ticket">User List</div>
       <div className="searchFilterContainer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight: '30px' }}>
         <Space>
           <Button type="primary" icon={<FaFileExport />}

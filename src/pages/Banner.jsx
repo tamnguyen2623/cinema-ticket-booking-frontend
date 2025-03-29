@@ -33,7 +33,7 @@ export default function Banner() {
 
   return (
     <div className="container-fluid">
-      <div className="title-ticket">List of banners</div>
+      <div className="title-ticket">Banner List</div>
       <div className="ticketListContainer">
         <div
           style={{

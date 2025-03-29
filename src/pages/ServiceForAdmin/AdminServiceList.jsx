@@ -45,7 +45,7 @@ const AdminServiceList = () => {
 
     return (
         <div className="container-fluid">
-            <div className="title-ticket">Service</div>
+            <div className="title-ticket">Service List</div>
             <div className="ticketListContainer">
                 <div className="searchFilterContainer">
                     <Input

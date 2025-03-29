@@ -108,7 +108,7 @@ const BookingAdmin = () => {
 
     return (
         <div className="container-fluid">
-            <div className="title-ticket">List of bookings by customer</div>
+            <div className="title-ticket">Booking List</div>
             <div className="ticketListContainer">
                 <div className="searchFilterContainer">
                     <div>

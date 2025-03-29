@@ -48,7 +48,7 @@ const SupportList = ({
 
   return (
     <div className="supportListContainer">
-      <strong className="title-support">Supports list</strong>
+      <strong className="title-support">Support List</strong>
       <div className="searchFilterContainer">
         <div>
           <Input

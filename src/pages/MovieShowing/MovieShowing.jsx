@@ -21,7 +21,10 @@ import {
 } from "@ant-design/icons";
 import moment from "moment";
 import SeatAvailable from "../../components/Seat/SeatAvailable[Admin]";
-import { createSeatAvailable, deleteSeatAvailables } from "../../components/api/seatAvailable";
+import {
+  createSeatAvailable,
+  deleteSeatAvailables,
+} from "../../components/api/seatAvailable";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 
@@ -156,7 +159,7 @@ const MovieShowingList = () => {
 
   const handleToggleDelete = async (id, isDelete) => {
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8080/movieshowing/${id}/active`,
         { isDelete: !isDelete },
         {
@@ -166,15 +169,20 @@ const MovieShowingList = () => {
           },
         }
       );
-      setMovieShowings((prev) =>
-        prev.map((showing) =>
-          showing._id === id ? { ...showing, isDelete: !isDelete } : showing
-        )
-      );
 
-      toast.success("Cập nhật trạng thái thành công!");
+      if (response.data.success) {
+        setMovieShowings((prev) =>
+          prev.map((showing) =>
+            showing._id === id ? { ...showing, isDelete: !isDelete } : showing
+          )
+        );
+        toast.success("Cập nhật trạng thái thành công!");
+      } else {
+        toast.error("Lỗi khi cập nhật trạng thái!");
+      }
     } catch (error) {
       toast.error("Lỗi khi cập nhật trạng thái!");
+      console.error("Error:", error);
     }
   };
 

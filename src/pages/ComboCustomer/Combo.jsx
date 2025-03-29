@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Carousel, Card, Button, InputNumber, message } from "antd";
+import { Carousel, Card, Button, InputNumber, message, Modal } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import axios from "axios";
 import "../../components/styles/Combo.css";
@@ -42,7 +42,6 @@ const ComboCarousel = () => {
   const handleQuantityChange = (combo, value) => {
     setSelectedCombos((prevCombos) => {
       const updatedCombos = [...prevCombos];
-
       const existingIndex = updatedCombos.findIndex((c) => c._id === combo._id);
 
       if (existingIndex !== -1) {
@@ -62,28 +61,43 @@ const ComboCarousel = () => {
     });
   };
 
-  const handleConfirmSelection = () => {
-    const existingBookingData =
-      JSON.parse(localStorage.getItem("bookingData")) || {};
-
+  const handleConfirmAndNext = () => {
     const filteredCombos = selectedCombos.filter((combo) => combo.quantity > 0);
 
-    const updatedBookingData = {
-      ...existingBookingData,
-      selectedCombos: filteredCombos,
-    };
+    // if (filteredCombos.length === 0) {
+    //   message.warning("You haven't selected any combos!");
+    //   return;
+    // }
 
-    localStorage.setItem("bookingData", JSON.stringify(updatedBookingData));
+    Modal.confirm({
+      title: "Confirm Combo Selection",
+      content: "Are you sure you want to confirm these combos and continue?",
+      okText: "Yes",
+      cancelText: "Cancel",
+      onOk: () => {
+        const existingBookingData =
+          JSON.parse(localStorage.getItem("bookingData")) || {};
 
-    message.success("You have confirmed your combo selection!");
-    console.log("Saved to bookingData:", updatedBookingData);
+        const updatedBookingData = {
+          ...existingBookingData,
+          selectedCombos: filteredCombos,
+        };
+
+        localStorage.setItem("bookingData", JSON.stringify(updatedBookingData));
+        message.success("You have confirmed your combo selection!");
+        console.log("Saved to bookingData:", updatedBookingData);
+
+        navigate("/totalslide");
+      },
+    });
   };
 
   return (
-    <><div className="hot_movies">
-      <p className="title-unique">Choose Your Combo</p>
-    </div><div className="combo-container">
-
+    <>
+      <div className="hot_movies">
+        <p className="title-unique">Choose Your Combo</p>
+      </div>
+      <div className="combo-container">
         {loading ? (
           <p>Loading combos...</p>
         ) : (
@@ -91,13 +105,14 @@ const ComboCarousel = () => {
             <Button
               className="carousel-arrow left-arrow"
               icon={<LeftOutlined />}
-              onClick={() => carouselRef.current && carouselRef.current.prev()} />
+              onClick={() => carouselRef.current && carouselRef.current.prev()}
+            />
             <Carousel
               dots={true}
+              infinite={false}
               slidesToShow={3}
               slidesToScroll={1}
               ref={carouselRef}
-              infinite={false}
               className="combo-slider"
             >
               {combos.map((combo) => {
@@ -113,16 +128,22 @@ const ComboCarousel = () => {
                     <Card
                       hoverable
                       className="combo-card"
-                      cover={<img
-                        alt={combo.name}
-                        src={combo.image}
-                        className="combo-image" />}
+                      cover={
+                        <img
+                          alt={combo.name}
+                          src={combo.image}
+                          className="combo-image"
+                        />
+                      }
                     >
                       <Meta
                         title={combo.name}
-                        description={<strong className="combo-description">
-                          Price: ${combo.price}
-                        </strong>} />
+                        description={
+                          <strong className="combo-description">
+                            Price: ${combo.price}
+                          </strong>
+                        }
+                      />
                       <strong className="combo-description">
                         Description: {combo.description}
                       </strong>
@@ -132,8 +153,11 @@ const ComboCarousel = () => {
                           min={0}
                           max={50}
                           value={selectedQuantity}
-                          onChange={(value) => handleQuantityChange(combo, value)}
-                          className="combo-input" />
+                          onChange={(value) =>
+                            handleQuantityChange(combo, value)
+                          }
+                          className="combo-input"
+                        />
                       </div>
                     </Card>
                   </div>
@@ -143,26 +167,20 @@ const ComboCarousel = () => {
             <Button
               className="carousel-arrow right-arrow"
               icon={<RightOutlined />}
-              onClick={() => carouselRef.current && carouselRef.current.next()} />
+              onClick={() => carouselRef.current && carouselRef.current.next()}
+            />
           </div>
         )}
 
         <Button
           // type="primary"
-          className="combo-button confirm-button"
-          onClick={handleConfirmSelection}
+          className="combo-button confirm-next-button"
+          onClick={handleConfirmAndNext}
         >
-          Confirm
+          Confirm & Next
         </Button>
-
-        <Button
-          // type="primary"
-          className="combo-button next-button"
-          onClick={() => navigate("/totalslide")}
-        >
-          Next
-        </Button>
-      </div></>
+      </div>
+    </>
   );
 };
 

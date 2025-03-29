@@ -166,7 +166,7 @@ const MovieTypePage = () => {
 
     return (
         <div className="container-fluid">
-            <div className="title-ticket">MovieType List</div>
+            <div className="title-ticket">Movie Type List</div>
             <div className="ticketListContainer">
                 <div className="searchFilterContainer">
                     <div>

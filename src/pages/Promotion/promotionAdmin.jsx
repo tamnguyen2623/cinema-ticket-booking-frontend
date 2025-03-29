@@ -97,8 +97,6 @@ const promotionAdmin = () => {
   const handleEditPromotion = async () => {
     try {
       const values = await form.validateFields();
-      console.log("Giá trị form:", values);
-
 
       const formData = new FormData();
       formData.append("name", values.name);
@@ -107,9 +105,13 @@ const promotionAdmin = () => {
       formData.append("dateStart", values.dateStart.format("YYYY-MM-DD"));
       formData.append("dateEnd", values.dateEnd.format("YYYY-MM-DD"));
 
+      // Nếu người dùng không tải ảnh mới thì giữ nguyên ảnh cũ
       if (imageFile) {
         formData.append("image", imageFile);
+      } else if (currentPromotion.image) {
+        formData.append("existingImage", currentPromotion.image);
       }
+
 
       await axios.put(`/promotion/admin/update/${currentPromotion._id}`, formData, {
         headers: {
@@ -117,7 +119,6 @@ const promotionAdmin = () => {
           Authorization: `Bearer ${auth.token}`,
         },
       });
-      console.log("Dữ liệu promotion khi edit:", currentPromotion);
 
       fetchPromotions();
       setModalType(null);
@@ -135,15 +136,23 @@ const promotionAdmin = () => {
         category: currentPromotion.category || "",
         dateStart: currentPromotion.dateStart ? moment(currentPromotion.dateStart) : null,
         dateEnd: currentPromotion.dateEnd ? moment(currentPromotion.dateEnd) : null,
+
       });
+      if (currentPromotion.image) {
+        setImageFile(null); // Đặt lại giá trị để tránh lỗi khi mở modal nhiều lần
+      }
+      // Đặt hình ảnh mặc định
+      if (currentPromotion.image) {
+        setImageFile(currentPromotion.image);
+      }
     }
   }, [currentPromotion]);
 
 
   const handleDelete = async (id, isDelete) => {
     try {
-      const newStatus = isDelete ? "active" : "disabled"; // Kiểm tra API cần status gì
-      await axios.put(`/promotion/admin/delete/${id}`, { status: newStatus }, {
+      // const newStatus = isDelete ? "active" : "disabled"; // Kiểm tra API cần status gì
+      await axios.put(`/promotion/admin/delete/${id}`, { isDelete: !isDelete }, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.token}`,
@@ -161,11 +170,12 @@ const promotionAdmin = () => {
     (promotion?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       promotion?.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
     (!selectedCategory || promotion?.category === selectedCategory)
-  ).sort((a, b) => a.isDelete - b.isDelete); // Sắp xếp mục bị disable xuống cuối
+  )
+  // .sort((a, b) => a.isDelete - b.isDelete); // Sắp xếp mục bị disable xuống cuối
 
-  
 
-  
+
+
 
 
   const handleUploadChange = ({ file }) => {
@@ -221,7 +231,7 @@ const promotionAdmin = () => {
       title: "Disabled",
       key: "disabled",
       render: (record) => (
-        <Switch checked={record.isDelete} onChange={() => handleDelete(record._id, record.isDelete)} />
+        <Switch className="custom-switch" checked={record.isDelete} onChange={() => handleDelete(record._id, record.isDelete)} />
       ),
     },
   ];
@@ -229,7 +239,7 @@ const promotionAdmin = () => {
   return (
     <div className="container-fluid">
 
-      <div className="title-ticket">Promotion Management</div>
+      <div className="title-ticket">Promotion List</div>
       <div className="ticketListContainer">
         <div className="searchFilterContainer">
           <div>
@@ -256,8 +266,12 @@ const promotionAdmin = () => {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => setModalType("add")}
-              className="addPromotionButton"
+              onClick={() => {
+                setCurrentPromotion(null); // Đặt về null khi mở Add
+                form.resetFields(); // Reset toàn bộ form
+                setImageFile(null); // Xóa ảnh đã chọn trước đó
+                setModalType("add");
+              }} className="addPromotionButton"
             >
               Add Promotion
             </Button>
@@ -334,12 +348,33 @@ const promotionAdmin = () => {
               <Select.Option value="Event Cinema">Event Cinema</Select.Option>
             </Select>
           </Form.Item>
+          <Form.Item name="image"
+            rules={[{ required: true, message: "Please select a image!" }]}
 
-          <Form.Item name="image" label="Image">
-            <Upload listType="picture" beforeUpload={(file) => { setImageFile(file); return false; }}>
+          label="Image">
+            <Upload
+              listType="picture"
+              beforeUpload={(file) => {
+                setImageFile(file);
+                return false; // Prevent default upload behavior
+              }}
+              fileList={
+                imageFile
+                  ? [{
+                    uid: "-1",
+                    name: "Current Image",
+                    status: "done",
+                    url: typeof imageFile === "string" ? imageFile : URL.createObjectURL(imageFile)
+                  }]
+                  : []
+              }
+              onRemove={() => setImageFile(null)} // Allow image removal
+            >
               <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>
           </Form.Item>
+
+
         </Form>
       </Modal>
     </div>

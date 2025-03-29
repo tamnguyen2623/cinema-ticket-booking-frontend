@@ -22,7 +22,7 @@ export default function Seat() {
 
   return (
     <div className="container-fluid">
-      <div className="title-ticket">List of seats</div>
+      <div className="title-ticket">Seat List</div>
       <div style={{ marginBottom: 16 }}>
         <SeatFilter options={options} onFilterChange={handleFilterChange} />
       </div>

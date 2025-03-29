@@ -271,12 +271,12 @@ const CinemaCustomer = () => {
         <Table dataSource={filteredCinemas} columns={columns} rowKey="_id" />
       </div>
       <Modal
-        title={modalType === "add" ? "Thêm Cinema Mới" : "Chỉnh Sửa Cinema"}
+        title={modalType === "add" ? "Add new cinema" : "Edit cinema"}
         open={modalType !== null}
         onCancel={() => setModalType(null)}
         onOk={modalType === "add" ? handleAddCinema : handleEditCinema}
-        okText="Lưu"
-        cancelText="Hủy"
+        okText="Save"
+        cancelText="Cancel"
         okButtonProps={{ className: "custom-ok-btn" }}
       >
         <Form form={form} layout="vertical">

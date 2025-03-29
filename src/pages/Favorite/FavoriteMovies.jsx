@@ -6,7 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 const FavoriteMovies = () => {
   const { auth } = useContext(AuthContext);
-  const userId = auth.userId;
+  const userId = auth.userId; // Không cần kiểm tra vì đã đảm bảo đăng nhập
 
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,18 +14,13 @@ const FavoriteMovies = () => {
   const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
-    if (!userId) {
-      setError("Bạn cần đăng nhập để xem danh sách yêu thích.");
-      setLoading(false);
-      return;
-    }
-
     const fetchFavoriteMovies = async () => {
       try {
+        setError(null); // Reset lỗi trước khi fetch mới
         const response = await axios.get(`http://localhost:8080/favorite/${userId}`);
         setFavoriteMovies(response.data.favoriteMovies);
       } catch (err) {
-        setError("Không thể tải danh sách phim yêu thích.");
+        setError("Unable to load favorite movie list.");
       } finally {
         setLoading(false);
       }
@@ -35,7 +30,7 @@ const FavoriteMovies = () => {
   }, [userId]);
 
   const handleShowMore = () => {
-    setVisibleCount((prevCount) => (prevCount < favoriteMovies.length ? favoriteMovies.length : 6));
+    setVisibleCount(visibleCount < favoriteMovies.length ? favoriteMovies.length : 6);
   };
 
   return (
@@ -45,27 +40,21 @@ const FavoriteMovies = () => {
       </div>
       <div className="screen_cwrap">
         {loading ? (
-          <p>Đang tải...</p>
+          <p>Loading...</p>
         ) : error ? (
           <p>{error}</p>
         ) : favoriteMovies.length === 0 ? (
-          <span className="text-display">Không có phim nào trong danh sách yêu thích.</span>
+          <span className="select-warning">There are no movies in the favorites list.</span>
         ) : (
           <div className="favoritemovie-list">
             {favoriteMovies.slice(0, visibleCount).map((movie) => (
-                <div key={movie._id} className="movie-item">
-                  <div className="movie-image-container">
-                  <img
-                    src={movie.img}
-                    alt={movie.title}
-                    className="movie-image"
-                  />
+              <div key={movie._id} className="movie-item">
+                <div className="movie-image-container">
+                  <img src={movie.img} alt={movie.title} className="movie-image" />
                   <div className="movie-actions">
-                    <button className="btn btn-book">
-                      <Link to={`/movielist/${movie._id}`}>
-                        <p>Details</p>
-                      </Link>
-                    </button>
+                    <Link to={`/movielist/${movie._id}`} className="btn btn-book">
+                      <p>Details</p>
+                    </Link>
                   </div>
                 </div>
                 <h3 className="movie-title">{movie.name}</h3>

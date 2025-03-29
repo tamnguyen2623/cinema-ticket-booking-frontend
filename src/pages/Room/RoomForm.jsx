@@ -107,10 +107,21 @@ const RoomForm = ({
               <Option value="ScreenX">ScreenX</Option>
             </Select>
           </Form.Item>
-          <Form.Item name="row" label="Number of Rows">
+          <Form.Item
+            name="row"
+            label="Number of Rows"
+            rules={[{ required: true, message: "Number of row is required" }]}
+          >
             <Input type="number" min={1} max={300} />
           </Form.Item>
-          <Form.Item name="colum" label="Number of Columns">
+
+          <Form.Item
+            name="colum"
+            label="Number of Columns"
+            rules={[
+              { required: true, message: "Number of column is required" },
+            ]}
+          >
             <Input type="number" min={1} max={300} />
           </Form.Item>
 

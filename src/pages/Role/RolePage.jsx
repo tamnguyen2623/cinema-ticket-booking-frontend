@@ -85,6 +85,13 @@ const RolePage = () => {
   }, []);
 
   const handleDelete = async (role) => {
+    if (
+      role.name.toLowerCase() === "admin" ||
+      role.name.toLowerCase() === "user"
+    ) {
+      toast.error("Cannot disable this role!");
+      return;
+    }
     try {
       await axios.put(
         `/role/delete/${role._id}`,
@@ -97,12 +104,12 @@ const RolePage = () => {
       await fetchRoles(); // Cập nhật lại danh sách từ server
 
       toast.success(
-        `Role ${role.name}  ${role.isDelete ? "name" : "disable "
-        } success!`,2
+        `Role ${role.name}  ${role.isDelete ? "name" : "disable "} success!`,
+        2
       );
     } catch (error) {
       console.error("Lỗi khi cập nhật trạng thái role:", error);
-      toast.error("Error role")
+      toast.error("Error role");
     }
   };
 
@@ -155,9 +162,11 @@ const RolePage = () => {
 
   // 🔎 Xử lý tìm kiếm
   useEffect(() => {
-    const filtered = roles.filter((role) =>
-      role.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ).sort((a, b) => a.isDelete - b.isDelete);; // sort by isDelete (false first, then true)
+    const filtered = roles
+      .filter((role) =>
+        role.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => a.isDelete - b.isDelete); // sort by isDelete (false first, then true)
     setFilteredRoles(filtered);
   }, [searchTerm, roles]);
 
@@ -187,12 +196,10 @@ const RolePage = () => {
               form.setFieldsValue({
                 name: record.name,
               });
-              setIsRoleEditing(true);  // Bật chế độ chỉnh sửa
+              setIsRoleEditing(true); // Bật chế độ chỉnh sửa
               setIsRoleModalVisible(true); // Mở modal
               setEditingRole(record); // Lưu role đang chỉnh sửa
-              
             }}
-
           >
             Edit
           </Button>
@@ -249,7 +256,6 @@ const RolePage = () => {
           rowKey="_id"
           pagination={{ pageSize: 5 }}
         />
-
       </div>
       <Modal
         title={isRoleEditing ? "Edit Role" : "Add Role"}
@@ -283,7 +289,6 @@ const RolePage = () => {
       </Modal>
     </div>
   );
-
 };
 
 export default RolePage;

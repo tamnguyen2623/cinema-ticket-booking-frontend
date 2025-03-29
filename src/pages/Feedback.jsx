@@ -14,7 +14,7 @@ export default function Feedback() {
 
   return (
     <div className="container-fluid">
-      <div className="title-ticket">List of feedbacks</div>
+      <div className="title-ticket">Feedback List</div>
       <div style={{ marginBottom: 16 }}>
         <FeedbackFilter onFilterChange={handleFilterChange} />
       </div>
