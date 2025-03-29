@@ -127,3 +127,6 @@
 .active-link:hover {
     background: #29293d;
 }
+.modal-change{
+    background-color: #fff !important;
+}

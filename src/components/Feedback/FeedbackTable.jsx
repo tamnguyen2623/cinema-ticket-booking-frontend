@@ -15,7 +15,6 @@ export default function FeedbackFilter({ selectedTypes }) {
         setFilteredFeedbacks(data);
       } else {
         const data = await filterFeedback(selectedTypes);
-        console.log(Array.isArray(data));
         setFilteredFeedbacks(data);
       }
     } catch (error) {

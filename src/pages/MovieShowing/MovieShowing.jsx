@@ -21,12 +21,13 @@ import {
 } from "@ant-design/icons";
 import moment from "moment";
 import SeatAvailable from "../../components/Seat/SeatAvailable[Admin]";
-import { createSeatAvailable } from "../../components/api/seatAvailable";
+import { createSeatAvailable, deleteSeatAvailables } from "../../components/api/seatAvailable";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 
 const MovieShowingList = () => {
   const [movieShowings, setMovieShowings] = useState([]);
+  const [filterMovieShowings, setFilterMovieShowings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -86,7 +87,7 @@ const MovieShowingList = () => {
       const newMovieShowing = {
         movieId: values.movieId,
         showtimeId: values.showtimeId,
-        cinemaId: values.cinemaId,
+        cinemaId: form.getFieldValue("cinemaId"),
         roomId: values.roomId,
         date: values.date.format("YYYY-MM-DD"),
       };
@@ -120,6 +121,11 @@ const MovieShowingList = () => {
         );
         console.log("Update Response:", response.data);
         if (response.data.success) {
+          await deleteSeatAvailables(response.data.data._id);
+          await createSeatAvailable({
+            roomId: response.data.data.roomId,
+            movieShowingId: response.data.data._id,
+          });
           console.log(response.data);
           fetchData();
         }
@@ -174,6 +180,10 @@ const MovieShowingList = () => {
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
+    const filter = movieShowings.filter((movieShowing) =>
+      movieShowing.movieId.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilterMovieShowings(filter);
   };
 
   if (loading) return <Spin size="large" tip="Đang tải..." />;
@@ -266,7 +276,7 @@ const MovieShowingList = () => {
             />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             name="cinemaId"
             label="Cinema"
             rules={[{ required: true }]}
@@ -277,7 +287,7 @@ const MovieShowingList = () => {
                 label: cinema.name,
               }))}
             />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item name="roomId" label="Room" rules={[{ required: true }]}>
             <Select
@@ -285,6 +295,12 @@ const MovieShowingList = () => {
                 value: room._id,
                 label: room.roomname,
               }))}
+              onChange={(roomId) => {
+                const selectedRoom = rooms.find((room) => room._id === roomId);
+                if (selectedRoom) {
+                  form.setFieldsValue({ cinemaId: selectedRoom.cinema._id }); // Gán giá trị cinemaId
+                }
+              }}
             />
           </Form.Item>
 
@@ -301,13 +317,14 @@ const MovieShowingList = () => {
         onCancel={handleCancel}
         okType={"default"}
         style={{ marginLeft: "350px" }}
+        cancelButtonProps={{ style: { display: "none" } }}
         width={1000}
       >
         <SeatAvailable movieShowing={currentMovieShowing} />
       </Modal>
 
       <Table
-        dataSource={movieShowings}
+        dataSource={searchTerm == "" ? movieShowings : filterMovieShowings}
         columns={[
           {
             title: "Movie Name",

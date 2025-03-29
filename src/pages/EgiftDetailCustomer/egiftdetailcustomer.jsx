@@ -11,6 +11,7 @@ import { Form, notification } from "antd/lib";
 import { AuthContext } from "../../context/AuthContext";
 import EgiftForm from "./EgiftForm";
 import { set } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const EgiftDetailCustomer = () => {
   const { id } = useParams();
@@ -20,6 +21,7 @@ const EgiftDetailCustomer = () => {
   const [error, setError] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEgift = async () => {
@@ -40,6 +42,7 @@ const EgiftDetailCustomer = () => {
   if (error) return <p>{error}</p>;
 
   const sendEgiftToUser = async (values, auth, setIsFormVisible) => {
+    console.log("Sending eGift with values:", values);
     if (!auth.token) {
       return notification.error({
         message: "Unauthorized",
@@ -53,6 +56,8 @@ const EgiftDetailCustomer = () => {
         },
       });
       setIsFormVisible(false);
+      console.log("Response from sending eGift:", response);
+      window.location.href = response.data.data;
       notification.success({ message: "Gift card to user successfully!" });
     } catch (error) {
       console.error("Lỗi khi gửi eGift:", error);
@@ -60,7 +65,8 @@ const EgiftDetailCustomer = () => {
   };
 
   const showGiftForm = () => {
-    setIsFormVisible(true);
+    if (!auth.token) navigate("/login");
+    else setIsFormVisible(true);
   }
 
   return (
@@ -68,17 +74,17 @@ const EgiftDetailCustomer = () => {
       <div className="movie-detail-header">
         <p className="movie-detail-title">EGIFT</p>
       </div>
-      <div className="movie-detail-content">
-        <div className="movie-detail-main-info">
-          <div className="detail-images">
+      <div className="moviecontent">
+        <div className="moviemaininfo">
+          <div className="detailimages">
             <img src={egift?.image} alt={egift?.name} />
-            <button onClick={showGiftForm} className="btn-book-ticket">Gift card</button>
+            <button onClick={showGiftForm} className="btnsendgift">Send as gift</button>
           </div>
-          <div className="movie-detail-info">
-            <div className="movie-detail-name-wrapper">
-              <h2 className="movie-detail-name">{egift?.name}</h2>
+          <div className="movieinfo">
+            <div className="movienamewrapper">
+              <h2 className="moviename">{egift?.name}</h2>
             </div>
-            <div className="movie-detail-inf-wrapper">
+            <div className="movieinfowrapper">
               <p>
                 <span className="label">Description:</span>{" "}
                 <span className="value">{egift?.description}</span>
@@ -87,6 +93,7 @@ const EgiftDetailCustomer = () => {
           </div>
         </div>
       </div>
+
       <FloatingNavigation />
       <EgiftForm
         isFormVisible={isFormVisible}

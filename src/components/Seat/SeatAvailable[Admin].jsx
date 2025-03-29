@@ -22,9 +22,9 @@ export default function SeatAvailableForAdmin({ movieShowing }) {
   }, [movieShowing]);
 
   const seatTypeColors = {
-    Standard: "bg-purple-500",
-    VIP: "bg-red-500",
-    Premium: "bg-pink-500",
+    Standard: "text-white bg-purple-500",
+    VIP: "text-white bg-red-500",
+    Premium: "text-white bg-pink-500",
     Disabled:
       "relative bg-yellow-100 after:content-[''] after:absolute after:top-2.5 after:right-2.5 after:w-full after:h-full after:border-t-2 after:border-red-500 after:rotate-45 after:pointer-events-none",
   };
@@ -33,7 +33,7 @@ export default function SeatAvailableForAdmin({ movieShowing }) {
     <div className="p-11">
       {/* <h2 className="text-xl mb-4 text-center">Cập nhật ghế phòng chiếu</h2> */}
       <div className="bg-gray-800 text-white py-2 text-center mb-4">
-        MÀN HÌNH
+        SCREEN
       </div>
       <div
         className="grid gap-2 ml-9"
@@ -60,17 +60,17 @@ export default function SeatAvailableForAdmin({ movieShowing }) {
 
       <div className="mt-4 flex gap-4 justify-center">
         <span className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-purple-500"></div>Ghế thường
+          <div className="w-4 h-4 bg-purple-500"></div>Standard
         </span>
         <span className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-500"></div>Ghế VIP
+          <div className="w-4 h-4 bg-red-500"></div>VIP
         </span>
         <span className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-pink-500"></div>Ghế Premium
+          <div className="w-4 h-4 bg-pink-500"></div>Premium
         </span>
         <span className="flex items-center gap-2">
           <div className="relative w-4 h-4 bg-yellow-100 after:content-[''] after:absolute after:top-1 after:right-1 after:w-full after:h-full after:border-t-2 after:border-red-500 after:rotate-45 after:pointer-events-none"></div>
-          Đã đặt
+          Booked
         </span>
       </div>
     </div>

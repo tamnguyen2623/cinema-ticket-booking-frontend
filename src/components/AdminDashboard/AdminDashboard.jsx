@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
-import { Link, useLocation, Navigate, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import "./AdminDashboard.css";
+import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/AdminDashboard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ChangePassword from "../../components/ChangePassword";
+import ChangeUsername from "../../components/ChangeUsername";
 import {
   faRightFromBracket,
   faClapperboard,
@@ -29,16 +30,17 @@ import {
 import { toast } from "react-toastify";
 import { FaProductHunt } from "react-icons/fa";
 
-const DashBoard = () => {
+import { AuthContext } from "../../context/AuthContext";
+const DashBroad = () => {
   const location = useLocation();
+
+  const isActive = (path) => (location.pathname === path ? "active-link" : "");
   const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   if (!auth.token || auth.role !== "admin") {
     return <Navigate to="/" replace />;
   }
-
-  const isActive = (path) => (location.pathname === path ? "active-link" : "");
 
   const [isLoggingOut, SetLoggingOut] = useState(false);
   const onLogout = async () => {
@@ -64,6 +66,11 @@ const DashBoard = () => {
       SetLoggingOut(false);
     }
   };
+  const showChangePasswordForm = () => {
+    setIsModalOTPOpen(true);
+  };
+  const [isModalOTPOpen, setIsModalOTPOpen] = useState(false);
+  const [isModalUsernameOpen, setIsModalUsernameOpen] = useState(false);
   return (
     <nav className="sidebar">
       <header className="sidebar-header">
@@ -71,10 +78,10 @@ const DashBoard = () => {
           <img
             src="https://i.pravatar.cc/50"
             alt="User Avatar"
-            className="avatar-unipue"
+            className="avatar"
           />
           <div className="profile-text">
-            <span className="name">{auth.username || "Admin"}</span>
+            <span className="name">Huỳnh Tuấn Kiệt</span>
             <span className="role">Admin</span>
           </div>
         </div>
@@ -82,10 +89,26 @@ const DashBoard = () => {
 
       <div className="menu-bar">
         <ul className="menu-links">
+          <li className={`nav-link ${isActive("")}`}>
+            <button onClick={() => showChangePasswordForm()}>
+              Change Password
+            </button>
+          </li>
+          <li className={`nav-link ${isActive("")}`}>
+            <button onClick={() => setIsModalUsernameOpen(true)}>
+              Change Username
+            </button>
+          </li>
           <li className={`nav-link ${isActive("/admin/dashboard")}`}>
             <Link to="/admin/dashboard">
               <FontAwesomeIcon icon={faChartBar} className="menu-icon" />
               <span>Dashboard</span>
+            </Link>
+          </li>
+          <li className={`nav-link ${isActive("/admin/banner")}`}>
+            <Link to="/admin/banner">
+              <FontAwesomeIcon icon={faTicket} className="menu-icon" />
+              <span>Banner</span>
             </Link>
           </li>
           <li className={`nav-link ${isActive("/admin/booking")}`}>
@@ -178,6 +201,12 @@ const DashBoard = () => {
               <span>Egift</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/service")}`}>
+            <Link to="/admin/service">
+              <FontAwesomeIcon icon={faHeadset} className="menu-icon" />
+              <span>Service</span>
+            </Link>
+          </li>
           <li className={`nav-link ${isActive("/admin/support")}`}>
             <Link to="/admin/support">
               <FontAwesomeIcon icon={faHeadset} className="menu-icon" />
@@ -205,8 +234,12 @@ const DashBoard = () => {
           </li>
         </ul>
       </div>
+      {isModalOTPOpen && <ChangePassword auth={auth} onClose={() => setIsModalOTPOpen(false)} />}
+      {isModalUsernameOpen && <ChangeUsername auth={auth} onClose={() => setIsModalUsernameOpen(false)} />}
     </nav>
   );
 };
 
-export default DashBoard;
+export default DashBroad;
+
+

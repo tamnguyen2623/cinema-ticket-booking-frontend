@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./Navbar.css";
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname);
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     if (location.pathname === "/") {
@@ -34,20 +36,30 @@ const Navbar = () => {
               MOVIES
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/myticket/:userId"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              MY TICKETS
-            </NavLink>
-          </li>
+          {auth.token && (
+            <li>
+              <NavLink
+                to="/myticket/:userId"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                MY TICKETS
+              </NavLink>
+            </li>
+          )}
           <li>
             <NavLink
               to="/promotionCus"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               PROMOTIONS
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/service"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              SERVICE
             </NavLink>
           </li>
           <li>
@@ -64,6 +76,14 @@ const Navbar = () => {
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               EGIFT
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/support"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              SUPPORT QUESTION
             </NavLink>
           </li>
         </ul>

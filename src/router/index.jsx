@@ -55,11 +55,27 @@ import Support from "../pages/Support/Support";
 import Promotion from "../pages/Promotion/promotionAdmin";
 import PromotionCus from "../pages/Promotion/PromotionCus";
 import PromotionCusDetail from "../pages/Promotion/PromotionCusDetail";
+import Banner from "../pages/Banner";
+import SentEgift from "../pages/SentEgiftCards/SentEgift";
+import SupportQuestionCustomer from "../pages/SupportQuestionCustomer/SupportQuestionCustomer";
+import Service from "../pages/ServiceForm/Service";
+import AdminServiceList from "../pages/ServiceForAdmin/AdminServiceList";
+
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
 
   if (!auth.token || auth.role !== "admin") {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
+  }
+
+  return element;
+};
+
+const ProtectedUserRoute = ({ element }) => {
+  const { auth } = useContext(AuthContext);
+
+  if (auth.token && auth.role == "admin") {
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
   return element;
@@ -76,7 +92,7 @@ const router = createBrowserRouter([
 
   {
     path: "/",
-    element: <CustomerLayout />,
+    element: <ProtectedUserRoute element={<CustomerLayout />} />,
     children: [
       { index: true, element: <MovieShowingCustomer /> },
       { path: "login", element: <Login /> },
@@ -98,6 +114,7 @@ const router = createBrowserRouter([
       { path: "egiftdetailcustomer/:id", element: <EgiftDetailCustomer /> },
       { path: "myticketdetail/:id", element: <MyTicketDetail /> },
       { path: "combocustomer", element: <ComboCustomer /> },
+      { path: "service", element: <Service /> },
       // { path: "vouchercustomerpage", element: <VoucherCustomerPage /> },
       { path: "/profile", element: <Profile /> },
       { path: "egiftdetailcustomer/:id", element: <EgiftDetailCustomer /> },
@@ -105,6 +122,8 @@ const router = createBrowserRouter([
       { path: "promotionCus", element: <PromotionCus /> },
       { path: "promotionCus/:id", element: <PromotionCusDetail /> },
 
+      { path: "egift/history", element: <SentEgift /> },
+      { path: "support", element: <SupportQuestionCustomer /> },
     ],
   },
 
@@ -136,6 +155,8 @@ const router = createBrowserRouter([
       { path: "/admin/support", element: <Support /> },
       { path: "/admin/promotion", element: <Promotion /> },
 
+      { path: "/admin/service", element: <AdminServiceList /> },
+      { path: "/admin/banner", element: <Banner /> },
     ],
   },
 

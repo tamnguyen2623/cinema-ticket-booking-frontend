@@ -10,6 +10,8 @@ import { getAvailableFeedbacks } from "../api/feedback";
 import "./DetailMovie.css";
 import FloatingNavigation from "../UtilityBar/FloatingNavigation";
 import moment from "moment";
+import { Select } from "antd"; // Import Select from Ant Design
+const { Option } = Select;
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -17,6 +19,7 @@ const MovieDetail = () => {
   const [loading, setLoading] = useState(true);
   const [openTrailer, setOpenTrailer] = useState(false);
   const [feedbackData, setFeedbackData] = useState([]);
+  const [selectedRating, setSelectedRating] = useState(null);
   const navigate = useNavigate();
 
   const fetchMovie = async () => {
@@ -34,7 +37,7 @@ const MovieDetail = () => {
       const data = await getAvailableFeedbacks(id);
       setFeedbackData(data);
     } catch (error) {
-      console.error("Failed to fetch detail movie:", error);
+      console.error("Failed to fetch movie details:", error);
     }
   };
 
@@ -44,15 +47,26 @@ const MovieDetail = () => {
 
   const handleBookTicket = () => {
     navigate("/bookingticket", { state: { selectedMovie: movie } });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (loading) return <p>Loading...</p>;
   if (!movie) return <p>Movie not found</p>;
 
+  // Handle rating filter change
+  const handleRatingFilter = (value) => {
+    setSelectedRating(value);
+  };
+
+  // Filter feedback based on selected rating
+  const filteredFeedback = selectedRating
+    ? feedbackData.filter((feedback) => feedback.ratting === selectedRating)
+    : feedbackData;
+
   return (
     <div className="movie-detail-container">
       <div className="movie-detail-header">
-        <p className="movie-detail-title">PHIM HOT TẠI RẠP</p>
+        <p className="movie-detail-title">HOT MOVIES IN CINEMA</p>
       </div>
       <div className="trailer-modal" onClick={() => setOpenTrailer(true)}>
         <div className="movie-trailer-container">
@@ -111,7 +125,7 @@ const MovieDetail = () => {
           <div className="movie-detail-image">
             <img src={movie.img} alt={movie.name} />
             <button className="btn-book-ticket" onClick={handleBookTicket}>
-              Đặt Vé
+              Book Ticket
             </button>
           </div>
           <div className="movie-detail-info">
@@ -120,29 +134,29 @@ const MovieDetail = () => {
             </div>
             <div className="movie-detail-inf-wrapper">
               <p>
-                <span className="label"> Thời lượng:</span>{" "}
-                <span className="value">{movie.length} phút</span>
+                <span className="label"> Duration:</span>{" "}
+                <span className="value">{movie.length} minutes</span>
               </p>
               <div className="movie-meta-inforunique">
                 <p>
-                  <span className="label"> Thể loại: </span>
+                  <span className="label"> Genre: </span>
                   <span className="value">
-                    {movie.movieType?.name || "Hành Động, Khoa Học Viễn Tưởng"}
+                    {movie.movieType.name || "Action, Sci-Fi"}
                   </span>
                 </p>
                 <p>
-                  <span className="label"> Ngày khởi chiếu:</span>{" "}
+                  <span className="label"> Release Date:</span>{" "}
                   <span className="value">
-                  {new Date(movie.releaseDate).toLocaleDateString("vi-VN")}
+                    {new Date(movie.releaseDate).toLocaleDateString("en-US")}
                   </span>
                 </p>
               </div>
               <p>
-                <span className="label"> Đạo diễn:</span>{" "}
+                <span className="label"> Director:</span>{" "}
                 <span className="value">{movie.director || "Jack 97"}</span>
               </p>
               <p>
-                <span className="label"> Diễn viên:</span>{" "}
+                <span className="label"> Cast:</span>{" "}
                 <span className="value">
                   {movie.actor ||
                     "Robert Downey Jr, Chris Evans, Scarlett Johansson, Chris Hemsworth"}
@@ -153,17 +167,36 @@ const MovieDetail = () => {
         </div>
         <div className="movie-detail-summary">
           <div className="movie-detail-summary-title">
-            <h3>Tóm tắt</h3>
+            <h3>Summary</h3>
           </div>
           <p className="movie-detail-summary-text">{movie.description}</p>
         </div>
       </div>
 
       <div className="movie-detail-reviews">
-        
         <hr className="divider" />
+        <div className="filter-section">
+          <label>Filter by Rating: </label>
+          <Select
+            defaultValue="All"
+            style={{ width: 120 }}
+            onChange={handleRatingFilter}
+          >
+            <Option value={null}>All</Option>
+            <Option value={5}>5 ★</Option>
+            <Option value={4}>4 ★</Option>
+            <Option value={3}>3 ★</Option>
+            <Option value={2}>2 ★</Option>
+            <Option value={1}>1 ★</Option>
+          </Select>
+        </div>
         <div className="review-list">
-          {feedbackData.map((feedback) => (
+          {filteredFeedback.length == 0 && (
+            <p className="text-center text-base text-gray-600">
+              - No feedback -
+            </p>
+          )}
+          {filteredFeedback.map((feedback) => (
             <div key={feedback._id} className="review-item">
               <div className="review-header">
                 <div className="review-info">
@@ -171,7 +204,9 @@ const MovieDetail = () => {
                   <p className="review-stars">{feedback.ratting} ★</p>
                 </div>
                 <p className="review-content">{feedback.comment}</p>
-                <p className="review-date">{moment(feedback.date).format("DD/MM/YYYY HH:mm")}</p>
+                <p className="review-date">
+                  {moment(feedback.date).format("DD/MM/YYYY HH:mm")}
+                </p>
               </div>
               <div className="review-user">
                 <p className="review-username">{feedback.userId.fullname}</p>

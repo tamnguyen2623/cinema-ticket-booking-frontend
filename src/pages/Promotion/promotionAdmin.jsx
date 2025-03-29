@@ -163,9 +163,9 @@ const promotionAdmin = () => {
     (!selectedCategory || promotion?.category === selectedCategory)
   ).sort((a, b) => a.isDelete - b.isDelete); // Sắp xếp mục bị disable xuống cuối
 
-  ;
+  
 
-  ;
+  
 
 
   const handleUploadChange = ({ file }) => {

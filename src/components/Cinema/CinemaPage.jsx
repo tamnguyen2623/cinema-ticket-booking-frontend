@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { Button, Typography, Grid } from "@mui/material";
 import { RightOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -8,6 +9,7 @@ import axios from "axios";
 import "./CinemaPage.css";
 import TicketBoard from "../../pages/TicketBoard/TicketBoard";
 const CinemaPage = () => {
+  const { auth } = useContext(AuthContext);
   const [currentWeek, setCurrentWeek] = useState(0);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [selectedCinema, setSelectedCinema] = useState(null);
@@ -40,7 +42,7 @@ const CinemaPage = () => {
         setCinemas(cinemasRes.data.data || []);
         setMovieShowing(movieShowingRes.data.data || []);
       } catch (err) {
-        setError("Lỗi khi tải dữ liệu");
+        setError("Error loading data");
         console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
@@ -95,14 +97,14 @@ const CinemaPage = () => {
   );
   const handleNextStep = () => {
     if (!selectedDate || !selectedCinema || !selectedMovie) {
-      alert("Vui lòng chọn đầy đủ Ngày, Rạp và Phim trước khi tiếp tục!");
+      alert("Please select Date, Cinema, and Movie before proceeding!");
       return;
     }
     const firstShowtime = showtimes.find(
       (showtime) => showtime.movie._id === selectedMovie._id
     );
     if (!firstShowtime) {
-      alert("Không có suất chiếu cho phim này!");
+      alert("No showtimes available for this movie!");
       return;
     }
     navigate(`/totalslide/${firstShowtime._id}`);
@@ -110,7 +112,7 @@ const CinemaPage = () => {
   return (
     <div className="cinema-container">
       <div className="movie-detail-header">
-        <p className="movie-detail-title">MUA VÉ XEM PHIM</p>
+        <p className="movie-detail-title">BOOK TICKET</p>
       </div>
 
       <div className="cinema-content">
@@ -165,12 +167,12 @@ const CinemaPage = () => {
         <div className="banner-secondary">
           <img
             src="https://dskb4mmeexzvj.cloudfront.net/cinema-shop/product-management/image/1440x548_d6b6b039ea.jpg"
-            alt="Khuyến mãi rạp chiếu phim"
+            alt="Cinema Promotions"
           />
         </div>
         <div className="ticket-option">
           <div className="show-cinema">
-            <h3>Rạp</h3>
+            <h3>Cinema</h3>
             <div className="cinema-list">
               {cinemas.map((cinema) => (
                 <div
@@ -192,7 +194,7 @@ const CinemaPage = () => {
           </div>
 
           <div className="show-movie">
-            <h3>Phim</h3>
+            <h3>Movie</h3>
             <div className="moviedetail-list">
               {movies.map((movie) => (
                 <div
@@ -215,22 +217,22 @@ const CinemaPage = () => {
         </div>
         <div className="Summary-booking">
           <div className="summary-item">
-            <span className="summary-label">Ngày:</span> {selectedDate}
+            <span className="summary-label">Date:</span> {selectedDate}
           </div>
           <div className="summary-item">
-            <span className="summary-label">Phim:</span>{" "}
+            <span className="summary-label">Movie:</span>{" "}
             {selectedMovie?.name || "Chưa chọn"}
           </div>
           <div className="summary-item">
-            <span className="summary-label">Rạp:</span>{" "}
+            <span className="summary-label">Cinema:</span>{" "}
             {selectedCinema?.name || "Chưa chọn"}
           </div>
         </div>
         <div className="showtime-wait">
           <h3>
-            Giờ chiếu{" "}
+          Showtime{" "}
             <span className="text-display">
-              Thời gian có thể chênh lệch 15 phút
+            Time may vary by 15 minutes
             </span>
           </h3>
         </div>
@@ -283,7 +285,7 @@ const CinemaPage = () => {
                               }}
                             >
                               <Link
-                                to={`/seatAvailable/${showtime._id}`}
+                                to={auth.token ? `/seatAvailable/${showtime._id}` : "/login"}
                                 className="showtime-link"
                                 style={{
                                   textDecoration: "none",
@@ -359,7 +361,7 @@ const CinemaPage = () => {
                                   }`}
                                 >
                                   <Link
-                                    to={`/seatAvailable/${showtime._id}`}
+                                    to={auth.token ? `/seatAvailable/${showtime._id}` : "/login"}
                                     className="showtime-link"
                                     style={{
                                       textDecoration: "none",
@@ -388,11 +390,11 @@ const CinemaPage = () => {
               )}
             </div>
           ) : (
-            <p className="select-warning">Không có suất chiếu cho ngày này</p>
+            <p className="select-warning">No showtimes available for this date</p>
           )
         ) : (
           <p className="select-warning">
-            Vui lòng chọn ngày và rạp để hiển thị suất chiếu
+            Please select a date and cinema to display showtimes
           </p>
         )}
       </div>

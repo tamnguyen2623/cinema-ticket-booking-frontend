@@ -1,9 +1,9 @@
 import {
-	EditOutlined,
-	DeleteOutlined,
-	PlusOutlined,
-	SearchOutlined,
-	FileOutlined
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  SearchOutlined,
+  FileOutlined
 } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, Space, Switch, Table, Typography } from 'antd';
 import axios from 'axios';
@@ -29,11 +29,11 @@ const User = () => {
   const [roleForm] = Form.useForm();
   const [isRoleEditing, setIsRoleEditing] = useState(false);
 
-	const fetchUsers = async () => {
-		try {
-			const response = await axios.get('/role/roles/get', {
-				headers: { Authorization: `Bearer ${auth.token}` },
-			});
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('/role/roles/get', {
+        headers: { Authorization: `Bearer ${auth.token}` },
+      });
 
       setUsers(response.data.data);
       setFilteredUsers(response.data.data);
@@ -59,14 +59,14 @@ const User = () => {
 
 
 
-	// 🔄 Gọi khi component mount
+  // 🔄 Gọi khi component mount
 
   useEffect(() => {
     fetchUsers();
 
 
-	}, []);
- // 🔎 Xử lý tìm kiếm
+  }, []);
+  // 🔎 Xử lý tìm kiếm
   useEffect(() => {
     const filtered = users.filter(user =>
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -75,59 +75,59 @@ const User = () => {
     ).sort((a, b) => a.isDelete - b.isDelete);
     setFilteredUsers(filtered);
   }
-  , [searchTerm, users]);
+    , [searchTerm, users]);
 
-	const handleSearch = (e) => {
-		setSearchTerm(e.target.value);
-	};
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-	const handleAddUser = () => {
-		form.resetFields();
-		setIsEditing(false);
-		setIsModalVisible(true);
-	};
+  const handleAddUser = () => {
+    form.resetFields();
+    setIsEditing(false);
+    setIsModalVisible(true);
+  };
 
-	const handleEditUser = (user) => {
-		form.setFieldsValue({
-			username: user.username,
-			fullname: user.fullname,
+  const handleEditUser = (user) => {
+    form.setFieldsValue({
+      username: user.username,
+      fullname: user.fullname,
       password: user.password,
-			email: user.email,
-			roleId: user.roleId?._id
-		});
-		setEditingUser(user);
-		setIsEditing(true);
-		setIsModalVisible(true);
-	};
+      email: user.email,
+      roleId: user.roleId?._id
+    });
+    setEditingUser(user);
+    setIsEditing(true);
+    setIsModalVisible(true);
+  };
 
-	const handleDeleteUser = async (user) => {
-		try {
-			await axios.put(`/role/deleteEmployee/${user._id}`, { isDelete: !user.isDelete }, {
-				headers: { Authorization: `Bearer ${auth.token}` },
-			});
-			toast.success("User deleted successfully!",2);
-			await fetchUsers();
-		} catch (error) {
-			console.error("Error deleting user:", error);
-			toast.error("Failed to delete user.");
-		}
-	};
+  const handleDeleteUser = async (user) => {
+    try {
+      await axios.put(`/role/deleteEmployee/${user._id}`, { isDelete: !user.isDelete }, {
+        headers: { Authorization: `Bearer ${auth.token}` },
+      });
+      toast.success("User deleted successfully!", 2);
+      await fetchUsers();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error("Failed to delete user.");
+    }
+  };
 
 
-	const handleAddRole = async (values) => {
-		try {
-			await axios.post('/role/create', values, {
-				headers: { Authorization: `Bearer ${auth.token}` },
-			});
-			toast.success('Role added successfully!');
-			setIsRoleModalVisible(false);
-			roleForm.resetFields();
-			fetchRoles(); // 🔄 Cập nhật danh sách roles
-		} catch (error) {
-			console.error('Error adding role:', error);
-			toast.error('Failed to add role.');
-		}
-	};
+  const handleAddRole = async (values) => {
+    try {
+      await axios.post('/role/create', values, {
+        headers: { Authorization: `Bearer ${auth.token}` },
+      });
+      toast.success('Role added successfully!');
+      setIsRoleModalVisible(false);
+      roleForm.resetFields();
+      fetchRoles(); // 🔄 Cập nhật danh sách roles
+    } catch (error) {
+      console.error('Error adding role:', error);
+      toast.error('Failed to add role.');
+    }
+  };
   const handleFormSubmit = async (values) => {
     console.log("Submitting user data:", values); // Log dữ liệu gửi đi
     try {
@@ -158,14 +158,24 @@ const User = () => {
       title: 'Role',
       dataIndex: 'roleId',
       render: (role) => role?.name || 'N/A',
-      
+
     },
 
     {
       title: 'Action',
       render: (_, record) => (
         <Space>
-          <Button icon={<EditOutlined />} onClick={() => handleEditUser(record)}>Update</Button>
+          <Button
+            className="custom-edit-btn"
+            icon={<EditOutlined />}
+            type="primary"
+            htmlType="submit"
+            block
+            onClick={() => handleEditUser(record)}>Edit
+          </Button>
+
+
+
         </Space>
       )
     },
@@ -255,7 +265,7 @@ const User = () => {
 
         <Button type="primary" icon={<PlusOutlined />}
           className="custom-edit-btn"
-          style = { {fontWeight:"bold"} }
+          style={{ fontWeight: "bold" }}
           onClick={handleAddUser}>
           Add User
         </Button>
@@ -285,8 +295,8 @@ const User = () => {
             name="fullname"
             label="Fullname"
             rules={[{ required: true, message: 'Please input fullname!' }]}
-          >        
-              <Input placeholder="Enter fullname" />
+          >
+            <Input placeholder="Enter fullname" />
           </Form.Item>
           <Form.Item
             name="password"

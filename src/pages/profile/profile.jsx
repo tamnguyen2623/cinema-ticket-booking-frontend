@@ -93,7 +93,7 @@ const Profile = () => {
       <div className="hot_movies">
         <p className="title-unique">PROFILE</p>
       </div>
-      <div className="max-w-[1200px] mx-auto bg-white shadow-md rounded-lg p-6 mt-6 mb-6">
+      <div className="max-w-[1000px] mx-auto bg-white shadow-lg rounded-lg p-6 mt-6 mb-6">
         {/* Avatar + Form */}
         <div className="flex flex-col md:flex-row items-center gap-6 mt-6 mb-6">
           {/* Avatar */}
@@ -103,7 +103,7 @@ const Profile = () => {
               alt="Avatar"
               className="w-32 h-32 rounded-full border-4 border-gray-300 shadow-md"
             />
-            <label htmlFor="avatarInput" className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-600 transition">
+            <label htmlFor="avatarInput" className="mt-3 px-4 py-2 rounded-md cursor-pointer font-bold" style={{backgroundColor: "#DAD2B4", color: "#231F20"}}>
 Choose image            </label>
             <input
               type="file"
@@ -140,11 +140,12 @@ Choose image            </label>
                 {/* Tổng chi tiêu */}
                 <div className="flex items-center justify-between bg-gray-100 p-4 rounded-md">
                   <p className="text-lg font-medium">
-                    Total: <span className="text-blue-500">{totalSpent.toLocaleString()} $</span>
+                    Total: <span className="font-bold" style={{color: "#231F20"}}>{totalSpent.toLocaleString()} $</span>
                   </p>
                   <button
                     onClick={() => navigate(`/myticket/${user.id}`)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                    className="px-4 py-2 rounded-md font-bold"
+                    style={{backgroundColor: "#DAD2B4", color: "#231F20"}}
                   >
 Detail tickets                  </button>
                 </div>
@@ -152,10 +153,11 @@ Detail tickets                  </button>
                 {/* Nút cập nhật thông tin */}
                 <button
                   onClick={handleUpdateProfile}
-                  className="w-full bg-blue-500 text-white px-5 py-3 rounded-md hover:bg-blue-600 transition flex items-center justify-center font-medium"
+                  className="w-full px-5 py-3 rounded-md transition flex items-center justify-center font-bold"
+                  style={{backgroundColor: "#DAD2B4", color: "#231F20"}}
                   disabled={loading}
                 >
-                  {loading ? "Đang cập nhật..." : "Cập nhật thông tin"}
+                  {loading ? "Updating..." : "Update information"}
                 </button>
               </div>
             )}

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FaTicketAlt, FaMapMarkerAlt, FaHeadset } from "react-icons/fa";
-import './FloatingNavigation.css';
+import { useNavigate } from "react-router-dom";
+import "./FloatingNavigation.css";
 
 const FloatingNavigation = () => {
   const [position, setPosition] = useState(window.innerHeight * 0.7);
   let scrollTimeout = null;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,31 +33,47 @@ const FloatingNavigation = () => {
     <div className="navigation-container" style={{ top: `${position}px` }}>
       <ul className="navigation-list">
         <li>
-          <Link to="/booking">
+          <Link
+            onClick={() => {
+              navigate("/bookingticket");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
             <FaTicketAlt className="icon" />
             <p>Quick Booking</p>
           </Link>
         </li>
         <li>
-          <Link to="/where-to-book">
+          <Link
+            onClick={() => {
+              navigate("/contact");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
             <FaMapMarkerAlt className="icon" />
             <p>Where to Book</p>
           </Link>
         </li>
         <li>
-          <Link to="/customer-center">
+          <Link
+            onClick={() => {
+              navigate("/support");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
             <FaHeadset className="icon" />
-            <p>Customer Center</p>
+            <p>Support</p>
           </Link>
         </li>
       </ul>
-      <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+      <button
+        className="back-to-top"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
         TOP <span className="arrow-up"></span>
       </button>
     </div>
-
   );
 };
 
 export default FloatingNavigation;
-``

@@ -185,8 +185,6 @@ const ShowtimePage = () => {
             key: "startTime",
             width: 300,
             render: (startTime) => moment(startTime).format('HH:mm'), // Extract only the time
-            sorter: (a, b) => moment(a.startTime).unix() - moment(b.startTime).unix(), // Sắp xếp trực tiếp trên bảng
-
         },
         {
             title: "Action",

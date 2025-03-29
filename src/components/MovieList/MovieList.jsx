@@ -8,12 +8,16 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./MovieList.css";
+import { getAvailableBanners } from "../api/banner";
+import { useNavigate } from "react-router-dom";
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
   const [allMovies, setAllMovies] = useState([]);
   const [visibleCount, setVisibleCount] = useState(8);
   const [filter, setFilter] = useState("nowShowing");
+  const [banners, setBanners] = useState([]);
+  const navigate = useNavigate();
 
   const fetchMovies = async (type) => {
     try {
@@ -32,10 +36,22 @@ const MovieList = () => {
     }
   };
 
+  const fetchBanners = async () => {
+    try {
+      const bannerList = await getAvailableBanners();
+      setBanners(bannerList); // Cập nhật state với danh sách banner
+    } catch (error) {
+      console.error("Lỗi khi tải banner:", error);
+    }
+  };
+
   useEffect(() => {
     fetchMovies(filter);
   }, [filter, visibleCount]);
 
+  useEffect(() => {
+    fetchBanners(); // Gọi API banner khi component mount
+  }, []);
 
   const handleShowMore = () => {
     if (visibleCount >= allMovies.length) {
@@ -60,24 +76,15 @@ const MovieList = () => {
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000 }}
         >
-          <SwiperSlide>
-            <img
-              src="https://media.lottecinemavn.com/Media/WebAdmin/ef4afc1938f04a669e8ec2e7b5578ad6.jpg"
-              alt="Slide 1"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="https://media.lottecinemavn.com/Media/WebAdmin/ee747d0d54bb445ba0d1f363f411ba9c.png"
-              alt="Slide 2"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="https://media.lottecinemavn.com/Media/WebAdmin/9e27c3018ad54fb39a1cdd27fdd828d6.jpg"
-              alt="Slide 3"
-            />
-          </SwiperSlide>
+          {banners.length > 0 ? (
+            banners.map((banner) => (
+              <SwiperSlide key={banner._id}>
+                <img src={banner.image} alt={banner.name} />
+              </SwiperSlide>
+            ))
+          ) : (
+            <p>Loading banners...</p>
+          )}
         </Swiper>
       </div>
 
@@ -96,7 +103,6 @@ const MovieList = () => {
         </button>
       </div>
 
-
       <div className="screen_cwrap">
         <div className="movie-list">
           {movies.map((movie) => (
@@ -110,22 +116,32 @@ const MovieList = () => {
                 <div className="overlay"> </div>
                 <div className="movie-actions">
                   {new Date(movie.releaseDate) <= new Date() ? (
-
                     <button className="btn btn-detail">
                       <Link
-                        to={`/bookingticket`}
+                        onClick={() => {
+                          navigate(`/bookingticket`);
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
                         state={{ selectedMovie: movie }}
                       >
                         <p>Book Ticket</p>
                       </Link>
                     </button>
                   ) : (
-                      <button className="btn btn-disabled cursor-not-allowed" disabled>
+                    <button
+                      className="btn btn-disabled cursor-not-allowed"
+                      disabled
+                    >
                       <p>Not Yet Available</p>
                     </button>
                   )}
                   <button className="btn btn-book">
-                    <Link to={`/movielist/${movie._id}`}>
+                    <Link
+                      onClick={() => {
+                        navigate(`/movielist/${movie._id}`);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                    >
                       <p>Details</p>
                     </Link>
                   </button>
