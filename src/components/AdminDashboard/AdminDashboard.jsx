@@ -117,6 +117,12 @@ const DashBroad = () => {
               <span>Booking</span>
             </Link>
           </li>
+          <li className={`nav-link ${isActive("/admin/service")}`}>
+            <Link to="/admin/service">
+              <FontAwesomeIcon icon={faCalendarCheck} className="menu-icon" />
+              <span>Service</span>
+            </Link>
+          </li>
           <li className={`nav-link ${isActive("/admin/role")}`}>
             <Link to="/admin/role">
               <FontAwesomeIcon icon={faUserShield} className="menu-icon" />

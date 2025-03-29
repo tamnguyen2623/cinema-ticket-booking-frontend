@@ -48,7 +48,16 @@ const Navbar = () => {
           )}
           <li>
             <NavLink
-              to="/promotionCus"
+
+              to="/favoritemovie"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              FAVORITE MOVIE
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/promotions"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               PROMOTIONS

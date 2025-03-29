@@ -55,11 +55,17 @@ import Support from "../pages/Support/Support";
 import Promotion from "../pages/Promotion/promotionAdmin";
 import PromotionCus from "../pages/Promotion/PromotionCus";
 import PromotionCusDetail from "../pages/Promotion/PromotionCusDetail";
+
+import FavoriteMovies from "../pages/Favorite/FavoriteMovies";
+import Service from "../pages/Service/Service";
+import AdminServiceList from "../pages/ServiceForAdmin/AdminServiceList";
+
+
 import Banner from "../pages/Banner";
 import SentEgift from "../pages/SentEgiftCards/SentEgift";
 import SupportQuestionCustomer from "../pages/SupportQuestionCustomer/SupportQuestionCustomer";
-import Service from "../pages/ServiceForm/Service";
-import AdminServiceList from "../pages/ServiceForAdmin/AdminServiceList";
+
+
 
 const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
@@ -114,6 +120,7 @@ const router = createBrowserRouter([
       { path: "egiftdetailcustomer/:id", element: <EgiftDetailCustomer /> },
       { path: "myticketdetail/:id", element: <MyTicketDetail /> },
       { path: "combocustomer", element: <ComboCustomer /> },
+      { path: "favoritemovie", element: <FavoriteMovies /> },
       { path: "service", element: <Service /> },
       // { path: "vouchercustomerpage", element: <VoucherCustomerPage /> },
       { path: "/profile", element: <Profile /> },
