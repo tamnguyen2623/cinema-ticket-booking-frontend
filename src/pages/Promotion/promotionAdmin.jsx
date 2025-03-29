@@ -46,13 +46,13 @@ const promotionAdmin = () => {
       const promotionsData = response.data?.data || response.data || [];
 
       if (!Array.isArray(promotionsData)) {
-        console.error("🚨 API trả về dữ liệu không đúng định dạng:", promotionsData);
+        console.error("API trả về dữ liệu không đúng định dạng:", promotionsData);
         return;
       }
 
       setPromotions(promotionsData);
     } catch (error) {
-      console.error("🚨 Lỗi API:", error.response?.data || error);
+      console.error("Lỗi API:", error.response?.data || error);
     }
   };
   useEffect(() => {
@@ -151,7 +151,7 @@ const promotionAdmin = () => {
       });
 
       fetchPromotions();
-      toast.success("Promotion disabled!");
+      toast.success("Promotion disable!");
     } catch (error) {
       console.error("Error Promotion disabled: ", error);
     }
@@ -161,10 +161,11 @@ const promotionAdmin = () => {
     (promotion?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       promotion?.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
     (!selectedCategory || promotion?.category === selectedCategory)
-  );
+  ).sort((a, b) => a.isDelete - b.isDelete); // Sắp xếp mục bị disable xuống cuối
 
-  // ).sort((a, b) => a.isDelete - b.isDelete); // Sắp xếp mục bị disable xuống cuối
-  ;
+  
+
+  
 
 
   const handleUploadChange = ({ file }) => {
@@ -289,7 +290,17 @@ const promotionAdmin = () => {
           <Form.Item
             name="dateStart"
             label="Day start"
-            rules={[{ required: true, message: "Please select a start date!" }]}
+            rules={[
+              { required: true, message: "Please select a start date!" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || !getFieldValue("dateEnd") || value.isBefore(getFieldValue("dateEnd"))) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("Start date must be before end date!"));
+                },
+              }),
+            ]}
           >
             <DatePicker style={{ width: "100%" }} format="YYYY-MM-DD" />
           </Form.Item>
@@ -297,10 +308,21 @@ const promotionAdmin = () => {
           <Form.Item
             name="dateEnd"
             label="Day end"
-            rules={[{ required: true, message: "Please select an end date!" }]}
+            rules={[
+              { required: true, message: "Please select an end date!" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || !getFieldValue("dateStart") || value.isAfter(getFieldValue("dateStart"))) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("End date must be after start date!"));
+                },
+              }),
+            ]}
           >
             <DatePicker style={{ width: "100%" }} format="YYYY-MM-DD" />
           </Form.Item>
+
           <Form.Item
             name="category"
             label="Category"

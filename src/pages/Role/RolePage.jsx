@@ -97,7 +97,7 @@ const RolePage = () => {
       await fetchRoles(); // Cập nhật lại danh sách từ server
 
       toast.success(
-        `Role ${role.name}  ${role.isDelete ? "vô hiệu hóa" : "Deleted "
+        `Role ${role.name}  ${role.isDelete ? "name" : "disable "
         } success!`,2
       );
     } catch (error) {
