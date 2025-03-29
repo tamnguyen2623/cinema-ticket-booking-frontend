@@ -5,11 +5,12 @@ import {
 	SearchOutlined,
 	FileOutlined
 } from '@ant-design/icons';
-import { Button, Form, Input, Modal, Select, Space, Switch, Table, Typography, message } from 'antd';
+import { Button, Form, Input, Modal, Select, Space, Switch, Table, Typography } from 'antd';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { FaFileExport } from 'react-icons/fa';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -65,19 +66,16 @@ const User = () => {
 
 
 	}, []);
-
-
-
-
-  // 🔎 Xử lý tìm kiếm
+ // 🔎 Xử lý tìm kiếm
   useEffect(() => {
     const filtered = users.filter(user =>
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.roleId?.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ).sort((a, b) => a.isDelete - b.isDelete);
     setFilteredUsers(filtered);
-  }, [searchTerm, users]);
+  }
+  , [searchTerm, users]);
 
 	const handleSearch = (e) => {
 		setSearchTerm(e.target.value);
@@ -93,6 +91,7 @@ const User = () => {
 		form.setFieldsValue({
 			username: user.username,
 			fullname: user.fullname,
+      password: user.password,
 			email: user.email,
 			roleId: user.roleId?._id
 		});
@@ -106,11 +105,11 @@ const User = () => {
 			await axios.put(`/role/deleteEmployee/${user._id}`, { isDelete: !user.isDelete }, {
 				headers: { Authorization: `Bearer ${auth.token}` },
 			});
-			message.success("User deleted successfully!");
+			toast.success("User deleted successfully!",2);
 			await fetchUsers();
 		} catch (error) {
 			console.error("Error deleting user:", error);
-			message.error("Failed to delete user.");
+			toast.error("Failed to delete user.");
 		}
 	};
 
@@ -120,35 +119,36 @@ const User = () => {
 			await axios.post('/role/create', values, {
 				headers: { Authorization: `Bearer ${auth.token}` },
 			});
-			message.success('Role added successfully!');
+			toast.success('Role added successfully!');
 			setIsRoleModalVisible(false);
 			roleForm.resetFields();
 			fetchRoles(); // 🔄 Cập nhật danh sách roles
 		} catch (error) {
 			console.error('Error adding role:', error);
-			message.error('Failed to add role.');
+			toast.error('Failed to add role.');
 		}
 	};
-	const handleFormSubmit = async (values) => {
-		try {
-			if (isEditing) {
-				await axios.put(`/role/putEmployee/${editingUser._id}`, values, {
-					headers: { Authorization: `Bearer ${auth.token}` },
-				});
-				message.success("User updated successfully!");
-			} else {
-				await axios.post("/role/createEmployee", values, {
-					headers: { Authorization: `Bearer ${auth.token}` },
-				});
-				message.success("User added successfully!");
-			}
-			fetchUsers();
-			setIsModalVisible(false);
-		} catch (error) {
-			console.error("Error saving user data:", error);
-			message.error("Error saving user data");
-		}
-	};
+  const handleFormSubmit = async (values) => {
+    console.log("Submitting user data:", values); // Log dữ liệu gửi đi
+    try {
+      if (isEditing) {
+        await axios.put(`/role/putEmployee/${editingUser._id}`, values, {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        });
+        toast.success("User updated successfully!");
+      } else {
+        await axios.post("/role/createEmployee", values, {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        });
+        toast.success("User added successfully!");
+      }
+      fetchUsers();
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error("Error saving user data:", error.response?.data || error);
+      toast.error("Error saving user data");
+    }
+  };
 
   const employeeColumns = [
     { title: 'Username', dataIndex: 'username' },
@@ -157,12 +157,8 @@ const User = () => {
     {
       title: 'Role',
       dataIndex: 'roleId',
-      filters: roles.length > 0 ? roles.map(role => ({
-        text: role.name,
-        value: role._id,
-      })) : [],
-      onFilter: (value, record) => record.roleId?._id === value,
-      render: (role) => role?.name || 'No Role',
+      render: (role) => role?.name || 'N/A',
+      
     },
 
     {
@@ -218,29 +214,53 @@ const User = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white p-8 rounded-none shadow-none">
-      <Title level={2}>User Management</Title>
-      <Space className="mb-4">
-        <Button type="primary" icon={<FaFileExport />}
-          className="custom-edit-btn"
-          onClick={handleExport}>
-          Export File
-        </Button>
+    <div className="container-fluid">
+      <div className="title-ticket">User Management</div>
+      <div className="searchFilterContainer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight: '30px' }}>
+        <Space>
+          <Button type="primary" icon={<FaFileExport />}
+            className="custom-edit-btn"
+            style={{ fontWeight: "bold" }}
+
+            onClick={handleExport}>
+            Export File
+          </Button>
+          <Input
+            placeholder="Search information"
+            prefix={<SearchOutlined />}
+            style={{ width: 300 }}
+            onChange={handleSearch}
+            value={searchTerm}
+          />
+          <Select
+            placeholder="Filter role"
+            onChange={(value) => {
+              if (!value) {
+                setFilteredUsers(users); // Nếu không chọn gì thì hiển thị tất cả
+              } else {
+                setFilteredUsers(users.filter(user => user.roleId?._id === value));
+              }
+            }}
+            allowClear
+            className="filterSelect"
+          >
+            {roles.map((role) => (
+              <Option key={role._id} value={role._id}>
+                {role.name}
+              </Option>
+            ))}
+          </Select>
+
+        </Space>
+
         <Button type="primary" icon={<PlusOutlined />}
           className="custom-edit-btn"
+          style = { {fontWeight:"bold"} }
           onClick={handleAddUser}>
           Add User
         </Button>
-        <Input
-          placeholder="Search information"
-          prefix={<SearchOutlined />}
-          style={{ width: 300 }}
-          onChange={handleSearch}
-          value={searchTerm}
-        />
+      </div>
 
-
-      </Space>
       <Table
         columns={employeeColumns}
         dataSource={filteredUsers}
@@ -265,9 +285,18 @@ const User = () => {
             name="fullname"
             label="Fullname"
             rules={[{ required: true, message: 'Please input fullname!' }]}
-          >
-            <Input placeholder="Enter fullname" />
+          >        
+              <Input placeholder="Enter fullname" />
           </Form.Item>
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={isEditing ? [] : [{ required: true, message: 'Please input password!' }]}
+            hidden={isEditing} // Ẩn khi update
+          >
+            <Input.Password placeholder="Enter password" />
+          </Form.Item>
+
           <Form.Item
             name="email"
             label="Email"
@@ -280,7 +309,7 @@ const User = () => {
             label="Role"
             rules={[{ required: true, message: "Please select a role!" }]}
           >
-            <Select placeholder="Select role">
+            <Select placeholder="Select role" >
               {roles.map((role) => (
                 <Option key={role._id} value={role._id}>{role.name}</Option>
               ))}

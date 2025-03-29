@@ -23,8 +23,11 @@ import {
   faUserShield,
   faFilm,
   faHeadset,
+  faDongSign,
+  faFire,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import { FaProductHunt } from "react-icons/fa";
 
 const DashBoard = () => {
   const location = useLocation();
@@ -179,6 +182,12 @@ const DashBoard = () => {
             <Link to="/admin/support">
               <FontAwesomeIcon icon={faHeadset} className="menu-icon" />
               <span>Support</span>
+            </Link>
+          </li>
+          <li className={`nav-link ${isActive("/admin/promotion")}`}>
+            <Link to="/admin/promotion">
+              <FontAwesomeIcon icon={faFire} className="menu-icon" />
+              <span>Promotion</span>
             </Link>
           </li>
           <li className="nav-link button-logout">

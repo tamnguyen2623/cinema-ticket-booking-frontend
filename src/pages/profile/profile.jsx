@@ -89,23 +89,22 @@ const Profile = () => {
 
   return (
 
-    <div className="container">
+    <div>
       <div className="hot_movies">
         <p className="title-unique">PROFILE</p>
       </div>
-      <div className="profile-container">
-        {/* Hiển thị avatar */}
-        <div className="avatar-profile">
-          <img
-            src={preview || avatar || "https://i.pinimg.com/474x/7e/7f/d0/7e7fd01f87a51b390e051e83340b7d78.jpg"}
-            alt="Avatar"
-            className="w-28 h-28 rounded-full mb-3"
-          />
-          <div className="avatar-buttons">
-            <label htmlFor="avatarInput" className="input-avatar">
-              Chọn ảnh
-            </label>
-
+      <div className="max-w-[1200px] mx-auto bg-white shadow-md rounded-lg p-6 mt-6 mb-6">
+        {/* Avatar + Form */}
+        <div className="flex flex-col md:flex-row items-center gap-6 mt-6 mb-6">
+          {/* Avatar */}
+          <div className="flex flex-col items-center">
+            <img
+              src={preview || avatar || "https://i.pinimg.com/474x/7e/7f/d0/7e7fd01f87a51b390e051e83340b7d78.jpg"}
+              alt="Avatar"
+              className="w-32 h-32 rounded-full border-4 border-gray-300 shadow-md"
+            />
+            <label htmlFor="avatarInput" className="mt-3 bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-600 transition">
+Choose image            </label>
             <input
               type="file"
               id="avatarInput"
@@ -113,52 +112,60 @@ const Profile = () => {
               className="hidden"
               onChange={handleFileChange}
             />
-
           </div>
-        </div>
-        <div className="profile-info">
-          {/* Hiển thị thông tin khách hàng */}
-          {user && (
-            <div className="mt-5 space-y-4">
-              {/* Cập nhật họ tên */}
-              <div className="flex items-center gap-3">
-                <strong>Tên:</strong>
-                <input
-                  type="text"
-                  value={fullname}
-                  onChange={(e) => setFullname(e.target.value)}
-                  className="border border-gray-300 px-2 py-1 rounded w-full max-w-xs"
-                />
 
-              </div>
+          {/* Form Thông Tin */}
+          <div className="flex-1 w-full ">
 
-              {/* Hiển thị Email */}
-              <p><strong>Email:</strong> {user.email}</p>
+            {user && (
+              <div className="space-y-4">
+                {/* Họ tên */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-gray-600 font-medium">Fullname:</label>
+                  <input
+                    type="text"
+                    value={fullname}
+                    onChange={(e) => setFullname(e.target.value)}
+                    className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                    placeholder="Nhập họ tên"
+                  />
+                </div>
 
-              {/* Hiển thị tổng số tiền đã mua vé */}
-              <div className="flex items-center gap-4 rounded">
+                {/* Email */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-gray-600 font-medium">Email:</label>
+                  <p className="text-gray-700 bg-gray-100 px-3 py-2 rounded-md">{user.email}</p>
+                </div>
 
-                <p><strong>Total:</strong> {totalSpent.toLocaleString()} $</p>
+                {/* Tổng chi tiêu */}
+                <div className="flex items-center justify-between bg-gray-100 p-4 rounded-md">
+                  <p className="text-lg font-medium">
+                    Total: <span className="text-blue-500">{totalSpent.toLocaleString()} $</span>
+                  </p>
+                  <button
+                    onClick={() => navigate(`/myticket/${user.id}`)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                  >
+Detail tickets                  </button>
+                </div>
+
+                {/* Nút cập nhật thông tin */}
                 <button
-                  onClick={() => navigate(`/myticket/${user.id}`)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                  Chi tiết
+                  onClick={handleUpdateProfile}
+                  className="w-full bg-blue-500 text-white px-5 py-3 rounded-md hover:bg-blue-600 transition flex items-center justify-center font-medium"
+                  disabled={loading}
+                >
+                  {loading ? "Đang cập nhật..." : "Cập nhật thông tin"}
                 </button>
               </div>
-              <button
-                onClick={handleUpdateProfile}
-                className="bg-blue-500 text-white px-5 py-2 rounded hover:bg-blue-600 transition flex items-center justify-center"
-                disabled={loading}
-              >
-                {loading ? "Loading..." : "Update Profile"}
-              </button>
-
-            </div>
-          )}
+            )}
+          </div>
         </div>
+      </div>
+
+
 
       </div>
-    </div>
   );
 };
 

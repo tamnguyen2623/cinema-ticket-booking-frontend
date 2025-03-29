@@ -193,7 +193,7 @@ const MyTicket = () => {
 
       <div className="head-container">
         <div className="sub-container">
-          <Row gutter={[32, 32]} justify="center">
+          <Row gutter={[0, 32]} justify="space-evenly">
             {filteredBookings.map((ticket) => (
               <Col key={ticket._id}>
                 <div className="ticket-card">
