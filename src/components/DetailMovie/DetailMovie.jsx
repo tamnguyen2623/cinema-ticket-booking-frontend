@@ -191,6 +191,11 @@ const MovieDetail = () => {
           </Select>
         </div>
         <div className="review-list">
+          {filteredFeedback.length == 0 && (
+            <p className="text-center text-base text-gray-600">
+              - No feedback -
+            </p>
+          )}
           {filteredFeedback.map((feedback) => (
             <div key={feedback._id} className="review-item">
               <div className="review-header">
