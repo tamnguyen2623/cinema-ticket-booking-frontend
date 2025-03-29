@@ -11,13 +11,13 @@ const Footer = () => {
                 <div className="banner">
                     <img
                         src="https://media.lottecinemavn.com/Media/WebAdmin/d3c9eea3982c46a09c9d9073cb6d2c17.jpg"
-                        alt="Banner quảng cáo"
+                        alt="Advertisement Banner"
                     />
                 </div>
                 <div className="banner-secondary">
                     <img
-                        src="https://media.lottecinemavn.com/Media/WebAdmin/9754b3be0cdc4bee9771fdbad2fd35f8.png"
-                        alt="Khuyến mãi rạp chiếu phim"
+                        src="https://media.lottecinemavn.com/Media/WebAdmin/d79908c7a0ce4c68b0363ff46a4bc575.jpg"
+                        alt="Cinema Promotions"
                     />
                 </div>
             </div>
@@ -25,27 +25,26 @@ const Footer = () => {
             {/* Footer Content */}
             <div className="footer-container">
                 <div className="footer-section">
-                    <h4>Về Chúng Tôi</h4>
+                    <h4>About Us</h4>
                     <p>
-                        Hệ thống rạp chiếu phim hiện đại với không gian sang trọng, âm thanh sống động,
-                        màn hình chất lượng cao và dịch vụ chuyên nghiệp. Chúng tôi cung cấp đặt vé trực
-                        tuyến, khu vực chờ tiện nghi, cùng đội ngũ nhân viên tận tâm, mang đến trải nghiệm
-                        điện ảnh trọn vẹn.
+                        A modern cinema system with a luxurious space, immersive sound, high-quality screens, 
+                        and professional services. We provide online ticket booking, comfortable waiting areas, 
+                        and a dedicated team to bring you a complete cinematic experience.
                     </p>
                 </div>
 
                 <nav className="footer-section">
-                    <h4>Liên Kết</h4>
+                    <h4>Links</h4>
                     <ul>
-                        <li><Link to="/about">Giới thiệu</Link></li>
-                        <li><Link to="/policy">Chính sách bảo mật</Link></li>
-                        <li><Link to="/terms">Điều khoản sử dụng</Link></li>
-                        <li><Link to="/contact">Liên hệ</Link></li>
+                        <li><Link to="/about">About Us</Link></li>
+                        <li><Link to="/policy">Privacy Policy</Link></li>
+                        <li><Link to="/terms">Terms of Use</Link></li>
+                        <li><Link to="/contact">Contact</Link></li>
                     </ul>
                 </nav>
 
                 <div className="footer-section">
-                    <h4>Theo Dõi Chúng Tôi</h4>
+                    <h4>Follow Us</h4>
                     <div className="social-icons">
                         <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                             <FaFacebookF />
@@ -65,7 +64,7 @@ const Footer = () => {
 
             {/* Footer Bottom */}
             <div className="footer-bottom">
-                <p>&copy; 2025 Rạp Chiếu Phim. All Rights Reserved.</p>
+                <p>&copy; 2025 Cinema. All Rights Reserved.</p>
             </div>
         </footer>
     );

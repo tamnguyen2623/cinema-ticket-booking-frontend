@@ -52,7 +52,7 @@ const SupportQuestionCustomer = () => {
   if (loading)
     return (
       <Spin
-        tip="Đang tải danh sách câu hỏi..."
+        tip="Loading support question list..."
         className="w-full flex justify-center"
       />
     );
@@ -60,7 +60,7 @@ const SupportQuestionCustomer = () => {
   return (
     <>
       <div className="hot_movies">
-        <p className="title-unique">Support Question</p>
+        <p className="title-unique">SUPPORT QUESTION</p>
       </div>
       <Layout style={{ minHeight: '100vh', padding: '20px', background: '#fff' }}>
       <Content>

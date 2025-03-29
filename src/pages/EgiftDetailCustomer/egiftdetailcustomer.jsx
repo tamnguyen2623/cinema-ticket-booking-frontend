@@ -11,6 +11,7 @@ import { Form, notification } from "antd/lib";
 import { AuthContext } from "../../context/AuthContext";
 import EgiftForm from "./EgiftForm";
 import { set } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const EgiftDetailCustomer = () => {
   const { id } = useParams();
@@ -20,6 +21,7 @@ const EgiftDetailCustomer = () => {
   const [error, setError] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEgift = async () => {
@@ -63,7 +65,8 @@ const EgiftDetailCustomer = () => {
   };
 
   const showGiftForm = () => {
-    setIsFormVisible(true);
+    if (!auth.token) navigate("/login");
+    else setIsFormVisible(true);
   }
 
   return (
@@ -75,7 +78,7 @@ const EgiftDetailCustomer = () => {
         <div className="movie-detail-main-info">
           <div className="detail-images">
             <img src={egift?.image} alt={egift?.name} />
-            <button onClick={showGiftForm} className="btn-book-ticket">Gift card</button>
+            <button onClick={showGiftForm} className="btn-book-ticket">Send as gift</button>
           </div>
           <div className="movie-detail-info">
             <div className="movie-detail-name-wrapper">

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { Button, Typography, Grid } from "@mui/material";
 import { RightOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -8,6 +9,7 @@ import axios from "axios";
 import "./CinemaPage.css";
 import TicketBoard from "../../pages/TicketBoard/TicketBoard";
 const CinemaPage = () => {
+  const { auth } = useContext(AuthContext);
   const [currentWeek, setCurrentWeek] = useState(0);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [selectedCinema, setSelectedCinema] = useState(null);
@@ -110,7 +112,7 @@ const CinemaPage = () => {
   return (
     <div className="cinema-container">
       <div className="movie-detail-header">
-        <p className="movie-detail-title">MUA VÉ XEM PHIM</p>
+        <p className="movie-detail-title">BOOK TICKET</p>
       </div>
 
       <div className="cinema-content">
@@ -283,7 +285,7 @@ const CinemaPage = () => {
                               }}
                             >
                               <Link
-                                to={`/seatAvailable/${showtime._id}`}
+                                to={auth.token ? `/seatAvailable/${showtime._id}` : "/login"}
                                 className="showtime-link"
                                 style={{
                                   textDecoration: "none",
@@ -359,7 +361,7 @@ const CinemaPage = () => {
                                   }`}
                                 >
                                   <Link
-                                    to={`/seatAvailable/${showtime._id}`}
+                                    to={auth.token ? `/seatAvailable/${showtime._id}` : "/login"}
                                     className="showtime-link"
                                     style={{
                                       textDecoration: "none",

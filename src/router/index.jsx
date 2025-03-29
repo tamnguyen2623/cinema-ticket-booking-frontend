@@ -60,7 +60,17 @@ const ProtectedAdminRoute = ({ element }) => {
   const { auth } = useContext(AuthContext);
 
   if (!auth.token || auth.role !== "admin") {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
+  }
+
+  return element;
+};
+
+const ProtectedUserRoute = ({ element }) => {
+  const { auth } = useContext(AuthContext);
+
+  if (auth.token && auth.role == "admin") {
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
   return element;
@@ -77,7 +87,7 @@ const router = createBrowserRouter([
 
   {
     path: "/",
-    element: <CustomerLayout />,
+    element: <ProtectedUserRoute element={<CustomerLayout />} />,
     children: [
       { index: true, element: <MovieShowingCustomer /> },
       { path: "login", element: <Login /> },

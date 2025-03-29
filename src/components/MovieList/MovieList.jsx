@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./MovieList.css";
 import { getAvailableBanners } from "../api/banner";
+import { useNavigate } from "react-router-dom";
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
@@ -16,6 +17,7 @@ const MovieList = () => {
   const [visibleCount, setVisibleCount] = useState(8);
   const [filter, setFilter] = useState("nowShowing");
   const [banners, setBanners] = useState([]);
+  const navigate = useNavigate();
 
   const fetchMovies = async (type) => {
     try {
@@ -116,7 +118,10 @@ const MovieList = () => {
                   {new Date(movie.releaseDate) <= new Date() ? (
                     <button className="btn btn-detail">
                       <Link
-                        to={`/bookingticket`}
+                        onClick={() => {
+                          navigate(`/bookingticket`);
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
                         state={{ selectedMovie: movie }}
                       >
                         <p>Book Ticket</p>
@@ -131,7 +136,12 @@ const MovieList = () => {
                     </button>
                   )}
                   <button className="btn btn-book">
-                    <Link to={`/movielist/${movie._id}`}>
+                    <Link
+                      onClick={() => {
+                        navigate(`/movielist/${movie._id}`);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                    >
                       <p>Details</p>
                     </Link>
                   </button>
