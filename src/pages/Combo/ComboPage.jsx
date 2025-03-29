@@ -34,6 +34,7 @@ const ComboPage = () => {
   const [currentCombo, setCurrentCombo] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [sortOrder, setSortOrder] = useState(""); // State lưu thứ tự sắp xếp
 
   useEffect(() => {
     fetchCombos();
@@ -114,13 +115,9 @@ const ComboPage = () => {
       formData.append("price", values.price);
 
       if (imageFile) {
-        formData.append("image", {
-          uri: imageFile.uri || imageFile.path,
-          type: imageFile.type || "image/jpeg",
-          name:
-            imageFile.name || `upload.${imageFile.type.split("/")[1] || "jpg"}`,
-        });
+        formData.append("image", imageFile);
       }
+
 
       await axios.put(`/combo/${currentCombo._id}`, formData, {
         headers: {
@@ -158,7 +155,9 @@ const ComboPage = () => {
       toast.error("Failed to disabled combo!");
     }
   };
-
+  const handleSortChange = (value) => {
+    setSortOrder(value);
+  };
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -166,6 +165,12 @@ const ComboPage = () => {
   const filteredCombos = combos.filter((combo) =>
     combo.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const sortedEgifts = [...filteredCombos].sort((a, b) => {
+    if (sortOrder === "asc") return a.name.localeCompare(b.name);
+    if (sortOrder === "desc") return b.name.localeCompare(a.name);
+    return 0; // Không sắp xếp nếu không có lựa chọn
+  });
 
   const columns = [
     { title: "Name Combo", dataIndex: "name", key: "name", width: 200 },
@@ -235,12 +240,27 @@ const ComboPage = () => {
               className="searchInput"
               style={{ width: 300 }}
             />
+            <Select
+              placeholder="Sort by"
+              value={sortOrder}
+              onChange={handleSortChange}
+              className="filterSelect"
+            >
+              <Option value="">Default</Option>
+              <Option value="asc">A - Z</Option>
+              <Option value="desc">Z - A</Option>
+            </Select>
           </div>
           <div className="buttonAddContainer">
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => setModalType("add")}
+              onClick={() => {
+                form.resetFields();  // Xóa dữ liệu form
+                setImageFile(null);  // Xóa ảnh đã chọn trước đó
+                setCurrentCombo(null); // Đảm bảo không có dữ liệu từ update
+                setModalType("add"); // Mở modal Add
+              }}
               className="addTicketButton"
             >
               Add Combo
@@ -248,7 +268,7 @@ const ComboPage = () => {
           </div>
         </div>
         <Table
-          dataSource={filteredCombos}
+          dataSource={sortedEgifts}
           columns={columns}
           rowKey="_id"
           scroll={{ x: 800 }}
@@ -312,24 +332,33 @@ const ComboPage = () => {
           <Form.Item
             name="image"
             label="Image"
-            // rules={[
-            //   {
-            //     required: true,
-            //     validator: (_, value) =>
-            //       fileList.length > 0
-            //         ? Promise.resolve()
-            //         : Promise.reject(new Error("Please upload an image!")),
-            //   },
-            // ]}
+            rules={[
+              {
+                required: modalType === "add", // Chỉ bắt buộc khi thêm mới
+                validator: (_, value) =>
+                  imageFile || modalType === "edit"
+                    ? Promise.resolve()
+                    : Promise.reject(new Error("Please upload an image!")),
+              },
+            ]}
           >
+            {modalType === "edit" && currentCombo?.image && !imageFile ? (
+              <div style={{ marginBottom: 10 }}>
+                <img src={currentCombo.image} alt="Current eGift" style={{ width: 100, height: 100 }} />
+              </div>
+            ) : null}
+            {imageFile && (
+              <div style={{ marginBottom: 10 }}>
+                <img src={URL.createObjectURL(imageFile)} alt="Selected" style={{ width: 100, height: 100 }} />
+              </div>
+            )}
             <Upload
               listType="picture"
+              fileList={[]} // Ngăn chặn cộng dồn ảnh
               beforeUpload={(file) => {
-                console.log("Before Upload File:", file);
                 setImageFile(file);
-                return false; // Không tự động upload
+                return false;
               }}
-              onChange={handleUploadChange}
             >
               <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>

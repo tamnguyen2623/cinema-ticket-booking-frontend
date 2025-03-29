@@ -5,16 +5,16 @@
     font-family: Arial, sans-serif;
 }
 
-body {
+.body {
     overflow-x: hidden;
 }
 
-.movie-detail-header {
+.movieheader {
     text-align: center;
     background-color: #DAD2B4;
 }
 
-.movie-detail-title {
+.movietitle {
     display: inline-block;
     padding: 10px 0;
     font-weight: 700;
@@ -22,19 +22,19 @@ body {
     border-bottom: 2px solid black;
 }
 
-.movie-detail-content {
+.moviecontent {
     width: 80%;
     justify-content: flex-start;
     align-items: flex-start;
 }
 
-.movie-detail-main-info {
+.moviemaininfo {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
 }
 
-.detail-images {
+.detailimages {
     display: flex;
     width: 30%;
     margin-left: 260px;
@@ -42,20 +42,19 @@ body {
     align-items: center;
     text-align: center;
     justify-content: center;
-    /* Căn giữa dọc */
 }
 
-.detail-images img {
+.detailimages img {
     width: 100%;
     border-radius: 30px;
     object-fit: cover;
 }
 
-.movie-detail-info {
+.movieinfo {
     margin-left: 30px;
 }
 
-.btn-book-ticket {
+.btnsendgift {
     background-color: #231f20;
     color: #cdc197;
     font-size: 18px;
@@ -72,25 +71,25 @@ body {
     align-items: center;
 }
 
-.btn-book-ticket:hover {
+.btnsendgift:hover {
     background-color: #cdc197;
     color: #231f20;
 }
 
-.movie-detail-name {
+.moviename {
     color: #231f20;
     font-size: 30px;
     font-weight: 700;
     line-height: 30px;
 }
 
-.movie-detail-inf-wrapper {
+.movieinfowrapper {
     padding: 15px;
     margin-top: 10px;
     border-radius: 8px;
 }
 
-.movie-detail-inf-wrapper p {
+.movieinfowrapper p {
     font-size: 19px;
     color: #333;
     margin: 5px 0;
@@ -98,33 +97,33 @@ body {
     border-left: 4px solid #d4af37;
 }
 
-.movie-detail-inf-wrapper p span.label {
+.movieinfowrapper p span.label {
     font-weight: bold;
     color: #000;
 }
 
-.movie-detail-inf-wrapper p span.value {
+.movieinfowrapper p span.value {
     font-weight: normal;
     color: #333;
 }
 
-.loading-message,
-.error-message,
-.no-data-message {
+.loadingmessage,
+.errormessage,
+.nodatamessage {
     text-align: center;
     font-size: 18px;
     font-weight: bold;
     margin-top: 20px;
 }
 
-.no-data-container {
+.nodatacontainer {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.no-data-message {
+.nodatamessage {
     font-size: 20px;
     font-weight: bold;
     color: red;
