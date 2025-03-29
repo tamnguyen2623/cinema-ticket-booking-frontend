@@ -33,9 +33,9 @@ export default function SeatAvailableForCustomer() {
   }, [id]);
 
   const seatTypeColors = {
-    Standard: "bg-purple-500",
-    VIP: "bg-red-500",
-    Premium: "bg-pink-500",
+    Standard: "text-white bg-purple-500",
+    VIP: "text-white bg-red-500",
+    Premium: "text-white bg-pink-500",
   };
 
   // Hàm xử lý chọn ghế
@@ -74,7 +74,7 @@ export default function SeatAvailableForCustomer() {
     // const seatIds = selectedSeats.map((s) => s._id);
 
     // ✅ Hiển thị thông báo trước khi điều hướng
-    alert(`Bạn đã chọn ghế: ${seatNames}`);
+    // alert(`Bạn đã chọn ghế: ${seatNames}`);
 
     // ✅ Cập nhật `localStorage`
     const existingBookingData =
@@ -96,8 +96,8 @@ export default function SeatAvailableForCustomer() {
 
   return (
     <div className="p-11">
-      <div className="bg-gray-800 text-white py-2 text-center mb-4">
-        MÀN HÌNH
+      <div className="text-white py-2 text-center mb-4" style={{backgroundColor:"#231F20"}}>
+        SCREEN
       </div>
       <div
         className="grid gap-2 ml-9"
@@ -128,27 +128,28 @@ export default function SeatAvailableForCustomer() {
 
       <div className="mt-4 flex gap-4 justify-center">
         <span className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-purple-500"></div>Ghế thường
+          <div className="w-4 h-4 bg-purple-500"></div>Standard
         </span>
         <span className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-500"></div>Ghế VIP
+          <div className="w-4 h-4 bg-red-500"></div>VIP
         </span>
         <span className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-pink-500"></div>Ghế Premium
+          <div className="w-4 h-4 bg-pink-500"></div>Premium
         </span>
         <span className="flex items-center gap-2">
           <div className="relative w-4 h-4 bg-yellow-100 after:content-[''] after:absolute after:top-1 after:right-1 after:w-full after:h-full after:border-t-2 after:border-red-500 after:rotate-45 after:pointer-events-none"></div>
-          Đã đặt
+          Booked
         </span>
       </div>
 
       {selectedSeats.length > 0 && (
-        <div className="mt-6 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            className="px-4 py-2 rounded-md font-medium"
+            style={{backgroundColor: "#DAD2B4", color: "#231F20"}}
             onClick={handleConfirmSelection}
           >
-            Xác nhận ghế đã chọn ({selectedSeats.length})
+            Confirm selected seat ({selectedSeats.length})
           </button>
         </div>
       )}

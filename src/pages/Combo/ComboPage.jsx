@@ -141,12 +141,16 @@ const ComboPage = () => {
 
   const handleDelete = async (id, isDelete) => {
     try {
-      await axios.put(`/combo/updateIsDelete/${id}`, { isDelete: !isDelete }, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-      });
+      await axios.put(
+        `/combo/updateIsDelete/${id}`,
+        { isDelete: !isDelete },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
       fetchCombos(); // Cập nhật lại danh sách combo
       toast.success("Combo disabled successfully!");
     } catch (error) {
@@ -209,7 +213,11 @@ const ComboPage = () => {
       key: "disabled",
       render: (record) => (
         <div style={{ display: "flex", gap: "10px" }}>
-          <Switch checked={record.isDelete} className="custom-switch" onChange={() => handleDelete(record._id, record.isDelete)} />
+          <Switch
+            checked={record.isDelete}
+            className="custom-switch"
+            onChange={() => handleDelete(record._id, record.isDelete)}
+          />
         </div>
       ),
     },
@@ -301,7 +309,19 @@ const ComboPage = () => {
           >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="image" label="Image">
+          <Form.Item
+            name="image"
+            label="Image"
+            // rules={[
+            //   {
+            //     required: true,
+            //     validator: (_, value) =>
+            //       fileList.length > 0
+            //         ? Promise.resolve()
+            //         : Promise.reject(new Error("Please upload an image!")),
+            //   },
+            // ]}
+          >
             <Upload
               listType="picture"
               beforeUpload={(file) => {
@@ -316,7 +336,7 @@ const ComboPage = () => {
           </Form.Item>
         </Form>
       </Modal>
-    </div >
+    </div>
   );
 };
 
