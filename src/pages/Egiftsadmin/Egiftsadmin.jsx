@@ -40,13 +40,13 @@ const EgiftAdmin = () => {
   const handleAddEgift = async () => {
     try {
       const values = await form.validateFields();
-      const formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("description", values.description);
       if (!imageFile) {
         toast.error("Please select an image before submitting.");
         return;
       }
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("description", values.description);
       formData.append("image", imageFile);
 
       await axios.post(`/egift/egifts`, formData, {
@@ -78,6 +78,7 @@ const EgiftAdmin = () => {
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("description", values.description);
+
       if (imageFile) {
         formData.append("image", imageFile);
       }
@@ -87,6 +88,7 @@ const EgiftAdmin = () => {
       });
       fetchEgifts();
       setModalType(null);
+      setImageFile(null);
       toast.success("eGift updated successfully!");
     } catch (error) {
       console.error("Error updating eGift:", error.response?.data || error);
@@ -149,7 +151,12 @@ const EgiftAdmin = () => {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => setModalType("add")}
+              onClick={() => {
+                form.resetFields();  // Xóa dữ liệu form
+                setImageFile(null);  // Xóa ảnh đã chọn trước đó
+                setCurrentEgift(null); // Đảm bảo không có dữ liệu từ update
+                setModalType("add"); // Mở modal Add
+              }}
               className="addTicketButton"
             >
               Add eGift
@@ -193,7 +200,9 @@ const EgiftAdmin = () => {
         okButtonProps={{ className: "custom-ok-btn" }}
         title={modalType === "add" ? "Add New eGift" : "Update eGift"}
         open={modalType !== null}
-        onCancel={() => { setModalType(null); form.resetFields(); }}
+        onCancel={() => {
+          setModalType(null); form.resetFields(); setImageFile(null); // Reset image file khi hủy
+        }}
         onOk={modalType === "add" ? handleAddEgift : handleEditEgift}
       >
         <Form form={form} layout="vertical">
@@ -212,8 +221,37 @@ const EgiftAdmin = () => {
           <Form.Item name="description" label="Description" rules={[{ required: true, message: "Please enter a description!" }]}>
             <Input.TextArea />
           </Form.Item>
-          <Form.Item name="image" label="Image">
-            <Upload listType="picture" beforeUpload={(file) => { setImageFile(file); return false; }}>
+          <Form.Item
+            name="image"
+            label="Image"
+            rules={[
+              {
+                required: modalType === "add", // Chỉ bắt buộc khi thêm mới
+                validator: (_, value) =>
+                  imageFile || modalType === "edit"
+                    ? Promise.resolve()
+                    : Promise.reject(new Error("Please upload an image!")),
+              },
+            ]}
+          >
+            {modalType === "edit" && currentEgift?.image && !imageFile ? (
+              <div style={{ marginBottom: 10 }}>
+                <img src={currentEgift.image} alt="Current eGift" style={{ width: 100, height: 100 }} />
+              </div>
+            ) : null}
+            {imageFile && (
+              <div style={{ marginBottom: 10 }}>
+                <img src={URL.createObjectURL(imageFile)} alt="Selected" style={{ width: 100, height: 100 }} />
+              </div>
+            )}
+            <Upload
+              listType="picture"
+              fileList={[]} // Ngăn chặn cộng dồn ảnh
+              beforeUpload={(file) => {
+                setImageFile(file);
+                return false;
+              }}
+            >
               <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>
           </Form.Item>
