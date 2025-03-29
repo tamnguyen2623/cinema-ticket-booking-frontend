@@ -312,7 +312,7 @@ export default function PaymentTicket() {
           </div>
 
           <Button
-            type="primary"
+            // type="primary"
             className="payment-button"
             onClick={() => {
               if (paymentMethod === "egift") {

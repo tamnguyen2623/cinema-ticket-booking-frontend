@@ -14,8 +14,8 @@
   flex-direction: column;
 }
 .ticket-header {
-  background: linear-gradient(135deg, #ff7f50, #ff4500);
-  color: white;
+  background: linear-gradient(135deg, #d0c291, #decb85);
+  color: rgb(0, 0, 0);
   padding: 20px;
   text-align: center;
   font-size: 18px;
@@ -58,7 +58,7 @@
 .ticket-barcode img {
   width: 150px;
   height: 130px;
-  border: 2px solid #ff4500;
+  border: 2px solid #d0c291;
   border-radius: 10px;
 }
 .ticket-transaction-id {
@@ -68,7 +68,7 @@
   color: #555;
 }
 .ticket-footer {
-  background: #ffe0b2;
+  background: #decb85;
   padding: 15px;
   text-align: center;
   font-size: 12px;

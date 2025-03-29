@@ -37,23 +37,25 @@ const Navbar = () => {
             </NavLink>
           </li>
           {auth.token && (
-            <li>
-              <NavLink
-                to="/myticket/:userId"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                MY TICKETS
-              </NavLink>
-            </li>
+            <>
+              <li>
+                <NavLink
+                  to="/myticket/:userId"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  MY TICKETS
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/favoritemovie"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  FAVORITE MOVIE
+                </NavLink>
+              </li>
+            </>
           )}
-          <li>
-            <NavLink
-              to="/favoritemovie"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              FAVORITE MOVIE
-            </NavLink>
-          </li>
           <li>
             <NavLink
               to="/promotions"
@@ -62,14 +64,14 @@ const Navbar = () => {
               PROMOTIONS
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               to="/service"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               SERVICE
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink
               to="/contact"
