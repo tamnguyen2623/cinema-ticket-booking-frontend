@@ -66,6 +66,14 @@ const Navbar = () => {
               EGIFT
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/support"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Support Question
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
