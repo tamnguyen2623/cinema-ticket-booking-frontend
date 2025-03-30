@@ -219,7 +219,7 @@ export default function PaymentTicket() {
           <img
             src={bookingData.selectedMovie?.img}
             alt={bookingData.selectedMovie?.name}
-            className="movie-poster"
+            className="movie-poster-booking"
           />
         </div>
         <div className="payment-right">

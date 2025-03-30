@@ -414,7 +414,22 @@ const Dashboard = () => {
               className="flex flex-col gap-4 rounded-lg bg-gray-50 p-6 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
               <span className="text-xl font-semibold text-gray-800">
-                {title}
+                {title} {index == 2 && (
+                  <>
+                    <Select
+                      value={yearForByMonth}
+                      onChange={(e) => setYearForByMonth(e)}
+                      className="w-24"
+                      placeholder="Select Month"
+                    >
+                      {yearList.map((m) => (
+                        <Option key={m} value={m}>
+                          {m}
+                        </Option>
+                      ))}
+                    </Select>
+                  </>
+                )}
               </span>
               {component}
             </div>
